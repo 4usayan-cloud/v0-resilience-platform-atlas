@@ -143,14 +143,15 @@ export function LiveFeeds({ selectedCountry }: LiveFeedsProps) {
   };
 
   return (
-    <Card className="h-full bg-card border-border">
+    <Card className="h-full bg-card border-border card-interactive">
       <CardHeader className="py-3 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <span className="relative flex h-2 w-2">
+          <span className="relative flex h-2 w-2 live-pulse">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
           Live Social Feeds
+          {isLoading && <span className="ml-auto animate-shimmer w-8 h-3 rounded skeleton"></span>}
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
@@ -183,13 +184,14 @@ export function LiveFeeds({ selectedCountry }: LiveFeedsProps) {
           </TabsList>
 
           {Object.entries(feeds).map(([platform, posts]) => (
-            <TabsContent key={platform} value={platform} className="m-0">
+            <TabsContent key={platform} value={platform} className="m-0 animate-fade-in">
               <ScrollArea className="h-[300px]">
                 <div className="space-y-1 p-2">
-                  {posts.map((post) => (
+                  {posts.map((post, index) => (
                     <div
                       key={post.id}
-                      className="p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                      className="p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 hover-lift transition-all cursor-pointer animate-fade-in-up"
+                      style={{ animationDelay: `${index * 50}ms` }}
                     >
                       <div className="flex items-start justify-between gap-2">
                         <span className="text-xs font-medium text-primary">

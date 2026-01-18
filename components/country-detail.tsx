@@ -37,29 +37,37 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
     label,
     score,
     icon,
+    delay = 0,
   }: {
     label: string;
     score: number;
     icon: React.ReactNode;
+    delay?: number;
   }) => (
-    <div className="p-3 rounded-lg bg-secondary/50">
+    <div 
+      className="p-3 rounded-lg bg-secondary/50 hover-lift card-interactive cursor-default"
+      style={{ animationDelay: `${delay}ms` }}
+    >
       <div className="flex items-center gap-2 mb-2">
-        {icon}
+        <div className="animate-float" style={{ animationDelay: `${delay}ms` }}>
+          {icon}
+        </div>
         <span className="text-xs font-medium text-muted-foreground">{label}</span>
       </div>
       <div className="flex items-center gap-2">
         <span
-          className="text-2xl font-bold font-mono"
+          className="text-2xl font-bold font-mono number-roll"
           style={{ color: getResilienceColor(score) }}
         >
           {Math.round(score)}
         </span>
         <Badge
           variant="outline"
-          className="text-[10px]"
+          className="text-[10px] animate-scale-in"
           style={{
             borderColor: getResilienceColor(score),
             color: getResilienceColor(score),
+            animationDelay: `${delay + 100}ms`,
           }}
         >
           {getResilienceLevel(score)}
@@ -67,7 +75,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
       </div>
       <Progress
         value={score}
-        className="h-1.5 mt-2"
+        className="h-1.5 mt-2 progress-animated"
         style={
           {
             "--progress-background": getResilienceColor(score),
@@ -82,29 +90,35 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
     value,
     unit = "",
     inverted = false,
+    index = 0,
   }: {
     label: string;
     value: number;
     unit?: string;
     inverted?: boolean;
+    index?: number;
   }) => {
     const displayValue = typeof value === "number" ? value.toFixed(1) : "N/A";
     const normalizedValue = inverted ? 100 - Math.min(100, Math.max(0, value)) : Math.min(100, Math.max(0, value));
 
     return (
-      <div className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
+      <div 
+        className="flex items-center justify-between py-2 border-b border-border/50 last:border-0 hover:bg-secondary/30 rounded px-1 transition-colors animate-fade-in-up"
+        style={{ animationDelay: `${index * 30}ms` }}
+      >
         <span className="text-xs text-muted-foreground">{label}</span>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-medium text-foreground">
+          <span className="text-xs font-mono font-medium text-foreground number-roll">
             {displayValue}
             {unit}
           </span>
           <div className="w-16 h-1.5 rounded-full bg-secondary overflow-hidden">
             <div
-              className="h-full rounded-full transition-all"
+              className="h-full rounded-full progress-animated"
               style={{
                 width: `${normalizedValue}%`,
                 backgroundColor: getResilienceColor(normalizedValue),
+                transitionDelay: `${index * 30}ms`,
               }}
             />
           </div>
@@ -195,6 +209,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
                   <ScoreCard
                     label="Economic"
                     score={country.scores.economic}
+                    delay={0}
                     icon={
                       <svg className="w-4 h-4 text-chart-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -204,6 +219,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
                   <ScoreCard
                     label="Social"
                     score={country.scores.social}
+                    delay={100}
                     icon={
                       <svg className="w-4 h-4 text-chart-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -213,6 +229,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
                   <ScoreCard
                     label="Institutional"
                     score={country.scores.institutional}
+                    delay={200}
                     icon={
                       <svg className="w-4 h-4 text-chart-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -222,6 +239,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
                   <ScoreCard
                     label="Infrastructure"
                     score={country.scores.infrastructure}
+                    delay={300}
                     icon={
                       <svg className="w-4 h-4 text-chart-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />

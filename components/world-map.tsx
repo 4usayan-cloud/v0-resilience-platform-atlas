@@ -1,14 +1,27 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   ComposableMap,
   Geographies,
   Geography,
   ZoomableGroup,
+  Marker,
 } from "react-simple-maps";
 import { CountryData, getResilienceColor } from "@/lib/types";
 import { countryMap } from "@/lib/country-data";
+
+interface GlobalEvent {
+  id: string;
+  type: 'conflict' | 'disaster' | 'economic' | 'political' | 'health' | 'climate';
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  title: string;
+  country: string;
+  countryCode: string;
+  coordinates: { lat: number; lng: number };
+  estimatedImpact: number;
+  isOngoing: boolean;
+}
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
@@ -70,13 +83,22 @@ interface WorldMapProps {
   selectedCountry: CountryData | null;
   pillar: "overall" | "economic" | "social" | "institutional" | "infrastructure";
   year: number;
+  showEvents?: boolean;
 }
+
+const severityMarkerColors: Record<string, string> = {
+  critical: '#dc2626',
+  high: '#f97316',
+  medium: '#eab308',
+  low: '#3b82f6',
+};
 
 export function WorldMap({
   onCountrySelect,
   selectedCountry,
   pillar,
   year,
+  showEvents = true,
 }: WorldMapProps) {
   const [position, setPosition] = useState({ coordinates: [0, 20] as [number, number], zoom: 1 });
   const [tooltipContent, setTooltipContent] = useState<{
@@ -85,6 +107,33 @@ export function WorldMap({
     x: number;
     y: number;
   } | null>(null);
+  const [events, setEvents] = useState<GlobalEvent[]>([]);
+  const [eventTooltip, setEventTooltip] = useState<{
+    event: GlobalEvent;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  // Fetch live events
+  useEffect(() => {
+    if (!showEvents) return;
+    
+    async function fetchEvents() {
+      try {
+        const res = await fetch('/api/events');
+        const data = await res.json();
+        if (data.success) {
+          setEvents(data.events);
+        }
+      } catch (error) {
+        console.error('[v0] Failed to fetch events for map:', error);
+      }
+    }
+    
+    fetchEvents();
+    const interval = setInterval(fetchEvents, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [showEvents]);
 
   const handleZoomIn = () => {
     if (position.zoom >= 4) return;
@@ -258,8 +307,85 @@ export function WorldMap({
               })
             }
           </Geographies>
+          
+          {/* Live Event Markers */}
+          {showEvents && events.map((event) => (
+            <Marker
+              key={event.id}
+              coordinates={[event.coordinates.lng, event.coordinates.lat]}
+            >
+              <g
+                className="cursor-pointer"
+                onMouseEnter={(evt) => {
+                  const { clientX, clientY } = evt as unknown as MouseEvent;
+                  setEventTooltip({ event, x: clientX, y: clientY });
+                }}
+                onMouseLeave={() => setEventTooltip(null)}
+              >
+                {/* Pulse ring for critical/high events */}
+                {(event.severity === 'critical' || event.severity === 'high') && (
+                  <circle
+                    r={12 / position.zoom}
+                    fill={severityMarkerColors[event.severity]}
+                    opacity={0.3}
+                    className="animate-ping"
+                  />
+                )}
+                {/* Main marker */}
+                <circle
+                  r={6 / position.zoom}
+                  fill={severityMarkerColors[event.severity]}
+                  stroke="#fff"
+                  strokeWidth={1.5 / position.zoom}
+                  className="drop-shadow-lg"
+                />
+                {/* Inner dot for ongoing */}
+                {event.isOngoing && (
+                  <circle
+                    r={2 / position.zoom}
+                    fill="#fff"
+                  />
+                )}
+              </g>
+            </Marker>
+          ))}
         </ZoomableGroup>
       </ComposableMap>
+
+      {/* Event Tooltip */}
+      {eventTooltip && (
+        <div
+          className="fixed z-50 bg-popover border border-border rounded-lg px-3 py-2 pointer-events-none shadow-lg max-w-[250px]"
+          style={{
+            left: eventTooltip.x + 10,
+            top: eventTooltip.y - 60,
+          }}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: severityMarkerColors[eventTooltip.event.severity] }}
+            />
+            <span className={`text-[10px] font-medium uppercase ${
+              eventTooltip.event.severity === 'critical' ? 'text-red-500' :
+              eventTooltip.event.severity === 'high' ? 'text-orange-500' :
+              'text-yellow-500'
+            }`}>
+              {eventTooltip.event.severity} {eventTooltip.event.type}
+            </span>
+            {eventTooltip.event.isOngoing && (
+              <span className="text-[9px] text-red-400 flex items-center gap-1">
+                <span className="w-1 h-1 rounded-full bg-red-500 animate-pulse" />
+                LIVE
+              </span>
+            )}
+          </div>
+          <p className="font-medium text-sm text-foreground">{eventTooltip.event.title}</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {eventTooltip.event.country} | Impact: <span className="text-red-400 font-mono">{eventTooltip.event.estimatedImpact}</span> pts
+          </p>
+        </div>
+      )}
     </div>
   );
 }

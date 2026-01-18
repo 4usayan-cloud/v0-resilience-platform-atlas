@@ -44,26 +44,26 @@ export function LoginPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-md relative z-10 animate-fade-in">
         {/* Logo Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4">
-            <Globe className="w-9 h-9 text-primary-foreground" />
+        <div className="text-center mb-8 animate-fade-in-down">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl mb-4 animate-pulse-glow hover-scale cursor-pointer">
+            <Globe className="w-9 h-9 text-primary-foreground animate-float" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Global Resilience Atlas</h1>
           <p className="text-sm text-muted-foreground mt-1">World Bank Economies | 2019-2030</p>
-          <Badge variant="secondary" className="mt-2 font-mono">v1.1</Badge>
+          <Badge variant="secondary" className="mt-2 font-mono animate-scale-in">v1.1</Badge>
         </div>
 
         {/* Login Card */}
-        <Card className="border-border/50 shadow-xl">
+        <Card className="border-border/50 shadow-xl animate-fade-in-up hover-glow transition-all duration-500" style={{ animationDelay: '0.2s' }}>
           <CardHeader className="space-y-1 pb-4">
             <CardTitle className="text-xl flex items-center gap-2">
-              <Shield className="w-5 h-5 text-primary" />
+              <Shield className="w-5 h-5 text-primary animate-float" />
               Secure Access
             </CardTitle>
             <CardDescription>
@@ -121,7 +121,7 @@ export function LoginPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full btn-press hover-lift" disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <span className="animate-spin mr-2">

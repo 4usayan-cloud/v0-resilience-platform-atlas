@@ -117,37 +117,42 @@ export function TimeZones() {
   };
 
   return (
-    <Card className="h-full bg-card border-border">
+    <Card className="h-full bg-card border-border card-interactive">
       <CardHeader className="py-3 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-2">
-          <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+          <svg className="w-4 h-4 text-primary animate-float" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10" />
             <polyline points="12 6 12 12 16 14" />
           </svg>
           Global Markets & Time Zones
+          <span className="relative flex h-2 w-2 ml-auto">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[200px]">
           <div className="grid grid-cols-2 gap-1 p-2">
-            {majorTimeZones.map((tz) => {
+            {majorTimeZones.map((tz, index) => {
               const timeData = times[tz.timezone] || { time: "--:--:--", date: "---", status: "closed" };
               
               return (
                 <div
                   key={tz.timezone}
-                  className="p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                  className="p-2 rounded-lg bg-secondary/30 hover:bg-secondary/50 hover-lift transition-all cursor-default animate-fade-in-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-foreground">{tz.name}</span>
                     <Badge 
                       variant="outline" 
-                      className={`text-[8px] h-4 px-1 ${getStatusColor(timeData.status)}`}
+                      className={`text-[8px] h-4 px-1 ${getStatusColor(timeData.status)} ${timeData.status === 'open' ? 'animate-pulse' : ''}`}
                     >
                       {timeData.status}
                     </Badge>
                   </div>
-                  <div className="text-lg font-mono font-bold text-primary tabular-nums">
+                  <div className="text-lg font-mono font-bold text-primary tabular-nums number-roll">
                     {timeData.time}
                   </div>
                   <div className="flex items-center justify-between mt-1">
