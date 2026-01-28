@@ -1,50 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SocialPost, FinanceData } from "@/lib/types";
+import { SocialPost } from "@/lib/types";
+import useSWR from "swr";
 
-// Simulated live feeds - in production these would be real API calls
-const generateMockPosts = (platform: string, country?: string): SocialPost[] => {
-  const topics = [
-    "economic outlook",
-    "market analysis",
-    "infrastructure development",
-    "social reform",
-    "policy changes",
-    "trade relations",
-    "investment trends",
-    "climate resilience",
-  ];
-
-  const sentiments: ("positive" | "negative" | "neutral")[] = [
-    "positive",
-    "negative",
-    "neutral",
-  ];
-
-  return Array.from({ length: 5 }, (_, i) => ({
-    id: `${platform}-${Date.now()}-${i}`,
-    platform,
-    author: `@analyst_${Math.random().toString(36).substr(2, 6)}`,
-    content: `${topics[Math.floor(Math.random() * topics.length)]} - Analysis shows ${
-      Math.random() > 0.5 ? "improving" : "challenging"
-    } conditions in ${country || "global"} markets. Key indicators suggest ${
-      Math.random() > 0.5 ? "growth" : "caution"
-    } ahead. #economics #resilience`,
-    timestamp: new Date(Date.now() - Math.random() * 3600000).toISOString(),
-    url: "#",
-    engagement: {
-      likes: Math.floor(Math.random() * 1000),
-      comments: Math.floor(Math.random() * 100),
-      shares: Math.floor(Math.random() * 50),
-    },
-    sentiment: sentiments[Math.floor(Math.random() * sentiments.length)],
-    country,
-  }));
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Failed to load feeds");
+  return res.json();
 };
 
 interface LiveFeedsProps {
@@ -52,34 +19,21 @@ interface LiveFeedsProps {
 }
 
 export function LiveFeeds({ selectedCountry }: LiveFeedsProps) {
-  const [feeds, setFeeds] = useState<Record<string, SocialPost[]>>({
-    twitter: [],
-    reddit: [],
-    youtube: [],
-    news: [],
-  });
-  const [isLoading, setIsLoading] = useState(true);
+  const countryParam = selectedCountry ? `&country=${encodeURIComponent(selectedCountry)}` : "";
+  const { data, isLoading } = useSWR(
+    `/api/feeds/social?platform=all${countryParam}`,
+    fetcher,
+    { refreshInterval: 60000 }
+  );
 
-  useEffect(() => {
-    // Initial load
-    setFeeds({
-      twitter: generateMockPosts("twitter", selectedCountry),
-      reddit: generateMockPosts("reddit", selectedCountry),
-      youtube: generateMockPosts("youtube", selectedCountry),
-      news: generateMockPosts("news", selectedCountry),
-    });
-    setIsLoading(false);
-
-    // Refresh every 30 seconds
-    const interval = setInterval(() => {
-      setFeeds((prev) => ({
-        ...prev,
-        twitter: generateMockPosts("twitter", selectedCountry),
-      }));
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [selectedCountry]);
+  const feeds = useMemo(() => {
+    const posts: SocialPost[] = data?.feeds ?? [];
+    const platforms = ["twitter", "reddit", "youtube", "news"];
+    return platforms.reduce<Record<string, SocialPost[]>>((acc, platform) => {
+      acc[platform] = posts.filter((post) => post.platform === platform);
+      return acc;
+    }, {});
+  }, [data]);
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -151,7 +105,9 @@ export function LiveFeeds({ selectedCountry }: LiveFeedsProps) {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
           </span>
           Live Social Feeds
-          {isLoading && <span className="ml-auto animate-shimmer w-8 h-3 rounded skeleton"></span>}
+          <span className="ml-auto text-[10px] text-muted-foreground uppercase">
+            {isLoading ? "loading" : data?.source || "unknown"}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
@@ -187,6 +143,12 @@ export function LiveFeeds({ selectedCountry }: LiveFeedsProps) {
             <TabsContent key={platform} value={platform} className="m-0 animate-fade-in">
               <ScrollArea className="h-[300px]">
                 <div className="space-y-1 p-2">
+                  {isLoading && (
+                    <div className="p-3 text-xs text-muted-foreground">Loading feeds...</div>
+                  )}
+                  {!isLoading && posts.length === 0 && (
+                    <div className="p-3 text-xs text-muted-foreground">No items available.</div>
+                  )}
                   {posts.map((post, index) => (
                     <div
                       key={post.id}
