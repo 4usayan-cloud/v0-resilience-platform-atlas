@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Resilience Dashboard (Local)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0f1413;
+      --card: #161d1b;
+      --text: #eef3f1;
+      --muted: #9aa8a3;
+      --accent: #42b883;
+      --border: #24302c;
+      --warn: #f39c12;
+      --bad: #e74c3c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.4 "Georgia", "Times New Roman", serif;
+      background: radial-gradient(1200px 600px at 20% -10%, #1d2a25 0%, #0f1413 60%);
+      color: var(--text);
+      padding: 24px;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    h1 { font-size: 22px; margin: 0; }
+    .meta { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 140px;
+    }
+    .card h2 { margin: 0 0 8px; font-size: 14px; color: var(--accent); }
+    .pill {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .list { margin: 0; padding-left: 18px; }
+    .list li { margin: 6px 0; }
+    .stat { font-size: 26px; font-weight: bold; }
+    .row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .ok { color: var(--accent); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="meta">Local Live Dashboard</div>
+        <h1>Resilience Pulse — Live Media & Events</h1>
+      </div>
+      <div class="pill" id="status">Loading…</div>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Global Events</h2>
+        <div class="row">
+          <div class="stat" id="eventCount">--</div>
+          <div class="pill" id="eventSource">source</div>
+        </div>
+        <ul class="list" id="eventList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Social / News Feeds</h2>
+        <div class="row">
+          <div class="stat" id="socialCount">--</div>
+          <div class="pill" id="socialSource">source</div>
+        </div>
+        <ul class="list" id="socialList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Market Indices</h2>
+        <div class="row">
+          <div class="stat" id="marketCount">--</div>
+          <div class="pill" id="marketSource">source</div>
+        </div>
+        <ul class="list" id="marketList"></ul>
+      </div>
+    </div>
+
+    <p class="hint">
+      This file needs a live API backend (Netlify/Vercel/localhost). Set <code>API_BASE</code> below.
+    </p>
+  </div>
+
+  <script>
+    // Set this to your live backend URL.
+    // Example: "https://your-site.netlify.app" or "http://localhost:3000"
+    const API_BASE = ""; // <-- fill in
+
+    const statusEl = document.getElementById("status");
+    const eventCountEl = document.getElementById("eventCount");
+    const eventSourceEl = document.getElementById("eventSource");
+    const eventListEl = document.getElementById("eventList");
+
+    const socialCountEl = document.getElementById("socialCount");
+    const socialSourceEl = document.getElementById("socialSource");
+    const socialListEl = document.getElementById("socialList");
+
+    const marketCountEl = document.getElementById("marketCount");
+    const marketSourceEl = document.getElementById("marketSource");
+    const marketListEl = document.getElementById("marketList");
+
+    function safeBase() {
+      if (!API_BASE) return null;
+      return API_BASE.replace(/\/$/, "");
+    }
+
+    async function fetchJSON(path) {
+      const base = safeBase();
+      if (!base) throw new Error("API_BASE not set");
+      const res = await fetch(base + path);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    }
+
+    function renderList(el, items) {
+      el.innerHTML = "";
+      items.forEach((text) => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        el.appendChild(li);
+      });
+    }
+
+    async function refresh() {
+      try {
+        statusEl.textContent = "Live";
+        statusEl.className = "pill ok";
+
+        const [events, social, finance] = await Promise.all([
+          fetchJSON("/api/events"),
+          fetchJSON("/api/feeds/social?platform=all"),
+          fetchJSON("/api/feeds/finance?type=all"),
+        ]);
+
+        eventCountEl.textContent = events.totalEvents ?? events.events?.length ?? 0;
+        eventSourceEl.textContent = (events.dataSource || "unknown").toUpperCase();
+        renderList(eventListEl, (events.events || []).slice(0, 5).map(e => `${e.title} (${e.country})`));
+
+        socialCountEl.textContent = social.totalCount ?? social.feeds?.length ?? 0;
+        socialSourceEl.textContent = (social.source || "unknown").toUpperCase();
+        renderList(socialListEl, (social.feeds || []).slice(0, 5).map(p => `${p.author}: ${p.content}`));
+
+        const indices = finance.indices || [];
+        marketCountEl.textContent = indices.length;
+        marketSourceEl.textContent = (finance.dataSource || "unknown").toUpperCase();
+        renderList(marketListEl, indices.slice(0, 5).map(i => `${i.name}: ${i.value} (${i.changePercent}%)`));
+
+      } catch (err) {
+        statusEl.textContent = "Offline";
+        statusEl.className = "pill bad";
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 60000);
+  </script>
+</body>
+</html>

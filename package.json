@@ -5,8 +5,8 @@
   "description": "Global Resilience Monitoring Platform with live data integration",
   "author": "Sayan Sen",
   "scripts": {
-    "build": "next build",
-    "dev": "next dev",
+    "build": "NEXT_DISABLE_TURBOPACK=1 next build",
+    "dev": "NEXT_DISABLE_TURBOPACK=1 next dev",
     "lint": "next lint",
     "start": "next start",
     "type-check": "tsc --noEmit"
