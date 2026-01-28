@@ -64,6 +64,7 @@ The platform works out-of-the-box with free public APIs. For enhanced features, 
 | `/api/feeds/social` | Social sentiment | Reddit | 5 min |
 | `/api/resilience` | Country scores | Static + World Bank | N/A |
 | `/api/forecast` | Predictions | BSTS+DFM Model | N/A |
+| `/api/health` | System health check | All APIs status | Real-time |
 
 ### Tech Stack
 
@@ -74,6 +75,14 @@ The platform works out-of-the-box with free public APIs. For enhanced features, 
 - **Deployment**: Vercel with edge functions
 
 ## 📊 Features
+
+### Pages & Navigation
+- 🏠 **Home Dashboard** (`/`): Main overview with interactive world map and live feeds
+- 📊 **Analytics** (`/analytics`): Detailed charts, trends, and comparative analysis
+- 📖 **Methodology** (`/methodology`): Detailed explanation of resilience scoring methodology
+  - Data sources and collection methods
+  - Scoring algorithms and weightings
+  - Validation and accuracy metrics
 
 ### Interactive Dashboard
 - 🗺️ **World Map**: Click countries for detailed resilience analysis
@@ -95,11 +104,21 @@ The platform works out-of-the-box with free public APIs. For enhanced features, 
 
 ## 🔧 Development
 
+### Prerequisites
+- **Node.js**: 18+ 
+- **Package Manager**: pnpm (recommended) or npm
+- **TypeScript**: 5.6.3 (included)
+
+### Development Commands
+
 ```bash
 # Start dev server with hot reload
 pnpm dev
 
-# Type checking
+# Type checking (TypeScript validation)
+pnpm run type-check
+
+# Linting (ESLint)
 pnpm run lint
 
 # Build for production
@@ -108,6 +127,31 @@ pnpm build
 # Start production server
 pnpm start
 ```
+
+### Project Structure
+```
+v0-resilience-platform-atlas/
+├── app/                    # Next.js app directory
+│   ├── api/               # API routes
+│   ├── analytics/         # Analytics page
+│   ├── methodology/       # Methodology page
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── ui/               # Reusable UI components
+│   └── *.tsx             # Feature components
+├── lib/                  # Utility functions and data
+│   ├── api-utils.ts      # API integration utilities
+│   ├── resilience-data.ts # Country data
+│   └── types.ts          # TypeScript types
+└── public/               # Static assets
+```
+
+### Development Best Practices
+- **TypeScript**: All code is strongly typed - run `pnpm type-check` before committing
+- **ESLint**: Follows Next.js conventions - run `pnpm lint` to check
+- **Components**: Use Radix UI and Tailwind CSS for consistency
+- **API Routes**: Include error handling and fallback mechanisms
+- **Testing**: Manual testing required (automated tests coming in v1.1)
 
 ## 🚢 Deployment
 
@@ -134,13 +178,28 @@ REDDIT_CLIENT_SECRET=your_secret_here
 
 ## 🤝 Contributing
 
+We welcome contributions! Please see our [Contributing Guidelines](./CONTRIBUTING.md) for details on:
+- How to report issues
+- Submitting pull requests
+- Code style guidelines
+- Development setup
+
 Built with [v0.app](https://v0.app/chat/4usayan-cloud-v0-resilience-platform-atlas-3CfUP6aa9Ou)
+
+## 📚 Documentation
+
+- **[README.md](./README.md)**: This file - project overview and quick start
+- **[CHANGELOG.md](./CHANGELOG.md)**: Complete version history and release notes
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)**: Guidelines for contributors
+- **[LIVE_DATA_SETUP.md](./LIVE_DATA_SETUP.md)**: Detailed API integration guide
+- **[GITHUB_DEPLOYMENT.md](./GITHUB_DEPLOYMENT.md)**: Deployment and CI/CD instructions
+- **[V1.0.0_RELEASE.md](./V1.0.0_RELEASE.md)**: v1.0.0 release summary and checklist
 
 Continue building: **[v0.app Chat](https://v0.app/chat/4usayan-cloud-v0-resilience-platform-atlas-3CfUP6aa9Ou)**
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+MIT License - See [LICENSE](./LICENSE) file for details
 
 ---
 
