@@ -1,5 +1,11 @@
-//  Live Global Events API - GDACS, ACLED, and custom event aggregation
+//  Live Global Events API - GDACS, ACLED, NewsAPI, and GDELT integration
 import { NextResponse } from 'next/server';
+import { 
+  fetchNewsEvents, 
+  fetchGDELTEvents, 
+  getCachedData, 
+  setCachedData 
+} from '@/lib/api-utils';
 
 export interface GlobalEvent {
   id: string;
@@ -16,6 +22,109 @@ export interface GlobalEvent {
   impactedPillars: ('economic' | 'social' | 'institutional' | 'infrastructure')[];
   estimatedImpact: number; // -10 to 0 impact on resilience score
   isOngoing: boolean;
+}
+
+// Country code mapping helper
+const countryMapping: Record<string, { code: string; region: string; coords: { lat: number; lng: number } }> = {
+  'us': { code: 'USA', region: 'North America', coords: { lat: 37.1, lng: -95.7 } },
+  'gb': { code: 'GBR', region: 'Europe & Central Asia', coords: { lat: 51.5, lng: -0.1 } },
+  'ukraine': { code: 'UKR', region: 'Europe & Central Asia', coords: { lat: 49.0, lng: 32.0 } },
+  'russia': { code: 'RUS', region: 'Europe & Central Asia', coords: { lat: 55.8, lng: 37.6 } },
+  'china': { code: 'CHN', region: 'East Asia & Pacific', coords: { lat: 35.9, lng: 104.2 } },
+  'india': { code: 'IND', region: 'South Asia', coords: { lat: 28.6, lng: 77.2 } },
+  'israel': { code: 'ISR', region: 'Middle East & North Africa', coords: { lat: 31.5, lng: 34.8 } },
+  'palestine': { code: 'PSE', region: 'Middle East & North Africa', coords: { lat: 31.9, lng: 35.2 } },
+};
+
+// Convert live news to events
+function convertNewsToEvents(articles: any[]): GlobalEvent[] {
+  if (!articles) return [];
+  
+  return articles.slice(0, 20).map((article, idx) => {
+    const keywords = article.title?.toLowerCase() || '';
+    let type: GlobalEvent['type'] = 'political';
+    let severity: GlobalEvent['severity'] = 'medium';
+    
+    if (keywords.includes('war') || keywords.includes('conflict') || keywords.includes('attack')) {
+      type = 'conflict';
+      severity = 'critical';
+    } else if (keywords.includes('disaster') || keywords.includes('earthquake') || keywords.includes('flood')) {
+      type = 'disaster';
+      severity = 'high';
+    } else if (keywords.includes('economic') || keywords.includes('market') || keywords.includes('inflation')) {
+      type = 'economic';
+      severity = 'medium';
+    } else if (keywords.includes('health') || keywords.includes('disease') || keywords.includes('pandemic')) {
+      type = 'health';
+      severity = 'high';
+    } else if (keywords.includes('climate') || keywords.includes('weather') || keywords.includes('temperature')) {
+      type = 'climate';
+      severity = 'medium';
+    }
+    
+    const countryInfo = countryMapping[article.source?.name?.toLowerCase()] || 
+                       { code: 'GLOBAL', region: 'Global', coords: { lat: 0, lng: 0 } };
+    
+    return {
+      id: `news-${idx}-${Date.now()}`,
+      type,
+      severity,
+      title: article.title || 'Global Event',
+      description: article.description || article.content?.slice(0, 200) || '',
+      country: article.source?.name || 'Global',
+      countryCode: countryInfo.code,
+      region: countryInfo.region,
+      coordinates: countryInfo.coords,
+      timestamp: article.publishedAt || new Date().toISOString(),
+      source: 'NewsAPI',
+      impactedPillars: type === 'economic' ? ['economic'] : 
+                      type === 'conflict' ? ['institutional', 'social'] :
+                      ['social', 'infrastructure'],
+      estimatedImpact: severity === 'critical' ? -30 : severity === 'high' ? -20 : -10,
+      isOngoing: true,
+    };
+  });
+}
+
+// Convert GDELT data to events
+function convertGDELTToEvents(articles: any[]): GlobalEvent[] {
+  if (!articles) return [];
+  
+  return articles.slice(0, 15).map((article, idx) => {
+    const title = article.title || '';
+    const keywords = title.toLowerCase();
+    
+    let type: GlobalEvent['type'] = 'political';
+    let severity: GlobalEvent['severity'] = 'medium';
+    
+    if (keywords.includes('war') || keywords.includes('conflict') || keywords.includes('violence')) {
+      type = 'conflict';
+      severity = 'critical';
+    } else if (keywords.includes('disaster') || keywords.includes('crisis')) {
+      type = 'disaster';
+      severity = 'high';
+    } else if (keywords.includes('economy') || keywords.includes('crisis')) {
+      type = 'economic';
+      severity = 'high';
+    }
+    
+    return {
+      id: `gdelt-${idx}-${Date.now()}`,
+      type,
+      severity,
+      title,
+      description: article.seendate ? `Event detected at ${article.seendate}` : 'Global event',
+      country: article.domain?.split('.').pop()?.toUpperCase() || 'GLOBAL',
+      countryCode: 'GLOBAL',
+      region: 'Global',
+      coordinates: { lat: 0, lng: 0 },
+      timestamp: article.seendate || new Date().toISOString(),
+      source: 'GDELT',
+      impactedPillars: ['institutional', 'social'],
+      estimatedImpact: severity === 'critical' ? -25 : -15,
+      isOngoing: true,
+    };
+  });
 }
 
 // Simulated live events data - In production, this would fetch from GDACS, ACLED APIs
@@ -269,21 +378,65 @@ function generateLiveEvents(): GlobalEvent[] {
 
 export async function GET() {
   try {
-    const events = generateLiveEvents();
-    
-    return NextResponse.json({
+    // Check cache first (5 minutes TTL)
+    const cached = getCachedData('global-events');
+    if (cached) {
+      return NextResponse.json(cached);
+    }
+
+    let allEvents: GlobalEvent[] = [];
+
+    // Try to fetch live data from multiple sources
+    const [newsArticles, gdeltArticles] = await Promise.all([
+      fetchNewsEvents(),
+      fetchGDELTEvents(),
+    ]);
+
+    // Convert live data to events
+    if (newsArticles) {
+      const newsEvents = convertNewsToEvents(newsArticles);
+      allEvents = [...allEvents, ...newsEvents];
+    }
+
+    if (gdeltArticles) {
+      const gdeltEvents = convertGDELTToEvents(gdeltArticles);
+      allEvents = [...allEvents, ...gdeltEvents];
+    }
+
+    // Fallback to mock data if no live data available
+    if (allEvents.length === 0) {
+      console.log('Using fallback mock data for events');
+      allEvents = generateLiveEvents();
+    }
+
+    // Sort by severity and timestamp
+    allEvents.sort((a, b) => {
+      const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+      const severityDiff = severityOrder[a.severity] - severityOrder[b.severity];
+      if (severityDiff !== 0) return severityDiff;
+      return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+    });
+
+    const response = {
       success: true,
       timestamp: new Date().toISOString(),
-      totalEvents: events.length,
-      criticalCount: events.filter(e => e.severity === 'critical').length,
-      highCount: events.filter(e => e.severity === 'high').length,
-      mediumCount: events.filter(e => e.severity === 'medium').length,
-      ongoingCount: events.filter(e => e.isOngoing).length,
-      events,
-    });
+      totalEvents: allEvents.length,
+      criticalCount: allEvents.filter(e => e.severity === 'critical').length,
+      highCount: allEvents.filter(e => e.severity === 'high').length,
+      mediumCount: allEvents.filter(e => e.severity === 'medium').length,
+      ongoingCount: allEvents.filter(e => e.isOngoing).length,
+      events: allEvents,
+      dataSource: newsArticles || gdeltArticles ? 'live' : 'mock',
+    };
+
+    // Cache the response
+    setCachedData('global-events', response, 300000); // 5 minutes
+
+    return NextResponse.json(response);
   } catch (error) {
+    console.error('Error fetching events:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch events' },
+      { success: false, error: 'Failed to fetch events', dataSource: 'error' },
       { status: 500 }
     );
   }
