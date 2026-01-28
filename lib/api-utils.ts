@@ -70,25 +70,27 @@ export async function fetchWorldBankIndicator(
   }
 }
 
-// GDELT Project - Global events (No key required)
+// GDELT Project - Global events (No key required, 100% FREE)
 export async function fetchGDELTEvents() {
   try {
-    // GDELT Last 15 minutes query
+    // GDELT query for recent global events - NO API KEY NEEDED
     const response = await axios.get(
       'https://api.gdeltproject.org/api/v2/doc/doc',
       {
         params: {
-          query: 'conflict OR disaster OR crisis OR emergency',
+          query: 'conflict OR disaster OR crisis OR emergency OR war OR earthquake OR flood',
           mode: 'artlist',
           maxrecords: 75,
           format: 'json',
-          sort: 'dateadded',
+          sort: 'datedesc',
         },
+        timeout: 10000, // 10 second timeout
       }
     );
+    console.log('✅ GDELT API response received:', response.data?.articles?.length, 'articles');
     return response.data.articles;
-  } catch (error) {
-    console.error('GDELT API error:', error);
+  } catch (error: any) {
+    console.error('GDELT API error:', error.message);
     return null;
   }
 }

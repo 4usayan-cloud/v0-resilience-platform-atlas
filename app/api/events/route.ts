@@ -88,24 +88,58 @@ function convertNewsToEvents(articles: any[]): GlobalEvent[] {
 
 // Convert GDELT data to events
 function convertGDELTToEvents(articles: any[]): GlobalEvent[] {
-  if (!articles) return [];
+  if (!articles || articles.length === 0) return [];
   
-  return articles.slice(0, 15).map((article, idx) => {
-    const title = article.title || '';
+  return articles.slice(0, 25).map((article, idx) => {
+    const title = article.title || 'Global Event';
+    const url = article.url || '';
     const keywords = title.toLowerCase();
     
     let type: GlobalEvent['type'] = 'political';
     let severity: GlobalEvent['severity'] = 'medium';
+    let country = 'Global';
+    let countryCode = 'GLOBAL';
+    let region = 'Global';
+    let coords = { lat: 0, lng: 0 };
     
-    if (keywords.includes('war') || keywords.includes('conflict') || keywords.includes('violence')) {
+    // Better type detection
+    if (keywords.includes('war') || keywords.includes('conflict') || keywords.includes('violence') || keywords.includes('attack') || keywords.includes('military')) {
       type = 'conflict';
       severity = 'critical';
-    } else if (keywords.includes('disaster') || keywords.includes('crisis')) {
+    } else if (keywords.includes('earthquake') || keywords.includes('flood') || keywords.includes('hurricane') || keywords.includes('disaster') || keywords.includes('storm')) {
       type = 'disaster';
       severity = 'high';
-    } else if (keywords.includes('economy') || keywords.includes('crisis')) {
+    } else if (keywords.includes('economy') || keywords.includes('economic') || keywords.includes('market') || keywords.includes('inflation') || keywords.includes('recession')) {
       type = 'economic';
       severity = 'high';
+    } else if (keywords.includes('climate') || keywords.includes('drought') || keywords.includes('wildfire')) {
+      type = 'climate';
+      severity = 'medium';
+    } else if (keywords.includes('health') || keywords.includes('disease') || keywords.includes('covid') || keywords.includes('virus')) {
+      type = 'health';
+      severity = 'high';
+    }
+    
+    // Extract country from URL domain or title
+    const urlLower = url.toLowerCase();
+    if (urlLower.includes('.cn') || keywords.includes('china')) {
+      country = 'China'; countryCode = 'CHN'; region = 'East Asia & Pacific';
+      coords = { lat: 39.9, lng: 116.4 };
+    } else if (urlLower.includes('.ru') || keywords.includes('russia')) {
+      country = 'Russia'; countryCode = 'RUS'; region = 'Europe & Central Asia';
+      coords = { lat: 55.8, lng: 37.6 };
+    } else if (keywords.includes('ukraine')) {
+      country = 'Ukraine'; countryCode = 'UKR'; region = 'Europe & Central Asia';
+      coords = { lat: 50.5, lng: 30.5 };
+    } else if (keywords.includes('israel') || keywords.includes('gaza') || keywords.includes('palestine')) {
+      country = 'Israel/Palestine'; countryCode = 'ISR'; region = 'Middle East & North Africa';
+      coords = { lat: 31.8, lng: 35.2 };
+    } else if (urlLower.includes('.uk') || keywords.includes('britain')) {
+      country = 'United Kingdom'; countryCode = 'GBR'; region = 'Europe & Central Asia';
+      coords = { lat: 51.5, lng: -0.1 };
+    } else if (urlLower.includes('.us') || keywords.includes('america')) {
+      country = 'United States'; countryCode = 'USA'; region = 'North America';
+      coords = { lat: 38.9, lng: -77.0 };
     }
     
     return {
@@ -113,15 +147,17 @@ function convertGDELTToEvents(articles: any[]): GlobalEvent[] {
       type,
       severity,
       title,
-      description: article.seendate ? `Event detected at ${article.seendate}` : 'Global event',
-      country: article.domain?.split('.').pop()?.toUpperCase() || 'GLOBAL',
-      countryCode: 'GLOBAL',
-      region: 'Global',
-      coordinates: { lat: 0, lng: 0 },
+      description: `Source: ${article.domain || 'GDELT'} | ${article.seendate ? new Date(article.seendate).toLocaleString() : 'Recent'}`,
+      country,
+      countryCode,
+      region,
+      coordinates: coords,
       timestamp: article.seendate || new Date().toISOString(),
       source: 'GDELT',
-      impactedPillars: ['institutional', 'social'],
-      estimatedImpact: severity === 'critical' ? -25 : -15,
+      impactedPillars: type === 'conflict' ? ['institutional', 'social', 'economic'] : 
+                       type === 'economic' ? ['economic'] :
+                       ['social', 'infrastructure'],
+      estimatedImpact: severity === 'critical' ? -30 : severity === 'high' ? -20 : -10,
       isOngoing: true,
     };
   });
@@ -386,27 +422,36 @@ export async function GET() {
 
     let allEvents: GlobalEvent[] = [];
 
-    // Try to fetch live data from multiple sources
-    const [newsArticles, gdeltArticles] = await Promise.all([
-      fetchNewsEvents(),
-      fetchGDELTEvents(),
-    ]);
-
-    // Convert live data to events
-    if (newsArticles) {
-      const newsEvents = convertNewsToEvents(newsArticles);
-      allEvents = [...allEvents, ...newsEvents];
+    // ALWAYS try GDELT first (free, no key needed, working NOW)
+    try {
+      const gdeltArticles = await fetchGDELTEvents();
+      if (gdeltArticles) {
+        const gdeltEvents = convertGDELTToEvents(gdeltArticles);
+        allEvents = [...allEvents, ...gdeltEvents];
+        console.log(`✅ Fetched ${gdeltEvents.length} events from GDELT`);
+      }
+    } catch (error) {
+      console.log('GDELT fetch failed, continuing...', error);
     }
 
-    if (gdeltArticles) {
-      const gdeltEvents = convertGDELTToEvents(gdeltArticles);
-      allEvents = [...allEvents, ...gdeltEvents];
+    // Try NewsAPI if key is configured
+    try {
+      const newsArticles = await fetchNewsEvents();
+      if (newsArticles) {
+        const newsEvents = convertNewsToEvents(newsArticles);
+        allEvents = [...allEvents, ...newsEvents];
+        console.log(`✅ Fetched ${newsEvents.length} events from NewsAPI`);
+      }
+    } catch (error) {
+      console.log('NewsAPI not available (no key or rate limit)');
     }
 
-    // Fallback to mock data if no live data available
+    // Fallback to mock data ONLY if we got nothing
     if (allEvents.length === 0) {
-      console.log('Using fallback mock data for events');
+      console.log('⚠️ No live data available, using curated fallback data');
       allEvents = generateLiveEvents();
+    } else {
+      console.log(`✅ Using ${allEvents.length} LIVE events from free APIs!`);
     }
 
     // Sort by severity and timestamp
@@ -426,7 +471,7 @@ export async function GET() {
       mediumCount: allEvents.filter(e => e.severity === 'medium').length,
       ongoingCount: allEvents.filter(e => e.isOngoing).length,
       events: allEvents,
-      dataSource: newsArticles || gdeltArticles ? 'live' : 'mock',
+      dataSource: allEvents.length > 0 && allEvents[0].source === 'GDELT' ? 'live-gdelt' : allEvents[0]?.source === 'NewsAPI' ? 'live-news' : 'curated',
     };
 
     // Cache the response
