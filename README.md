@@ -104,11 +104,21 @@ The platform works out-of-the-box with free public APIs. For enhanced features, 
 
 ## 🔧 Development
 
+### Prerequisites
+- **Node.js**: 18+ 
+- **Package Manager**: pnpm (recommended) or npm
+- **TypeScript**: 5.6.3 (included)
+
+### Development Commands
+
 ```bash
 # Start dev server with hot reload
 pnpm dev
 
-# Type checking
+# Type checking (TypeScript validation)
+pnpm run type-check
+
+# Linting (ESLint)
 pnpm run lint
 
 # Build for production
@@ -117,6 +127,31 @@ pnpm build
 # Start production server
 pnpm start
 ```
+
+### Project Structure
+```
+v0-resilience-platform-atlas/
+├── app/                    # Next.js app directory
+│   ├── api/               # API routes
+│   ├── analytics/         # Analytics page
+│   ├── methodology/       # Methodology page
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── ui/               # Reusable UI components
+│   └── *.tsx             # Feature components
+├── lib/                  # Utility functions and data
+│   ├── api-utils.ts      # API integration utilities
+│   ├── resilience-data.ts # Country data
+│   └── types.ts          # TypeScript types
+└── public/               # Static assets
+```
+
+### Development Best Practices
+- **TypeScript**: All code is strongly typed - run `pnpm type-check` before committing
+- **ESLint**: Follows Next.js conventions - run `pnpm lint` to check
+- **Components**: Use Radix UI and Tailwind CSS for consistency
+- **API Routes**: Include error handling and fallback mechanisms
+- **Testing**: Manual testing required (automated tests coming in v1.1)
 
 ## 🚢 Deployment
 
