@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -104,6 +104,7 @@ export function WorldMap({
   const [tooltipContent, setTooltipContent] = useState<{
     name: string;
     score: number;
+    impact?: number;
     x: number;
     y: number;
   } | null>(null);
@@ -113,6 +114,17 @@ export function WorldMap({
     x: number;
     y: number;
   } | null>(null);
+  const impactByCountry = useMemo(() => {
+    const impactMap = new Map<string, number>();
+    events.forEach((event) => {
+      if (!event.countryCode) return;
+      impactMap.set(
+        event.countryCode,
+        (impactMap.get(event.countryCode) || 0) + event.estimatedImpact
+      );
+    });
+    return impactMap;
+  }, [events]);
 
   // Fetch live events
   useEffect(() => {
@@ -162,13 +174,19 @@ export function WorldMap({
       const allScores = [...country.historicalScores, ...country.forecastScores];
       const yearData = allScores.find((s) => s.year === year);
 
-      if (!yearData) return country.scores[pillar];
+      const baseScore = yearData
+        ? (pillar === "overall"
+            ? yearData.overall
+            : (yearData[pillar as keyof typeof yearData] as number))
+        : country.scores[pillar];
 
-      return pillar === "overall"
-        ? yearData.overall
-        : (yearData[pillar as keyof typeof yearData] as number);
+      if (!showEvents || year < 2024) return baseScore;
+
+      const impact = impactByCountry.get(country.code) || 0;
+      const adjusted = Math.max(0, Math.min(100, baseScore + impact));
+      return adjusted;
     },
-    [pillar, year]
+    [impactByCountry, pillar, showEvents, year]
   );
 
   const handleCountryClick = useCallback((geo: { id?: string }) => {
@@ -237,6 +255,11 @@ export function WorldMap({
               {tooltipContent.score}
             </span>
           </p>
+          {showEvents && year >= 2024 && tooltipContent.impact && (
+            <p className="text-[10px] text-muted-foreground mt-1">
+              Live impact: <span className="font-mono text-red-400">{tooltipContent.impact}</span> pts
+            </p>
+          )}
         </div>
       )}
 
@@ -294,6 +317,7 @@ export function WorldMap({
                         setTooltipContent({
                           name: countryData.name,
                           score: Math.round(score),
+                          impact: impactByCountry.get(countryData.code) || 0,
                           x: clientX,
                           y: clientY,
                         });

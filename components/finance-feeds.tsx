@@ -1,116 +1,70 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { CountryData } from "@/lib/types";
-import { countries } from "@/lib/country-data";
 import { ArrowUpIcon, ArrowDownIcon, MinusIcon } from "lucide-react";
+import useSWR from "swr";
 
-interface FinanceItem {
+interface FIIData {
+  country: string;
   countryCode: string;
-  countryName: string;
-  fiiNetInflow: number;
-  fiiChange: number;
-  stockIndex: string;
-  stockValue: number;
-  stockChange: number;
-  currencyCode: string;
-  usdRate: number;
-  currencyChange: number;
+  fiiInflow: number;
+  fiiOutflow: number;
+  netFII: number;
+  change24h: number;
+  changePercent: number;
+  marketCap: string;
+  currency: string;
+  lastUpdated: string;
 }
 
-// Major economies for FII tracking
-const majorEconomies = [
-  "USA", "CHN", "JPN", "DEU", "GBR", "IND", "FRA", "ITA", "CAN", "KOR",
-  "RUS", "BRA", "AUS", "ESP", "MEX", "IDN", "NLD", "SAU", "TUR", "CHE",
-  "TWN", "POL", "THA", "SGP", "MYS", "ZAF"
-];
+interface MarketIndex {
+  name: string;
+  country: string;
+  value: number;
+  change: number;
+  changePercent: number;
+  currency: string;
+}
 
-const stockIndices: Record<string, string> = {
-  USA: "S&P 500",
-  CHN: "Shanghai Composite",
-  JPN: "Nikkei 225",
-  DEU: "DAX",
-  GBR: "FTSE 100",
-  IND: "NIFTY 50",
-  FRA: "CAC 40",
-  ITA: "FTSE MIB",
-  CAN: "S&P/TSX",
-  KOR: "KOSPI",
-  RUS: "MOEX",
-  BRA: "Bovespa",
-  AUS: "ASX 200",
-  ESP: "IBEX 35",
-  MEX: "IPC",
-  IDN: "IDX Composite",
-  NLD: "AEX",
-  SAU: "Tadawul",
-  TUR: "BIST 100",
-  CHE: "SMI",
-  TWN: "TAIEX",
-  POL: "WIG20",
-  THA: "SET",
-  SGP: "STI",
-  MYS: "KLCI",
-  ZAF: "JSE Top 40"
+interface FinanceResponse {
+  fii?: FIIData[];
+  indices?: MarketIndex[];
+  timestamp?: string;
+  dataSource?: string;
+}
+
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Failed to load finance data");
+  return res.json();
 };
-
-function generateFinanceData(): FinanceItem[] {
-  return majorEconomies.map(code => {
-    const country = countries.find(c => c.code === code);
-    if (!country) return null;
-    
-    const baseValue = 10000 + Math.random() * 40000;
-    const fiiBase = (Math.random() - 0.4) * 5000;
-    
-    return {
-      countryCode: code,
-      countryName: country.name,
-      fiiNetInflow: fiiBase,
-      fiiChange: (Math.random() - 0.5) * 10,
-      stockIndex: stockIndices[code] || `${code} Index`,
-      stockValue: baseValue,
-      stockChange: (Math.random() - 0.5) * 4,
-      currencyCode: country.currency,
-      usdRate: code === "USA" ? 1 : 0.5 + Math.random() * 150,
-      currencyChange: (Math.random() - 0.5) * 2
-    };
-  }).filter(Boolean) as FinanceItem[];
-}
 
 interface FinanceFeedsProps {
   selectedCountry?: CountryData | null;
 }
 
 export function FinanceFeeds({ selectedCountry }: FinanceFeedsProps) {
-  const [financeData, setFinanceData] = useState<FinanceItem[]>([]);
-  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const { data, isLoading } = useSWR<FinanceResponse>(
+    "/api/feeds/finance?type=all",
+    fetcher,
+    { refreshInterval: 120000 }
+  );
 
-  useEffect(() => {
-    setFinanceData(generateFinanceData());
-    setLastUpdate(new Date());
+  const fiiMap = useMemo(() => {
+    return new Map((data?.fii ?? []).map((item) => [item.countryCode, item]));
+  }, [data?.fii]);
 
-    // Simulate live updates every 15 seconds
-    const interval = setInterval(() => {
-      setFinanceData(prev => 
-        prev.map(item => ({
-          ...item,
-          fiiChange: item.fiiChange + (Math.random() - 0.5) * 0.5,
-          stockChange: item.stockChange + (Math.random() - 0.5) * 0.2,
-          currencyChange: item.currencyChange + (Math.random() - 0.5) * 0.1
-        }))
-      );
-      setLastUpdate(new Date());
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const filteredData = selectedCountry 
-    ? financeData.filter(d => d.countryCode === selectedCountry.code)
-    : financeData;
+  const indices = useMemo(() => {
+    const list = data?.indices ?? [];
+    if (selectedCountry) {
+      return list.filter((idx) => idx.country === selectedCountry.code);
+    }
+    return list;
+  }, [data?.indices, selectedCountry]);
 
   const TrendIcon = ({ value }: { value: number }) => {
     if (value > 0.1) return <ArrowUpIcon className="w-3 h-3 text-green-500" />;
@@ -141,25 +95,38 @@ export function FinanceFeeds({ selectedCountry }: FinanceFeedsProps) {
             </svg>
             FII & Market Data
           </CardTitle>
-          <Badge variant="outline" className="text-[10px]">
-            {lastUpdate.toLocaleTimeString()}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline" className="text-[10px] uppercase">
+              {data?.dataSource || (isLoading ? "loading" : "unknown")}
+            </Badge>
+            <Badge variant="outline" className="text-[10px]">
+              {data?.timestamp ? new Date(data.timestamp).toLocaleTimeString() : "--:--"}
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[300px]">
           <div className="space-y-1 p-2">
-            {filteredData.slice(0, 15).map((item) => (
+            {isLoading && (
+              <div className="p-3 text-xs text-muted-foreground">Loading finance data...</div>
+            )}
+            {!isLoading && indices.length === 0 && (
+              <div className="p-3 text-xs text-muted-foreground">No finance data available.</div>
+            )}
+            {indices.slice(0, 15).map((item) => {
+              const fii = fiiMap.get(item.country);
+              return (
               <div
-                key={item.countryCode}
+                key={`${item.country}-${item.name}`}
                 className="p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-semibold text-foreground">
-                    {item.countryName}
+                    {item.name}
                   </span>
                   <span className="text-[10px] font-mono text-muted-foreground">
-                    {item.countryCode}
+                    {item.country}
                   </span>
                 </div>
                 
@@ -168,43 +135,45 @@ export function FinanceFeeds({ selectedCountry }: FinanceFeedsProps) {
                   <div>
                     <span className="text-muted-foreground block">FII Net</span>
                     <div className="flex items-center gap-1">
-                      <span className={getChangeColor(item.fiiNetInflow)}>
-                        ${formatValue(item.fiiNetInflow / 1000, 1)}B
-                      </span>
-                      <TrendIcon value={item.fiiChange} />
+                      {fii ? (
+                        <>
+                          <span className={getChangeColor(fii.netFII)}>
+                            {formatValue(fii.netFII, 0)}
+                          </span>
+                          <TrendIcon value={fii.changePercent} />
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground">N/A</span>
+                      )}
                     </div>
                   </div>
                   
                   {/* Stock Index */}
                   <div>
-                    <span className="text-muted-foreground block truncate" title={item.stockIndex}>
-                      {item.stockIndex}
+                    <span className="text-muted-foreground block truncate" title={item.name}>
+                      {item.name}
                     </span>
                     <div className="flex items-center gap-1">
                       <span className="text-foreground font-mono">
-                        {formatValue(item.stockValue, 0)}
+                        {formatValue(item.value, 0)}
                       </span>
-                      <span className={`${getChangeColor(item.stockChange)} text-[9px]`}>
-                        {item.stockChange > 0 ? "+" : ""}{formatValue(item.stockChange)}%
+                      <span className={`${getChangeColor(item.changePercent)} text-[9px]`}>
+                        {item.changePercent > 0 ? "+" : ""}{formatValue(item.changePercent)}%
                       </span>
                     </div>
                   </div>
                   
                   {/* Currency */}
                   <div>
-                    <span className="text-muted-foreground block">{item.currencyCode}/USD</span>
+                    <span className="text-muted-foreground block">Currency</span>
                     <div className="flex items-center gap-1">
-                      <span className="text-foreground font-mono">
-                        {formatValue(item.usdRate, item.usdRate > 10 ? 2 : 4)}
-                      </span>
-                      <span className={`${getChangeColor(item.currencyChange)} text-[9px]`}>
-                        {item.currencyChange > 0 ? "+" : ""}{formatValue(item.currencyChange)}%
-                      </span>
+                      <span className="text-foreground font-mono">{item.currency}</span>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </ScrollArea>
       </CardContent>

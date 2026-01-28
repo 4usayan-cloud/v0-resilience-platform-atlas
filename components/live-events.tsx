@@ -34,6 +34,7 @@ interface EventsResponse {
   mediumCount: number;
   ongoingCount: number;
   events: GlobalEvent[];
+  dataSource?: string;
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
@@ -70,6 +71,8 @@ export function LiveEvents({ onEventSelect, selectedCountryCode }: LiveEventsPro
   const [events, setEvents] = useState<GlobalEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'critical' | 'ongoing'>('all');
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [dataSource, setDataSource] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchEvents() {
@@ -78,6 +81,8 @@ export function LiveEvents({ onEventSelect, selectedCountryCode }: LiveEventsPro
         const data: EventsResponse = await res.json();
         if (data.success) {
           setEvents(data.events);
+          setLastUpdated(data.timestamp || new Date().toISOString());
+          setDataSource(data.dataSource || null);
         }
       } catch (error) {
         console.error('[v0] Failed to fetch events:', error);
@@ -111,9 +116,17 @@ export function LiveEvents({ onEventSelect, selectedCountryCode }: LiveEventsPro
             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
           </span>
           Live Global Events
-          <Badge variant="destructive" className="ml-auto text-[10px] h-5 animate-pulse">
-            {criticalCount} Critical
-          </Badge>
+          <div className="ml-auto flex items-center gap-2">
+            <Badge variant="outline" className="text-[10px] uppercase">
+              {dataSource || (isLoading ? "loading" : "unknown")}
+            </Badge>
+            <Badge variant="destructive" className="text-[10px] h-5 animate-pulse">
+              {criticalCount} Critical
+            </Badge>
+            <Badge variant="outline" className="text-[10px]">
+              {lastUpdated ? new Date(lastUpdated).toLocaleTimeString() : "--:--"}
+            </Badge>
+          </div>
         </CardTitle>
         <div className="flex gap-1 mt-2">
           {(['all', 'critical', 'ongoing'] as const).map((f) => (
