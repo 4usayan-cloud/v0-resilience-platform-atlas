@@ -88,14 +88,14 @@ export function DatafixChat() {
       <CardHeader className="py-3 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-2">
           {avatarError ? (
-            <div className="w-10 h-10 rounded-full border border-border bg-secondary/60 text-[10px] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border border-border bg-secondary/60 text-[11px] flex items-center justify-center">
               DF
             </div>
           ) : (
             <img
               src={avatarSrc}
               alt={isLoading ? "Datafix thinking" : "Datafix answering"}
-              className="w-10 h-10 rounded-full border border-border"
+              className="w-12 h-12 rounded-full border border-border"
               onError={() => setAvatarError(true)}
             />
           )}
@@ -106,7 +106,7 @@ export function DatafixChat() {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 flex flex-col h-full">
-        <ScrollArea className="h-[420px] px-4">
+        <ScrollArea className="h-[520px] px-4">
           <div className="space-y-3 py-3">
             {messages.map((msg, idx) => (
               <div
