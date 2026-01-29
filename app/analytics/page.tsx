@@ -658,16 +658,16 @@ export default function AnalyticsPage() {
                       <ReferenceLine x={2024} stroke="hsl(var(--muted-foreground))" strokeDasharray="5 5" label={{ value: 'Forecast Start', fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
                       
                       {/* 95% Confidence Interval */}
-                      <Area type="monotone" dataKey="upper95" stroke="none" fill="url(#confidence95)" />
-                      <Area type="monotone" dataKey="lower95" stroke="none" fill="transparent" />
+                      <Area type="natural" dataKey="upper95" stroke="none" fill="url(#confidence95)" />
+                      <Area type="natural" dataKey="lower95" stroke="none" fill="transparent" />
                       
                       {/* 80% Confidence Interval */}
-                      <Area type="monotone" dataKey="upper80" stroke="none" fill="url(#confidence80)" />
-                      <Area type="monotone" dataKey="lower80" stroke="none" fill="transparent" />
+                      <Area type="natural" dataKey="upper80" stroke="none" fill="url(#confidence80)" />
+                      <Area type="natural" dataKey="lower80" stroke="none" fill="transparent" />
                       
                       {/* Main Line */}
                       <Line 
-                        type="monotone" 
+                        type="natural" 
                         dataKey="value" 
                         stroke="hsl(var(--primary))" 
                         strokeWidth={2.5} 
