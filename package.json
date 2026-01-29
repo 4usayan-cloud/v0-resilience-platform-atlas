@@ -1,8 +1,8 @@
 {
   "name": "resilience-platform-atlas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
-  "description": "Global Resilience Monitoring Platform with live data integration",
+  "description": "Global Resilience Monitoring Platform with real-time data only (no mock fallback)",
   "author": "Sayan Sen",
   "scripts": {
     "build": "NEXT_DISABLE_TURBOPACK=1 next build",
