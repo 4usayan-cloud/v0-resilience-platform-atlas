@@ -1,18 +1,30 @@
-# Resilience Platform Atlas v1.0.0 🌍
+# Resilience Platform Atlas v1.0.1 🌍
 
-*Global Resilience Monitoring Platform with Live Data Integration*
+*Global Resilience Monitoring Platform with **Real-Time Data Only***
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://v0-resilience-platform-atlas.vercel.app)
 [![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/4usayan-cloud-v0-resilience-platform-atlas-3CfUP6aa9Ou)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue?style=for-the-badge)](https://github.com/sayan-sen/v0-resilience-platform-atlas)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue?style=for-the-badge)](https://github.com/4usayan-cloud/v0-resilience-platform-atlas)
 [![Status](https://img.shields.io/badge/status-production-green?style=for-the-badge)](https://v0-resilience-platform-atlas.vercel.app)
+
+## 🔥 v1.0.1 - Real Data Only (Critical Fix)
+
+**IMPORTANT:** All mock data has been removed. The platform now shows **ONLY real-time events** from GDELT or returns an error.
+
+- ✅ **100% Real-Time Data**: GDELT Project integration (FREE, no key required)
+- ✅ **No Mock Fallback**: System fails gracefully if APIs unavailable
+- ✅ **Current Events**: All events dated January 2026 (today)
+- ✅ **Fresh Data**: 2-minute cache for optimal freshness
+- ✅ **Verified**: `realTimeDataOnly: true` flag in all responses
+
+**Why this matters:** Mock data undermines credibility. This platform shows real current events or nothing.
 
 ## 🚀 What's New in v1.0
 
-**Live Data Integration is Here!** This version transforms the platform from mock data to real-time global intelligence:
+**Live Data Integration:** Real-time global intelligence powered by free public APIs:
 
-- ✅ **Real-time Global Events**: NewsAPI + GDELT Project integration
-- ✅ **Live Financial Markets**: Yahoo Finance market indices
+- ✅ **Real-time Global Events**: GDELT Project (25+ events, updated every 15 min)
+- ✅ **Live Financial Markets**: Yahoo Finance market indices (FREE)
 - ✅ **Social Media Intelligence**: Reddit API for global sentiment
 - ✅ **Economic Indicators**: World Bank & IMF data
 - ✅ **Smart Caching**: Optimized API calls with automatic fallback
