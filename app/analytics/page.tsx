@@ -414,11 +414,21 @@ export default function AnalyticsPage() {
             </div>
           </div>
         </div>
-        <div className="h-2 bg-background rounded-full overflow-hidden">
+        <div className="relative h-3 bg-background rounded-full overflow-hidden">
+          <div className="absolute inset-0 flex">
+            <span className="flex-1" style={{ backgroundColor: "#dc2626" }} />
+            <span className="flex-1" style={{ backgroundColor: "#f97316" }} />
+            <span className="flex-1" style={{ backgroundColor: "#eab308" }} />
+            <span className="flex-1" style={{ backgroundColor: "#f5f5f5" }} />
+            <span className="flex-1" style={{ backgroundColor: "#22c55e" }} />
+          </div>
           <div
-            className={`h-full rounded-full transition-all duration-500 analytics-bg3`}
-            data-bgcolor={color}
-            data-width={normalizedValue}
+            className="absolute inset-y-0 left-0 bg-black/10"
+            style={{ width: `${Math.max(0, Math.min(100, normalizedValue))}%` }}
+          />
+          <div
+            className="absolute -top-0.5 w-0.5 h-4 bg-foreground"
+            style={{ left: `${Math.max(0, Math.min(100, normalizedValue))}%` }}
           />
         </div>
         {ind.benchmark && (
