@@ -6,8 +6,8 @@ const COUNTRY_DATA_PATH = path.join(ROOT, "lib", "country-data.ts");
 const OUTPUT_PATH = path.join(ROOT, "data", "worldbank-indicators.json");
 
 const INDICATORS = {
+  ageYouth: "SP.POP.0014.TO.ZS",
   unemployment: "SL.UEM.TOTL.ZS",
-  wageShare: "SL.EMP.WORK.ZS",
   taxRevenue: "GC.TAX.TOTL.GD.ZS",
 };
 

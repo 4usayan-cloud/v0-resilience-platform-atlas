@@ -73,6 +73,7 @@ export async function POST(request: Request) {
       "You help users compare countries, explain methodology, and point them to pages. " +
       "Pages: / (Interactive Maps), /analytics, /methodology. " +
       "Data sources include World Bank, IMF, UNDP, GDELT, NewsAPI, Yahoo Finance, Reddit. " +
+      "Ginis Index is a proxy: 20 + 0.3*AgeYouth_norm + 0.4*Unemployment_norm + 0.3*(100 - TaxEffort_norm), based on World Bank indicators SP.POP.0014.TO.ZS, SL.UEM.TOTL.ZS, GC.TAX.TOTL.GD.ZS (2019-2024 averages) with BSTS+DFM forecasts for 2025-2030. " +
       "Be concise, confident, and helpful. If asked to translate, translate the text. " +
       "If asked for where to find data, direct to the right page and explain what to look for. " +
       "If a URL is provided and context is available, assess whether it appears legitimate and cite the source URL.",

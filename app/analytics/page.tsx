@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { countries, regions, incomeGroups } from "@/lib/country-data";
 import { CountryData, getResilienceColor, getResilienceLevel, zScoreNormalize } from "@/lib/types";
+import { buildGinisSeriesMap } from "@/lib/worldbank";
 import {
   LineChart,
   Line,
@@ -98,6 +99,10 @@ export default function AnalyticsPage() {
 
   const country = useMemo(() => countries.find(c => c.code === selectedCountry), [selectedCountry]);
   const compareData = useMemo(() => countries.find(c => c.code === compareCountry), [compareCountry]);
+  const pillarScore = country ? country.scores[pillar === 'overall' ? 'overall' : pillar] : 0;
+  const pillarColor = getResilienceColor(pillarScore);
+  const compareColor = compareData ? getResilienceColor(compareData.scores.overall) : "#f97316";
+  const ginisSeriesMap = useMemo(() => buildGinisSeriesMap(countries.map(c => c.code)), []);
 
   // Historical and forecast data with confidence intervals
   const chartData = useMemo(() => {
@@ -133,6 +138,34 @@ export default function AnalyticsPage() {
     
     return [...historical, ...forecastData];
   }, [country, pillar]);
+
+  const ginisChartData = useMemo(() => {
+    if (!country) return [];
+    const series = ginisSeriesMap.get(country.code) || [];
+    if (series.length === 0) return [];
+    const historical = series.map((point) => ({
+      year: point.year,
+      value: point.value,
+      type: 'historical' as const,
+      lower80: null as number | null,
+      upper80: null as number | null,
+      lower95: null as number | null,
+      upper95: null as number | null,
+    }));
+    const historicalValues = historical.map((h) => h.value);
+    const forecastYears = [2025, 2026, 2027, 2028, 2029, 2030];
+    const forecasts = generateBSTSForecast(historicalValues, forecastYears.length);
+    const forecastData = forecastYears.map((yr, i) => ({
+      year: yr,
+      value: forecasts[i].value,
+      lower80: forecasts[i].lower80,
+      upper80: forecasts[i].upper80,
+      lower95: forecasts[i].lower95,
+      upper95: forecasts[i].upper95,
+      type: 'forecast' as const,
+    }));
+    return [...historical, ...forecastData];
+  }, [country, ginisSeriesMap]);
 
   // Global z-statistics for the selected pillar
   const globalStats = useMemo(() => {
@@ -199,7 +232,7 @@ export default function AnalyticsPage() {
     { name: 'Human Capital Index', value: country.social.humanCapitalIndex, unit: '/100', description: 'World Bank Human Capital Index' },
     { name: 'Healthcare Access', value: country.social.healthcareAccess, unit: '/100', description: 'Universal health coverage index' },
     { name: 'Health System Capacity', value: country.social.healthSystemCapacity, unit: '/100', description: 'Healthcare infrastructure capacity' },
-    { name: 'Ginis Index', value: country.social.giniCoefficient, unit: '', description: 'Validated proxy using wage share, unemployment, and tax effort (0-100)', inverted: true, benchmark: 30 },
+    { name: 'Ginis Index', value: country.social.giniCoefficient, unit: '', description: 'Validated proxy using age distribution, unemployment, and tax effort (0-100)', inverted: true, benchmark: 30 },
     { name: 'Poverty Rate', value: country.social.povertyRate, unit: '%', description: 'Population below poverty line', inverted: true, benchmark: 10 },
     { name: 'Social Safety Nets', value: country.social.socialSafetyNets, unit: '/100', description: 'Coverage of social protection programs' },
     { name: 'Employment Rate', value: country.social.employmentRate, unit: '/100', description: 'Working-age population employment' },
@@ -626,12 +659,12 @@ export default function AnalyticsPage() {
                     <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
                       <defs>
                         <linearGradient id="confidence95" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.05}/>
+                          <stop offset="5%" stopColor={pillarColor} stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor={pillarColor} stopOpacity={0.05}/>
                         </linearGradient>
                         <linearGradient id="confidence80" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/>
+                          <stop offset="5%" stopColor={pillarColor} stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor={pillarColor} stopOpacity={0.1}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -669,23 +702,23 @@ export default function AnalyticsPage() {
                       <Line 
                         type="natural" 
                         dataKey="value" 
-                        stroke="hsl(var(--primary))" 
+                        stroke={pillarColor}
                         strokeWidth={2.5} 
                         dot={(props) => {
                           const { cx, cy, payload } = props;
                           if (payload.type === 'forecast') {
-                            return <circle cx={cx} cy={cy} r={4} fill="hsl(var(--primary))" strokeWidth={2} stroke="hsl(var(--background))" />;
+                            return <circle cx={cx} cy={cy} r={4} fill={pillarColor} strokeWidth={2} stroke="hsl(var(--background))" />;
                           }
-                          return <circle cx={cx} cy={cy} r={3} fill="hsl(var(--primary))" />;
+                          return <circle cx={cx} cy={cy} r={3} fill={pillarColor} />;
                         }}
                         activeDot={{ r: 6 }}
                       />
                       <Legend 
                         wrapperStyle={{ fontSize: 10 }} 
                         payload={[
-                          { value: 'Score', type: 'line', color: 'hsl(var(--primary))' },
-                          { value: '80% CI', type: 'rect', color: 'hsl(var(--primary) / 0.3)' },
-                          { value: '95% CI', type: 'rect', color: 'hsl(var(--primary) / 0.15)' },
+                          { value: 'Score', type: 'line', color: pillarColor },
+                          { value: '80% CI', type: 'rect', color: pillarColor },
+                          { value: '95% CI', type: 'rect', color: pillarColor },
                         ]}
                       />
                     </ComposedChart>
@@ -693,6 +726,81 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="mt-3 p-3 rounded-lg bg-secondary/30 text-xs text-muted-foreground">
                   <strong>Model:</strong> BSTS extracts trend/seasonal components while DFM captures latent factors across indicators. Shaded regions show 80% and 95% confidence intervals based on posterior predictive distributions.
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Ginis Index Trend */}
+          {country && ginisChartData.length > 0 && (
+            <Card className="col-span-12 lg:col-span-6">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">Ginis Index Trend (2019-2030)</CardTitle>
+                    <CardDescription>Proxy based on age distribution, unemployment, and tax effort</CardDescription>
+                  </div>
+                  <Badge variant="outline">Social</Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[320px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={ginisChartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
+                      <defs>
+                        <linearGradient id="ginis95" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.05}/>
+                        </linearGradient>
+                        <linearGradient id="ginis80" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.1}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                      <XAxis dataKey="year" tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                      <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: 'hsl(var(--card))',
+                          border: '1px solid hsl(var(--border))',
+                          borderRadius: '8px',
+                          fontSize: '11px',
+                        }}
+                        formatter={(value: number, name: string) => {
+                          const labels: Record<string, string> = {
+                            value: 'Ginis Index',
+                            lower95: '95% CI Lower',
+                            upper95: '95% CI Upper',
+                            lower80: '80% CI Lower',
+                            upper80: '80% CI Upper',
+                          };
+                          return [value?.toFixed(1), labels[name] || name];
+                        }}
+                      />
+                      <ReferenceLine x={2024} stroke="hsl(var(--muted-foreground))" strokeDasharray="5 5" label={{ value: 'Forecast Start', fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+
+                      <Area type="natural" dataKey="upper95" stroke="none" fill="url(#ginis95)" />
+                      <Area type="natural" dataKey="lower95" stroke="none" fill="transparent" />
+                      <Area type="natural" dataKey="upper80" stroke="none" fill="url(#ginis80)" />
+                      <Area type="natural" dataKey="lower80" stroke="none" fill="transparent" />
+
+                      <Line
+                        type="natural"
+                        dataKey="value"
+                        stroke={getResilienceColor(100 - (country.social.giniCoefficient || 0))}
+                        strokeWidth={2.5}
+                        dot={(props) => {
+                          const { cx, cy, payload } = props;
+                          if (payload.type === 'forecast') {
+                            return <circle cx={cx} cy={cy} r={4} fill={getResilienceColor(100 - (country.social.giniCoefficient || 0))} strokeWidth={2} stroke="hsl(var(--background))" />;
+                          }
+                          return <circle cx={cx} cy={cy} r={3} fill={getResilienceColor(100 - (country.social.giniCoefficient || 0))} />;
+                        }}
+                        activeDot={{ r: 6 }}
+                      />
+                    </ComposedChart>
+                  </ResponsiveContainer>
                 </div>
               </CardContent>
             </Card>
@@ -714,9 +822,9 @@ export default function AnalyticsPage() {
                       <PolarGrid stroke="hsl(var(--border))" />
                       <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
                       <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))' }} />
-                      <Radar name={country.name} dataKey="A" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.4} strokeWidth={2} />
+                      <Radar name={country.name} dataKey="A" stroke={pillarColor} fill={pillarColor} fillOpacity={0.4} strokeWidth={2} />
                       {compareData && compareCountry && (
-                        <Radar name={compareData.name} dataKey="B" stroke="#f97316" fill="#f97316" fillOpacity={0.4} strokeWidth={2} />
+                        <Radar name={compareData.name} dataKey="B" stroke={compareColor} fill={compareColor} fillOpacity={0.4} strokeWidth={2} />
                       )}
                       <Legend wrapperStyle={{ fontSize: 10, paddingTop: 10 }} />
                       <Tooltip 
@@ -847,7 +955,7 @@ export default function AnalyticsPage() {
                   title="Economic Resilience"
                   icon={TrendingUp}
                   indicators={economicIndicators}
-                  color="hsl(var(--chart-1))"
+                  color={getResilienceColor(country.scores.economic)}
                   score={country.scores.economic}
                   sectionKey="economic"
                 />
@@ -858,7 +966,7 @@ export default function AnalyticsPage() {
                   title="Social & Human Capital Resilience"
                   icon={Activity}
                   indicators={socialIndicators}
-                  color="hsl(var(--chart-2))"
+                  color={getResilienceColor(country.scores.social)}
                   score={country.scores.social}
                   sectionKey="social"
                 />
@@ -869,7 +977,7 @@ export default function AnalyticsPage() {
                   title="Institutional & Governance Resilience"
                   icon={BarChart3}
                   indicators={institutionalIndicators}
-                  color="hsl(var(--chart-3))"
+                  color={getResilienceColor(country.scores.institutional)}
                   score={country.scores.institutional}
                   sectionKey="institutional"
                 />
@@ -880,7 +988,7 @@ export default function AnalyticsPage() {
                   title="Infrastructure & Systemic Resilience"
                   icon={Target}
                   indicators={infrastructureIndicators}
-                  color="hsl(var(--chart-4))"
+                  color={getResilienceColor(country.scores.infrastructure)}
                   score={country.scores.infrastructure}
                   sectionKey="infrastructure"
                 />

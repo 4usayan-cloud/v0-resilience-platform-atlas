@@ -239,7 +239,7 @@ export default function MethodologyPage() {
                 <CardContent className="space-y-4">
                   <p className="text-sm text-muted-foreground">
                     The Ginis Index is a validated proxy for inequality on a scale of 0 (perfect equality) to 100 (maximum inequality). 
-                    We derive it using wage share, unemployment, and tax effort signals (2019-2024 averages).
+                    We derive it using age distribution, unemployment, and tax effort signals (2019-2024 averages).
                   </p>
                   
                   {/* Three Dimensions of Inequality */}
@@ -273,7 +273,7 @@ export default function MethodologyPage() {
                       We compute the Ginis Index from World Bank indicators using 2019-2024 averages:
                     </p>
                     <div className="font-mono text-xs bg-background p-2 rounded">
-                      Ginis_Index = 20 + 0.5 * Unemployment_norm + 0.25 * (100 - WageShare_norm) + 0.25 * (100 - TaxEffort_norm)
+                      Ginis_Index = 20 + 0.3 * AgeYouth_norm + 0.4 * Unemployment_norm + 0.3 * (100 - TaxEffort_norm)
                     </div>
                   </div>
                   
@@ -284,9 +284,9 @@ export default function MethodologyPage() {
                       <p className="text-xs text-primary mt-1">SL.UEM.TOTL.ZS</p>
                     </div>
                     <div className="p-3 rounded-lg bg-secondary/30">
-                      <h4 className="text-sm font-medium mb-1">Wage Share Source</h4>
-                      <p className="text-xs text-muted-foreground">World Bank WDI - Wage and salaried workers (% of total employment)</p>
-                      <p className="text-xs text-primary mt-1">SL.EMP.WORK.ZS</p>
+                      <h4 className="text-sm font-medium mb-1">Age Distribution Source</h4>
+                      <p className="text-xs text-muted-foreground">World Bank WDI - Population ages 0-14 (% of total)</p>
+                      <p className="text-xs text-primary mt-1">SP.POP.0014.TO.ZS</p>
                     </div>
                     <div className="p-3 rounded-lg bg-secondary/30">
                       <h4 className="text-sm font-medium mb-1">Tax Effort Source</h4>
