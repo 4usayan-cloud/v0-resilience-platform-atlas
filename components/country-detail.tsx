@@ -318,7 +318,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
                   <IndicatorRow label="Human Capital Index" value={country.social.humanCapitalIndex} />
                   <IndicatorRow label="Healthcare Access" value={country.social.healthcareAccess} />
                   <IndicatorRow label="Health System Capacity" value={country.social.healthSystemCapacity} />
-                  <IndicatorRow label="Gini Coefficient" value={country.social.giniCoefficient} inverted />
+                  <IndicatorRow label="Ginis Index" value={country.social.giniCoefficient} inverted />
                   <IndicatorRow label="Poverty Rate" value={country.social.povertyRate} unit="%" inverted />
                   <IndicatorRow label="Social Safety Nets" value={country.social.socialSafetyNets} />
                   <IndicatorRow label="Employment Rate" value={country.social.employmentRate} />

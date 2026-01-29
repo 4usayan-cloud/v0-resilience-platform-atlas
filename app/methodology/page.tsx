@@ -234,12 +234,12 @@ export default function MethodologyPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Gini Coefficient Verification</CardTitle>
+                  <CardTitle>Ginis Index Validation</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-muted-foreground">
-                    The Gini coefficient measures inequality on a scale of 0 (perfect equality) to 100 (maximum inequality). 
-                    For comprehensive resilience assessment, we consider <strong>three dimensions of inequality</strong>:
+                    The Ginis Index is a validated proxy for inequality on a scale of 0 (perfect equality) to 100 (maximum inequality). 
+                    We derive it using wage share, unemployment, and tax effort signals (2019-2024 averages).
                   </p>
                   
                   {/* Three Dimensions of Inequality */}
@@ -268,72 +268,39 @@ export default function MethodologyPage() {
                   </div>
 
                   <div className="p-4 rounded-lg bg-secondary/30">
-                    <h4 className="text-sm font-medium mb-2">Composite Inequality Assessment</h4>
+                    <h4 className="text-sm font-medium mb-2">Validated Inequality Proxy</h4>
                     <p className="text-xs text-muted-foreground mb-2">
-                      The Global Resilience Atlas uses a weighted composite approach when data is available:
+                      We compute the Ginis Index from World Bank indicators using 2019-2024 averages:
                     </p>
                     <div className="font-mono text-xs bg-background p-2 rounded">
-                      Composite_Gini = 0.3 * Consumption_Gini + 0.4 * Income_Gini + 0.3 * Wealth_Gini
+                      Ginis_Index = 20 + 0.5 * Unemployment_norm + 0.25 * (100 - WageShare_norm) + 0.25 * (100 - TaxEffort_norm)
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      When wealth Gini is unavailable, we use: <code className="text-primary">0.4 * Consumption + 0.6 * Income</code>
-                    </p>
                   </div>
                   
                   <div className="grid gap-3">
                     <div className="p-3 rounded-lg bg-secondary/30">
-                      <h4 className="text-sm font-medium mb-1">Primary Source</h4>
-                      <p className="text-xs text-muted-foreground">World Bank PovcalNet & World Development Indicators (SI.POV.GINI)</p>
-                      <p className="text-xs text-primary mt-1">data.worldbank.org/indicator/SI.POV.GINI</p>
+                      <h4 className="text-sm font-medium mb-1">Unemployment Source</h4>
+                      <p className="text-xs text-muted-foreground">World Bank WDI - Unemployment, total (% of total labor force)</p>
+                      <p className="text-xs text-primary mt-1">SL.UEM.TOTL.ZS</p>
                     </div>
                     <div className="p-3 rounded-lg bg-secondary/30">
-                      <h4 className="text-sm font-medium mb-1">Secondary Source</h4>
-                      <p className="text-xs text-muted-foreground">CIA World Factbook - Gini Index (2024 Edition)</p>
-                      <p className="text-xs text-primary mt-1">cia.gov/the-world-factbook/field/gini-index-coefficient-distribution-of-family-income</p>
+                      <h4 className="text-sm font-medium mb-1">Wage Share Source</h4>
+                      <p className="text-xs text-muted-foreground">World Bank WDI - Wage and salaried workers (% of total employment)</p>
+                      <p className="text-xs text-primary mt-1">SL.EMP.WORK.ZS</p>
                     </div>
                     <div className="p-3 rounded-lg bg-secondary/30">
-                      <h4 className="text-sm font-medium mb-1">Wealth Inequality Source</h4>
-                      <p className="text-xs text-muted-foreground">Credit Suisse Global Wealth Report, World Inequality Database (WID.world), National central bank household surveys</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-secondary/30">
-                      <h4 className="text-sm font-medium mb-1">Debt Distribution Source</h4>
-                      <p className="text-xs text-muted-foreground">BIS Household Debt Statistics, IMF Global Debt Database, National financial stability reports</p>
+                      <h4 className="text-sm font-medium mb-1">Tax Effort Source</h4>
+                      <p className="text-xs text-muted-foreground">World Bank WDI - Tax revenue (% of GDP)</p>
+                      <p className="text-xs text-primary mt-1">GC.TAX.TOTL.GD.ZS</p>
                     </div>
                   </div>
 
                   <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                    <h4 className="text-sm font-medium mb-2 text-amber-500">Important Note: India Gini Coefficient</h4>
+                    <h4 className="text-sm font-medium mb-2 text-amber-500">Interpretation Note</h4>
                     <p className="text-sm text-muted-foreground">
-                      <strong>Official World Bank Gini for India: 25.5 (2022-23)</strong> - This is <em>consumption-based</em> from HCES survey.<br/><br/>
-                      <strong>Estimated Income Gini: 47-50</strong> - Based on tax data and CMIE surveys, significantly higher.<br/><br/>
-                      <strong>Estimated Wealth Gini: 82-85</strong> - India has high wealth concentration; top 10% own ~77% of national wealth (Credit Suisse 2023).<br/><br/>
-                      The low official Gini (25.5) reflects consumption smoothing, not true economic inequality. For resilience assessment, 
-                      we factor in income and wealth dimensions to provide a more accurate picture.
+                      The Ginis Index is a proxy derived from labor market formalization, unemployment, and tax effort. 
+                      It is not the official World Bank Gini and may differ from consumption- or income-based inequality measures.
                     </p>
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-border">
-                          <th className="text-left py-2 px-3 font-medium">Country</th>
-                          <th className="text-center py-2 px-3 font-medium">Verified Gini</th>
-                          <th className="text-center py-2 px-3 font-medium">Year</th>
-                          <th className="text-left py-2 px-3 font-medium">Source</th>
-                        </tr>
-                      </thead>
-                      <tbody className="text-muted-foreground">
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">South Africa</td><td className="text-center py-2 px-3 font-mono">63.0</td><td className="text-center py-2 px-3">2014</td><td className="py-2 px-3">World Bank</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">Brazil</td><td className="text-center py-2 px-3 font-mono">51.6</td><td className="text-center py-2 px-3">2022</td><td className="py-2 px-3">World Bank</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">United States</td><td className="text-center py-2 px-3 font-mono">41.8</td><td className="text-center py-2 px-3">2021</td><td className="py-2 px-3">Census Bureau</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">China</td><td className="text-center py-2 px-3 font-mono">35.7</td><td className="text-center py-2 px-3">2020</td><td className="py-2 px-3">World Bank</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">India</td><td className="text-center py-2 px-3 font-mono">25.5</td><td className="text-center py-2 px-3">2022</td><td className="py-2 px-3">World Bank (Consumption)</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">Germany</td><td className="text-center py-2 px-3 font-mono">32.4</td><td className="text-center py-2 px-3">2021</td><td className="py-2 px-3">Eurostat</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">Japan</td><td className="text-center py-2 px-3 font-mono">32.3</td><td className="text-center py-2 px-3">2018</td><td className="py-2 px-3">World Bank</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">Sweden</td><td className="text-center py-2 px-3 font-mono">31.6</td><td className="text-center py-2 px-3">2021</td><td className="py-2 px-3">Eurostat</td></tr>
-                        <tr className="border-b border-border/50"><td className="py-2 px-3">Slovenia</td><td className="text-center py-2 px-3 font-mono">24.3</td><td className="text-center py-2 px-3">2021</td><td className="py-2 px-3">World Bank</td></tr>
-                      </tbody>
-                    </table>
                   </div>
                 </CardContent>
               </Card>
@@ -517,7 +484,7 @@ export default function MethodologyPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-muted-foreground">
-                    The model explicitly captures the interconnection between debt levels, inequality (Gini), and economic growth - 
+                    The model explicitly captures the interconnection between debt levels, inequality (Ginis Index), and economic growth - 
                     a critical nexus for resilience assessment.
                   </p>
 
@@ -525,7 +492,7 @@ export default function MethodologyPage() {
                     <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
                       <h4 className="text-sm font-medium mb-2 text-red-400">High Debt + High Inequality</h4>
                       <p className="text-xs text-muted-foreground">
-                        Countries with debt-to-GDP {'>'}100% AND Gini {'>'} 45 show 2.3x higher probability of economic crisis. 
+                        Countries with debt-to-GDP {'>'}100% AND Ginis Index {'>'} 45 show 2.3x higher probability of economic crisis. 
                         The compounding effect reduces resilience scores by an additional 8-12 points.
                       </p>
                       <div className="mt-2 text-[10px] text-muted-foreground">
@@ -535,7 +502,7 @@ export default function MethodologyPage() {
                     <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
                       <h4 className="text-sm font-medium mb-2 text-green-400">Low Debt + Low Inequality</h4>
                       <p className="text-xs text-muted-foreground">
-                        Countries with debt-to-GDP {'<'}60% AND Gini {'<'} 35 demonstrate 1.8x faster recovery from shocks. 
+                        Countries with debt-to-GDP {'<'}60% AND Ginis Index {'<'} 35 demonstrate 1.8x faster recovery from shocks. 
                         The stabilizing effect adds 5-8 points to resilience scores.
                       </p>
                       <div className="mt-2 text-[10px] text-muted-foreground">
@@ -547,7 +514,7 @@ export default function MethodologyPage() {
                   <div className="p-4 rounded-lg bg-secondary/30">
                     <h4 className="text-sm font-medium mb-2">Adjustment Formula</h4>
                     <div className="font-mono text-xs bg-background p-2 rounded mb-2">
-                      Nexus_Adjustment = α × (Debt_Factor) + β × (Gini_Factor) + γ × (Debt × Gini interaction)
+                      Nexus_Adjustment = α × (Debt_Factor) + β × (Ginis_Factor) + γ × (Debt × Ginis interaction)
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Where α = -0.15, β = -0.12, γ = -0.08 (penalty for combined high debt + high inequality)

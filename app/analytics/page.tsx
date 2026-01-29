@@ -199,7 +199,7 @@ export default function AnalyticsPage() {
     { name: 'Human Capital Index', value: country.social.humanCapitalIndex, unit: '/100', description: 'World Bank Human Capital Index' },
     { name: 'Healthcare Access', value: country.social.healthcareAccess, unit: '/100', description: 'Universal health coverage index' },
     { name: 'Health System Capacity', value: country.social.healthSystemCapacity, unit: '/100', description: 'Healthcare infrastructure capacity' },
-    { name: 'Gini Coefficient', value: country.social.giniCoefficient, unit: '', description: 'Income inequality measure (0-100)', inverted: true, benchmark: 30 },
+    { name: 'Ginis Index', value: country.social.giniCoefficient, unit: '', description: 'Validated proxy using wage share, unemployment, and tax effort (0-100)', inverted: true, benchmark: 30 },
     { name: 'Poverty Rate', value: country.social.povertyRate, unit: '%', description: 'Population below poverty line', inverted: true, benchmark: 10 },
     { name: 'Social Safety Nets', value: country.social.socialSafetyNets, unit: '/100', description: 'Coverage of social protection programs' },
     { name: 'Employment Rate', value: country.social.employmentRate, unit: '/100', description: 'Working-age population employment' },
@@ -299,7 +299,7 @@ export default function AnalyticsPage() {
     'Human Capital Index': { category: 'social', key: 'humanCapitalIndex' },
     'Healthcare Access': { category: 'social', key: 'healthcareAccess' },
     'Health System Capacity': { category: 'social', key: 'healthSystemCapacity' },
-    'Gini Coefficient': { category: 'social', key: 'giniCoefficient' },
+    'Ginis Index': { category: 'social', key: 'giniCoefficient' },
     'Poverty Rate': { category: 'social', key: 'povertyRate' },
     'Social Safety Nets': { category: 'social', key: 'socialSafetyNets' },
     'Employment Rate': { category: 'social', key: 'employmentRate' },
@@ -371,7 +371,7 @@ export default function AnalyticsPage() {
             )}
           </div>
           <div className="text-right">
-            <div className="text-lg font-bold font-mono" style={{ color }}>
+            <div className="text-lg font-bold font-mono analytics-color" data-color={color}>
               {ind.value.toFixed(1)}{ind.unit}
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -383,18 +383,16 @@ export default function AnalyticsPage() {
         </div>
         <div className="h-2 bg-background rounded-full overflow-hidden">
           <div
-            className="h-full rounded-full transition-all duration-500"
-            style={{
-              width: `${normalizedValue}%`,
-              backgroundColor: color,
-            }}
+            className={`h-full rounded-full transition-all duration-500 analytics-bg3`}
+            data-bgcolor={color}
+            data-width={normalizedValue}
           />
         </div>
         {ind.benchmark && (
           <div className="relative h-0">
             <div 
-              className="absolute -top-2 w-0.5 h-2 bg-foreground/50"
-              style={{ left: `${Math.min(100, (ind.benchmark / 100) * 100)}%` }}
+              className="absolute -top-2 w-0.5 h-2 bg-foreground/50 analytics-benchmark"
+              data-left={Math.min(100, (ind.benchmark / 100) * 100)}
             />
           </div>
         )}
@@ -429,8 +427,8 @@ export default function AnalyticsPage() {
           <CardHeader className="pb-2 cursor-pointer hover:bg-secondary/30 transition-colors">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-                  <Icon className="h-5 w-5" style={{ color }} />
+                <div className="p-2 rounded-lg analytics-bg3" data-bgcolor={`${color}20`}>
+                  <Icon className="h-5 w-5 analytics-color" data-color={color} />
                 </div>
                 <div className="text-left">
                   <CardTitle className="text-base">{title}</CardTitle>
@@ -439,7 +437,7 @@ export default function AnalyticsPage() {
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <div className="text-2xl font-bold font-mono" style={{ color }}>
+                  <div className="text-2xl font-bold font-mono analytics-color" data-color={color}>
                     {score.toFixed(1)}
                   </div>
                   <Badge variant="outline" className="text-xs">
@@ -560,7 +558,7 @@ export default function AnalyticsPage() {
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <span className="text-muted-foreground">Score</span>
-                      <div className="text-lg font-bold font-mono" style={{ color: getResilienceColor(countryZStats.score) }}>
+                      <div className="text-lg font-bold font-mono analytics-color" data-color={getResilienceColor(countryZStats.score)}>
                         {countryZStats.score.toFixed(1)}
                       </div>
                     </div>
@@ -780,12 +778,12 @@ export default function AnalyticsPage() {
                           <tr key={pillarItem.key} className={`border-b border-border/50 ${pillarItem.key === 'overall' ? 'bg-secondary/30 font-medium' : ''}`}>
                             <td className="py-2 px-3">{pillarItem.name}</td>
                             <td className="text-center py-2 px-3">
-                              <span className="font-mono" style={{ color: getResilienceColor(country.scores[pillarItem.key]) }}>
+                              <span className="font-mono analytics-color" data-color={getResilienceColor(country.scores[pillarItem.key])}>
                                 {country.scores[pillarItem.key].toFixed(1)}
                               </span>
                             </td>
                             <td className="text-center py-2 px-3">
-                              <span className="font-mono" style={{ color: getResilienceColor(compareData.scores[pillarItem.key]) }}>
+                              <span className="font-mono analytics-color" data-color={getResilienceColor(compareData.scores[pillarItem.key])}>
                                 {compareData.scores[pillarItem.key].toFixed(1)}
                               </span>
                             </td>
@@ -807,7 +805,7 @@ export default function AnalyticsPage() {
                   <h4 className="text-sm font-medium mb-3">Key Indicators Comparison</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {[
-                      { label: 'Gini Index', valueA: country.social.giniCoefficient, valueB: compareData.social.giniCoefficient, inverted: true },
+                      { label: 'Ginis Index', valueA: country.social.giniCoefficient, valueB: compareData.social.giniCoefficient, inverted: true },
                       { label: 'Poverty Rate', valueA: country.social.povertyRate, valueB: compareData.social.povertyRate, inverted: true, unit: '%' },
                       { label: 'Rule of Law', valueA: country.institutional.ruleOfLaw, valueB: compareData.institutional.ruleOfLaw },
                       { label: 'GDP Growth', valueA: country.economic.gdpGrowth, valueB: compareData.economic.gdpGrowth, unit: '%' },
@@ -950,7 +948,7 @@ export default function AnalyticsPage() {
                       >
                         <span className="w-6 text-muted-foreground font-mono">#{i + 1}</span>
                         <span className="flex-1 text-left truncate">{c.name}</span>
-                        <span className="font-mono font-bold" style={{ color: getResilienceColor(c.scores.overall) }}>
+                        <span className="font-mono font-bold analytics-color" data-color={getResilienceColor(c.scores.overall)}>
                           {Math.round(c.scores.overall)}
                         </span>
                       </button>
@@ -973,7 +971,7 @@ export default function AnalyticsPage() {
                       >
                         <span className="w-6 text-muted-foreground font-mono">#{countries.length - 9 + i}</span>
                         <span className="flex-1 text-left truncate">{c.name}</span>
-                        <span className="font-mono font-bold" style={{ color: getResilienceColor(c.scores.overall) }}>
+                        <span className="font-mono font-bold analytics-color" data-color={getResilienceColor(c.scores.overall)}>
                           {Math.round(c.scores.overall)}
                         </span>
                       </button>

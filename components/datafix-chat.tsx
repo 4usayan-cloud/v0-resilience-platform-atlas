@@ -34,10 +34,11 @@ export function DatafixChat() {
   const [avatarError, setAvatarError] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  const avatarSrc = useMemo(
-    () => (isLoading ? "/datafix-thinking.svg" : "/datafix-answering.svg"),
-    [isLoading]
-  );
+  // Show both avatars on the left, larger
+  const avatarList = [
+    { src: "/avatar1.png", alt: "Avatar 1" },
+    { src: "/avatar2.png", alt: "Avatar 2" },
+  ];
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -86,24 +87,26 @@ export function DatafixChat() {
   return (
     <Card className="h-full bg-card border-border">
       <CardHeader className="py-3 px-4">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          {avatarError ? (
-            <div className="w-12 h-12 rounded-full border border-border bg-secondary/60 text-[11px] flex items-center justify-center">
-              DF
-            </div>
-          ) : (
-            <img
-              src={avatarSrc}
-              alt={isLoading ? "Datafix thinking" : "Datafix answering"}
-              className="w-12 h-12 rounded-full border border-border"
-              onError={() => setAvatarError(true)}
-            />
-          )}
-          Datafix
-          <Badge variant="outline" className="text-[10px]">
-            {isLoading ? "Thinking..." : "Online"}
-          </Badge>
-        </CardTitle>
+        <div className="flex items-center gap-4">
+          {/* Both avatars on the left, larger */}
+          <div className="flex flex-col gap-2 items-center mr-2">
+            {avatarList.map((a) => (
+              <img
+                key={a.src}
+                src={a.src}
+                alt={a.alt}
+                className="w-24 h-24 rounded-full border border-border shadow-lg"
+                style={{ objectFit: 'cover' }}
+              />
+            ))}
+          </div>
+          <CardTitle className="text-sm font-medium flex flex-col items-start gap-2">
+            <span>Datafix</span>
+            <Badge variant="outline" className="text-[10px]">
+              {isLoading ? "Thinking..." : "Online"}
+            </Badge>
+          </CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="p-0 flex flex-col h-full">
         <ScrollArea className="h-[520px] px-4">

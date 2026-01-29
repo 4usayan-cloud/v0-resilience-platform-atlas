@@ -23,7 +23,7 @@ interface GlobalEvent {
   isOngoing: boolean;
 }
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+const geoUrl = "/world-110m.json";
 
 // Complete ISO numeric to Alpha-3 mapping for all World Bank recognized economies
 const isoMapping: Record<string, string> = {

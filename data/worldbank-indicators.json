@@ -1,0 +1,5555 @@
+{
+  "metadata": {
+    "source": "World Bank API v2",
+    "dateRange": "2019-2030",
+    "generatedAt": "2026-01-29T17:41:32.571Z"
+  },
+  "indicators": {
+    "unemployment": "SL.UEM.TOTL.ZS",
+    "wageShare": "SL.EMP.WORK.ZS",
+    "taxRevenue": "GC.TAX.TOTL.GD.ZS"
+  },
+  "data": {
+    "AFG": {
+      "2019": {
+        "unemployment": 11.187,
+        "wageShare": 16.0196670823789
+      },
+      "2020": {
+        "unemployment": 11.71,
+        "wageShare": 15.6660435507755
+      },
+      "2021": {
+        "unemployment": 12.006,
+        "wageShare": 17.6979779384531
+      },
+      "2022": {
+        "unemployment": 14.1,
+        "wageShare": 17.2471462569728
+      },
+      "2023": {
+        "unemployment": 14.008,
+        "wageShare": 16.8832833330748
+      },
+      "2024": {
+        "unemployment": 13.687,
+        "wageShare": 16.6413740341388
+      }
+    },
+    "ALB": {
+      "2019": {
+        "unemployment": 11.466,
+        "wageShare": 45.7317506294247,
+        "taxRevenue": 0.0000179309939892851
+      },
+      "2020": {
+        "unemployment": 11.639,
+        "wageShare": 46.1584767177968,
+        "taxRevenue": 0.0000168955410663729
+      },
+      "2021": {
+        "unemployment": 11.474,
+        "wageShare": 47.8864884763587,
+        "taxRevenue": 0.0000180962279133573
+      },
+      "2022": {
+        "unemployment": 10.785,
+        "wageShare": 47.041594025486,
+        "taxRevenue": 0.0000180607759287802
+      },
+      "2023": {
+        "unemployment": 10.669,
+        "wageShare": 49.0432111982342,
+        "taxRevenue": 0.0000178021587949933
+      },
+      "2024": {
+        "unemployment": 10.689,
+        "wageShare": 49.3940261619145
+      }
+    },
+    "DZA": {
+      "2019": {
+        "unemployment": 12.302,
+        "wageShare": 68.4642702996993
+      },
+      "2020": {
+        "unemployment": 14.08,
+        "wageShare": 68.7567241799275
+      },
+      "2021": {
+        "unemployment": 13.656,
+        "wageShare": 69.2231948294086
+      },
+      "2022": {
+        "unemployment": 12.382,
+        "wageShare": 69.2984458442729
+      },
+      "2023": {
+        "unemployment": 11.645,
+        "wageShare": 69.4644844537813
+      },
+      "2024": {
+        "unemployment": 11.655,
+        "wageShare": 69.623930165349
+      }
+    },
+    "AGO": {
+      "2019": {
+        "unemployment": 16.497,
+        "wageShare": 25.1526346403042,
+        "taxRevenue": 1.12888521414e-8
+      },
+      "2020": {
+        "unemployment": 16.696,
+        "wageShare": 24.5781029253489,
+        "taxRevenue": 2.05176075923944e-8
+      },
+      "2021": {
+        "unemployment": 15.799,
+        "wageShare": 24.690894820249,
+        "taxRevenue": 1.07033300733944e-8
+      },
+      "2022": {
+        "unemployment": 14.124,
+        "wageShare": 24.1548789834013,
+        "taxRevenue": 1.27318115283927e-8
+      },
+      "2023": {
+        "unemployment": 14.051,
+        "wageShare": 24.1070868145093,
+        "taxRevenue": 8.86912888166896e-9
+      },
+      "2024": {
+        "unemployment": 14.02,
+        "wageShare": 24.1421508499038,
+        "taxRevenue": 7.74436374420001e-9
+      }
+    },
+    "ARG": {
+      "2019": {
+        "unemployment": 9.843,
+        "wageShare": 73.4928209912151,
+        "taxRevenue": 0.0000103919973375404
+      },
+      "2020": {
+        "unemployment": 11.461,
+        "wageShare": 73.0000136812167,
+        "taxRevenue": 0.0000107081211457574
+      },
+      "2021": {
+        "unemployment": 8.736,
+        "wageShare": 72.4110614586954,
+        "taxRevenue": 0.0000113410740324002
+      },
+      "2022": {
+        "unemployment": 6.805,
+        "wageShare": 73.2896429489726,
+        "taxRevenue": 0.0000110647708089117
+      },
+      "2023": {
+        "unemployment": 6.139,
+        "wageShare": 74.2467092792939,
+        "taxRevenue": 0.00000992889407586128
+      },
+      "2024": {
+        "unemployment": 7.15,
+        "wageShare": 74.2768690630454
+      }
+    },
+    "ARM": {
+      "2019": {
+        "unemployment": 18.304,
+        "wageShare": 60.5410017858172,
+        "taxRevenue": 2.22851709967864e-8
+      },
+      "2020": {
+        "unemployment": 18.175,
+        "wageShare": 60.2982886395994,
+        "taxRevenue": 2.18604192825684e-8
+      },
+      "2021": {
+        "unemployment": 15.469,
+        "wageShare": 63.212011820089,
+        "taxRevenue": 2.20010047373073e-8
+      },
+      "2022": {
+        "unemployment": 13.451,
+        "wageShare": 63.673385340086,
+        "taxRevenue": 2.1827155237788e-8
+      },
+      "2023": {
+        "unemployment": 12.405,
+        "wageShare": 65.1771184172776,
+        "taxRevenue": 2.23886922456361e-8
+      },
+      "2024": {
+        "unemployment": 12.405,
+        "wageShare": 65.6864113930678,
+        "taxRevenue": 2.23660356799158e-8
+      }
+    },
+    "AUS": {
+      "2019": {
+        "unemployment": 5.143,
+        "wageShare": 83.1936234996348,
+        "taxRevenue": 2.33142643790741e-8
+      },
+      "2020": {
+        "unemployment": 6.394,
+        "wageShare": 83.2986691638764,
+        "taxRevenue": 2.2507523858651e-8
+      },
+      "2021": {
+        "unemployment": 5.022,
+        "wageShare": 83.2092938609049,
+        "taxRevenue": 2.30039076566829e-8
+      },
+      "2022": {
+        "unemployment": 3.728,
+        "wageShare": 83.4758482594961,
+        "taxRevenue": 2.35614929509239e-8
+      },
+      "2023": {
+        "unemployment": 3.668,
+        "wageShare": 83.6552862352026
+      },
+      "2024": {
+        "unemployment": 3.942,
+        "wageShare": 83.7818913139287
+      }
+    },
+    "AUT": {
+      "2019": {
+        "unemployment": 4.56,
+        "wageShare": 87.2243575492855,
+        "taxRevenue": 0.0000258096620383826
+      },
+      "2020": {
+        "unemployment": 5.201,
+        "wageShare": 87.1313360681095,
+        "taxRevenue": 0.000024666005775658
+      },
+      "2021": {
+        "unemployment": 6.459,
+        "wageShare": 87.2668355951008,
+        "taxRevenue": 0.0000260148539837239
+      },
+      "2022": {
+        "unemployment": 4.992,
+        "wageShare": 87.4663946022951,
+        "taxRevenue": 0.0000261266920803131
+      },
+      "2023": {
+        "unemployment": 5.264,
+        "wageShare": 87.7615396689004,
+        "taxRevenue": 0.000025640680066923
+      },
+      "2024": {
+        "unemployment": 5.2,
+        "wageShare": 87.7937857709044
+      }
+    },
+    "AZE": {
+      "2019": {
+        "unemployment": 5,
+        "wageShare": 31.6929629905677,
+        "taxRevenue": 0.0000142188526451777
+      },
+      "2020": {
+        "unemployment": 7.24,
+        "wageShare": 31.9252403469063,
+        "taxRevenue": 0.0000151855725074093
+      },
+      "2021": {
+        "unemployment": 6.04,
+        "wageShare": 32.373014349026,
+        "taxRevenue": 0.0000134213202980155
+      },
+      "2022": {
+        "unemployment": 5.65,
+        "wageShare": 32.4954504656582,
+        "taxRevenue": 0.0000154476897158899
+      },
+      "2023": {
+        "unemployment": 5.64,
+        "wageShare": 32.6518107235186,
+        "taxRevenue": 0.0000177860607300996
+      },
+      "2024": {
+        "unemployment": 5.648,
+        "wageShare": 32.8229444141175
+      }
+    },
+    "BHS": {
+      "2019": {
+        "unemployment": 9.336,
+        "wageShare": 85.2821947596084,
+        "taxRevenue": 0.0000165602018528282
+      },
+      "2020": {
+        "unemployment": 12.016,
+        "wageShare": 84.8375489081757,
+        "taxRevenue": 0.0000179313432819978
+      },
+      "2021": {
+        "unemployment": 11.078,
+        "wageShare": 84.235631894424,
+        "taxRevenue": 0.0000133895376505774
+      },
+      "2022": {
+        "unemployment": 9.25,
+        "wageShare": 83.5116955297495,
+        "taxRevenue": 0.0000155305623380922
+      },
+      "2023": {
+        "unemployment": 8.645,
+        "wageShare": 82.8270620878201,
+        "taxRevenue": 0.0000161980053499047
+      },
+      "2024": {
+        "unemployment": 9.049,
+        "wageShare": 82.9406033487298
+      }
+    },
+    "BHR": {
+      "2019": {
+        "unemployment": 1.217,
+        "wageShare": 97.5187336919853,
+        "taxRevenue": 0.00000287818871909521
+      },
+      "2020": {
+        "unemployment": 1.765,
+        "wageShare": 97.2469569479618,
+        "taxRevenue": 0.00000282317547820215
+      },
+      "2021": {
+        "unemployment": 1.548,
+        "wageShare": 97.2564707541241
+      },
+      "2022": {
+        "unemployment": 1.265,
+        "wageShare": 97.4011721957128
+      },
+      "2023": {
+        "unemployment": 1.049,
+        "wageShare": 97.3696931271176
+      },
+      "2024": {
+        "unemployment": 1.084,
+        "wageShare": 97.455309161896
+      }
+    },
+    "BGD": {
+      "2019": {
+        "unemployment": 4.504,
+        "wageShare": 39.4095382192166,
+        "taxRevenue": 7.63863895398449e-9
+      },
+      "2020": {
+        "unemployment": 5.539,
+        "wageShare": 38.5305258814231,
+        "taxRevenue": 7.00153674405437e-9
+      },
+      "2021": {
+        "unemployment": 5.457,
+        "wageShare": 38.3430176800705,
+        "taxRevenue": 7.64236300887138e-9
+      },
+      "2022": {
+        "unemployment": 4.593,
+        "wageShare": 38.3626059510853
+      },
+      "2023": {
+        "unemployment": 3.352,
+        "wageShare": 38.1260527788908
+      },
+      "2024": {
+        "unemployment": 3.635,
+        "wageShare": 38.5746986872547
+      }
+    },
+    "BRB": {
+      "2019": {
+        "unemployment": 8.41,
+        "wageShare": 79.4368051492101
+      },
+      "2020": {
+        "unemployment": 10.586,
+        "wageShare": 79.8390626319709
+      },
+      "2021": {
+        "unemployment": 11.015,
+        "wageShare": 80.4993934492519
+      },
+      "2022": {
+        "unemployment": 7.261,
+        "wageShare": 80.2580260157288
+      },
+      "2023": {
+        "unemployment": 6.54,
+        "wageShare": 80.0161057896075
+      },
+      "2024": {
+        "unemployment": 6.448,
+        "wageShare": 80.2028206283076
+      }
+    },
+    "BLR": {
+      "2019": {
+        "unemployment": 4.165,
+        "wageShare": 92.1158772890348,
+        "taxRevenue": 0.0000133015061369933
+      },
+      "2020": {
+        "unemployment": 4.049,
+        "wageShare": 92.4274799485397,
+        "taxRevenue": 0.0000120229232611634
+      },
+      "2021": {
+        "unemployment": 3.9,
+        "wageShare": 92.4297698206467,
+        "taxRevenue": 0.0000128250049638453
+      },
+      "2022": {
+        "unemployment": 3.574,
+        "wageShare": 92.6847643705149,
+        "taxRevenue": 0.0000112335456201836
+      },
+      "2023": {
+        "unemployment": 3.461,
+        "wageShare": 92.865982566053,
+        "taxRevenue": 0.00001270106334387
+      },
+      "2024": {
+        "unemployment": 3.458,
+        "wageShare": 93.0095784617133
+      }
+    },
+    "BEL": {
+      "2019": {
+        "unemployment": 5.364,
+        "wageShare": 85.2160284532741,
+        "taxRevenue": 0.0000225978209383393
+      },
+      "2020": {
+        "unemployment": 5.545,
+        "wageShare": 84.5432371937612,
+        "taxRevenue": 0.0000218615640422477
+      },
+      "2021": {
+        "unemployment": 6.248,
+        "wageShare": 85.4912177879278,
+        "taxRevenue": 0.0000232249877086564
+      },
+      "2022": {
+        "unemployment": 5.57,
+        "wageShare": 84.7326070639044,
+        "taxRevenue": 0.0000227983120173894
+      },
+      "2023": {
+        "unemployment": 5.547,
+        "wageShare": 85.2553057123112
+      },
+      "2024": {
+        "unemployment": 5.7,
+        "wageShare": 85.3196761297737
+      }
+    },
+    "BLZ": {
+      "2019": {
+        "unemployment": 9.053,
+        "wageShare": 64.7625279395926
+      },
+      "2020": {
+        "unemployment": 10.763,
+        "wageShare": 64.0244846786386
+      },
+      "2021": {
+        "unemployment": 10.302,
+        "wageShare": 64.4323077223877
+      },
+      "2022": {
+        "unemployment": 8.682,
+        "wageShare": 64.6223802347001
+      },
+      "2023": {
+        "unemployment": 8.278,
+        "wageShare": 64.4971757111156
+      },
+      "2024": {
+        "unemployment": 8.698,
+        "wageShare": 64.6701689263582
+      }
+    },
+    "BEN": {
+      "2019": {
+        "unemployment": 1.214,
+        "wageShare": 17.2790215573348
+      },
+      "2020": {
+        "unemployment": 1.518,
+        "wageShare": 16.9057029947054
+      },
+      "2021": {
+        "unemployment": 1.833,
+        "wageShare": 18.1057329494683
+      },
+      "2022": {
+        "unemployment": 1.685,
+        "wageShare": 19.1735702132462
+      },
+      "2023": {
+        "unemployment": 1.641,
+        "wageShare": 19.4699012292988
+      },
+      "2024": {
+        "unemployment": 1.637,
+        "wageShare": 19.773286561157
+      }
+    },
+    "BTN": {
+      "2019": {
+        "unemployment": 2.72,
+        "wageShare": 28.3920054265677,
+        "taxRevenue": 0.0000144975527173232
+      },
+      "2020": {
+        "unemployment": 5.03,
+        "wageShare": 28.7407220305893,
+        "taxRevenue": 0.0000122846363802964
+      },
+      "2021": {
+        "unemployment": 4.803,
+        "wageShare": 29.2093980797169
+      },
+      "2022": {
+        "unemployment": 5.947,
+        "wageShare": 29.4485948455064
+      },
+      "2023": {
+        "unemployment": 3.126,
+        "wageShare": 29.7786875549681
+      },
+      "2024": {
+        "unemployment": 3.282,
+        "wageShare": 30.1034223009426
+      }
+    },
+    "BOL": {
+      "2019": {
+        "unemployment": 3.682,
+        "wageShare": 31.8639958571817
+      },
+      "2020": {
+        "unemployment": 7.903,
+        "wageShare": 30.2019889750457
+      },
+      "2021": {
+        "unemployment": 5.089,
+        "wageShare": 30.6638318326353
+      },
+      "2022": {
+        "unemployment": 3.552,
+        "wageShare": 32.2225732896144
+      },
+      "2023": {
+        "unemployment": 3.024,
+        "wageShare": 33.3546207154529
+      },
+      "2024": {
+        "unemployment": 3.274,
+        "wageShare": 33.491429348496
+      }
+    },
+    "BIH": {
+      "2019": {
+        "unemployment": 15.692,
+        "wageShare": 75.9753667752816,
+        "taxRevenue": 0.0000198265969676567
+      },
+      "2020": {
+        "unemployment": 15.868,
+        "wageShare": 76.3225156706989,
+        "taxRevenue": 0.0000187506430544753
+      },
+      "2021": {
+        "unemployment": 14.897,
+        "wageShare": 76.590765355038,
+        "taxRevenue": 0.000019098149294853
+      },
+      "2022": {
+        "unemployment": 12.657,
+        "wageShare": 76.9481703918634,
+        "taxRevenue": 0.0000190910598721056
+      },
+      "2023": {
+        "unemployment": 10.668,
+        "wageShare": 77.2962245861974,
+        "taxRevenue": 0.0000190586852173251
+      },
+      "2024": {
+        "unemployment": 10.69,
+        "wageShare": 77.621658160567,
+        "taxRevenue": 0.0000203059477554195
+      }
+    },
+    "BWA": {
+      "2019": {
+        "unemployment": 20.094,
+        "wageShare": 70.417027184867,
+        "taxRevenue": 0.0000210985509979513
+      },
+      "2020": {
+        "unemployment": 21.017,
+        "wageShare": 70.9965560653827,
+        "taxRevenue": 0.0000222747050330683
+      },
+      "2021": {
+        "unemployment": 23.106,
+        "wageShare": 71.4379860287334,
+        "taxRevenue": 0.0000222304202220167
+      },
+      "2022": {
+        "unemployment": 23.615,
+        "wageShare": 71.5913935952051,
+        "taxRevenue": 0.0000196495295038272
+      },
+      "2023": {
+        "unemployment": 23.381,
+        "wageShare": 71.7582212469754,
+        "taxRevenue": 0.0000187133278342197
+      },
+      "2024": {
+        "unemployment": 23.81,
+        "wageShare": 71.846467412583,
+        "taxRevenue": 0.0000224882379320016
+      }
+    },
+    "BRA": {
+      "2019": {
+        "unemployment": 11.936,
+        "wageShare": 67.7840573288815,
+        "taxRevenue": 1.3737694839557e-8
+      },
+      "2020": {
+        "unemployment": 13.697,
+        "wageShare": 67.4937055183708,
+        "taxRevenue": 1.27193878562394e-8
+      },
+      "2021": {
+        "unemployment": 13.158,
+        "wageShare": 66.4827575723646,
+        "taxRevenue": 1.4136675133405e-8
+      },
+      "2022": {
+        "unemployment": 9.231,
+        "wageShare": 67.8725666461771,
+        "taxRevenue": 1.4725847914016e-8
+      },
+      "2023": {
+        "unemployment": 7.947,
+        "wageShare": 68.7717287083402,
+        "taxRevenue": 1.40418624162203e-8
+      },
+      "2024": {
+        "unemployment": 6.801,
+        "wageShare": 69.4925308014466,
+        "taxRevenue": 1.54102340842559e-8
+      }
+    },
+    "BRN": {
+      "2019": {
+        "unemployment": 6.6,
+        "wageShare": 91.0178237519309
+      },
+      "2020": {
+        "unemployment": 7.409,
+        "wageShare": 90.4004198221533
+      },
+      "2021": {
+        "unemployment": 4.905,
+        "wageShare": 92.0713660427696
+      },
+      "2022": {
+        "unemployment": 5.191,
+        "wageShare": 92.4874921467649
+      },
+      "2023": {
+        "unemployment": 5.296,
+        "wageShare": 92.5195202628204
+      },
+      "2024": {
+        "unemployment": 5.18,
+        "wageShare": 92.6221936623961
+      }
+    },
+    "BGR": {
+      "2019": {
+        "unemployment": 4.148,
+        "wageShare": 88.5428569490497,
+        "taxRevenue": 0.000020595103763448
+      },
+      "2020": {
+        "unemployment": 5.037,
+        "wageShare": 89.2696383846822,
+        "taxRevenue": 0.0000201966624707302
+      },
+      "2021": {
+        "unemployment": 5.166,
+        "wageShare": 88.7744611870845,
+        "taxRevenue": 0.0000205917857007665
+      },
+      "2022": {
+        "unemployment": 4.148,
+        "wageShare": 88.406917291337,
+        "taxRevenue": 0.0000217263560549334
+      },
+      "2023": {
+        "unemployment": 4.319,
+        "wageShare": 88.0017206096778,
+        "taxRevenue": 0.0000205146095521809
+      },
+      "2024": {
+        "unemployment": 4.2,
+        "wageShare": 88.062601457457
+      }
+    },
+    "BFA": {
+      "2019": {
+        "unemployment": 4.493,
+        "wageShare": 17.1624498493291,
+        "taxRevenue": 1.56406078587093e-8
+      },
+      "2020": {
+        "unemployment": 4.59,
+        "wageShare": 15.8391651583277,
+        "taxRevenue": 1.37423701755588e-8
+      },
+      "2021": {
+        "unemployment": 4.511,
+        "wageShare": 16.618124266039,
+        "taxRevenue": 1.60197877797196e-8
+      },
+      "2022": {
+        "unemployment": 3.828,
+        "wageShare": 17.1624562779818,
+        "taxRevenue": 1.78607653483496e-8
+      },
+      "2023": {
+        "unemployment": 3.601,
+        "wageShare": 17.1624551552448,
+        "taxRevenue": 1.85514879980901e-8
+      },
+      "2024": {
+        "unemployment": 3.441,
+        "wageShare": 17.1624570066547
+      }
+    },
+    "BDI": {
+      "2019": {
+        "unemployment": 1.043,
+        "wageShare": 14.2846144796926,
+        "taxRevenue": 1.35121247978402e-8
+      },
+      "2020": {
+        "unemployment": 1.03,
+        "wageShare": 14.5316728687415,
+        "taxRevenue": 1.29599323354184e-8
+      },
+      "2021": {
+        "unemployment": 1.118,
+        "wageShare": 15.0205518869916,
+        "taxRevenue": 1.26333374627504e-8
+      },
+      "2022": {
+        "unemployment": 0.909,
+        "wageShare": 15.0222023473155
+      },
+      "2023": {
+        "unemployment": 0.911,
+        "wageShare": 15.0260599582808
+      },
+      "2024": {
+        "unemployment": 0.915,
+        "wageShare": 15.0845255513112
+      }
+    },
+    "CPV": {
+      "2019": {
+        "unemployment": 12.123,
+        "wageShare": 59.9192832351279,
+        "taxRevenue": 0.0000182240332376635
+      },
+      "2020": {
+        "unemployment": 14.65,
+        "wageShare": 59.4591054940737,
+        "taxRevenue": 0.0000183857032911625
+      },
+      "2021": {
+        "unemployment": 13.932,
+        "wageShare": 59.7926200878396
+      },
+      "2022": {
+        "unemployment": 12.239,
+        "wageShare": 60.3288472975889
+      },
+      "2023": {
+        "unemployment": 11.882,
+        "wageShare": 60.7115367727205
+      },
+      "2024": {
+        "unemployment": 11.883,
+        "wageShare": 61.1159200382904
+      }
+    },
+    "KHM": {
+      "2019": {
+        "unemployment": 0.119,
+        "wageShare": 43.268549086575,
+        "taxRevenue": 1.45706459641918e-8
+      },
+      "2020": {
+        "unemployment": 0.172,
+        "wageShare": 43.0512930839546,
+        "taxRevenue": 1.32902084670658e-8
+      },
+      "2021": {
+        "unemployment": 0.396,
+        "wageShare": 43.4220964975122,
+        "taxRevenue": 1.19927698915381e-8
+      },
+      "2022": {
+        "unemployment": 0.245,
+        "wageShare": 43.6979826265789,
+        "taxRevenue": 1.35187383949089e-8
+      },
+      "2023": {
+        "unemployment": 0.256,
+        "wageShare": 43.9436031678253,
+        "taxRevenue": 1.2203542053066e-8
+      },
+      "2024": {
+        "unemployment": 0.254,
+        "wageShare": 44.2114074254182
+      }
+    },
+    "CMR": {
+      "2019": {
+        "unemployment": 3.632,
+        "wageShare": 28.1784201623877,
+        "taxRevenue": 1.20282727609789e-8
+      },
+      "2020": {
+        "unemployment": 3.881,
+        "wageShare": 28.4719079502977,
+        "taxRevenue": 1.08705828069932e-8
+      },
+      "2021": {
+        "unemployment": 3.976,
+        "wageShare": 29.8409779632926,
+        "taxRevenue": 1.13415157268484e-8
+      },
+      "2022": {
+        "unemployment": 3.646,
+        "wageShare": 30.0552795947086
+      },
+      "2023": {
+        "unemployment": 3.607,
+        "wageShare": 30.2390195758244
+      },
+      "2024": {
+        "unemployment": 3.603,
+        "wageShare": 30.4344189692236
+      }
+    },
+    "CAN": {
+      "2019": {
+        "unemployment": 5.69,
+        "wageShare": 85.206167744508,
+        "taxRevenue": 0.0000127416889014909
+      },
+      "2020": {
+        "unemployment": 9.657,
+        "wageShare": 84.8385299883634,
+        "taxRevenue": 0.0000135185987464231
+      },
+      "2021": {
+        "unemployment": 7.527,
+        "wageShare": 85.9974969887277,
+        "taxRevenue": 0.000013996294680919
+      },
+      "2022": {
+        "unemployment": 5.279,
+        "wageShare": 86.5303347793484,
+        "taxRevenue": 0.000013736451836938
+      },
+      "2023": {
+        "unemployment": 5.415,
+        "wageShare": 86.8197039187933,
+        "taxRevenue": 0.000014089801316377
+      },
+      "2024": {
+        "unemployment": 6.351,
+        "wageShare": 86.9766151362485,
+        "taxRevenue": 0.0000142302331833719
+      }
+    },
+    "CAF": {
+      "2019": {
+        "unemployment": 5.916,
+        "wageShare": 14.5077217361143,
+        "taxRevenue": 0.00000831845804130232
+      },
+      "2020": {
+        "unemployment": 6.519,
+        "wageShare": 13.7142582211604,
+        "taxRevenue": 0.00000870964482990026
+      },
+      "2021": {
+        "unemployment": 6.701,
+        "wageShare": 14.1823941561048,
+        "taxRevenue": 0.00000820629230003801
+      },
+      "2022": {
+        "unemployment": 6.287,
+        "wageShare": 14.3023776018088
+      },
+      "2023": {
+        "unemployment": 6.181,
+        "wageShare": 14.4303018714199
+      },
+      "2024": {
+        "unemployment": 6.253,
+        "wageShare": 14.5189494712832
+      }
+    },
+    "TCD": {
+      "2019": {
+        "unemployment": 1.077,
+        "wageShare": 8.76620372038998
+      },
+      "2020": {
+        "unemployment": 1.695,
+        "wageShare": 8.1616560842677
+      },
+      "2021": {
+        "unemployment": 1.53,
+        "wageShare": 8.67164646570472
+      },
+      "2022": {
+        "unemployment": 1.081,
+        "wageShare": 8.66064810580822
+      },
+      "2023": {
+        "unemployment": 1.059,
+        "wageShare": 8.55136713486557
+      },
+      "2024": {
+        "unemployment": 1.053,
+        "wageShare": 8.48578028339527
+      }
+    },
+    "CHI": {
+      "2019": {
+        "unemployment": 6.185,
+        "wageShare": 91.0903939995258
+      },
+      "2020": {
+        "unemployment": 6.633,
+        "wageShare": 90.9117239642362
+      },
+      "2021": {
+        "unemployment": 6.643,
+        "wageShare": 91.1190627057786
+      },
+      "2022": {
+        "unemployment": 5.923,
+        "wageShare": 91.2188005688226
+      },
+      "2023": {
+        "unemployment": 5.928,
+        "wageShare": 91.3087405436041
+      },
+      "2024": {
+        "unemployment": 6.031,
+        "wageShare": 91.3895193920853
+      }
+    },
+    "CHL": {
+      "2019": {
+        "unemployment": 7.493,
+        "wageShare": 75.616225313705,
+        "taxRevenue": 1.77188527701523e-8
+      },
+      "2020": {
+        "unemployment": 10.934,
+        "wageShare": 74.9000623727774,
+        "taxRevenue": 1.61961693313326e-8
+      },
+      "2021": {
+        "unemployment": 9.281,
+        "wageShare": 75.073960745456,
+        "taxRevenue": 1.96762203580828e-8
+      },
+      "2022": {
+        "unemployment": 8.249,
+        "wageShare": 75.3921900215385,
+        "taxRevenue": 2.13364673205925e-8
+      },
+      "2023": {
+        "unemployment": 9.013,
+        "wageShare": 75.3546838641267,
+        "taxRevenue": 1.77194011337982e-8
+      },
+      "2024": {
+        "unemployment": 8.718,
+        "wageShare": 75.9554430709623
+      }
+    },
+    "CHN": {
+      "2019": {
+        "unemployment": 4.56,
+        "wageShare": 60.4384345294744,
+        "taxRevenue": 8.32942550168391e-9
+      },
+      "2020": {
+        "unemployment": 5,
+        "wageShare": 60.4619293602765,
+        "taxRevenue": 7.92409749807608e-9
+      },
+      "2021": {
+        "unemployment": 4.55,
+        "wageShare": 60.7328948874263,
+        "taxRevenue": 7.79829641266188e-9
+      },
+      "2022": {
+        "unemployment": 4.98,
+        "wageShare": 61.1427650636135,
+        "taxRevenue": 7.51799464421188e-9
+      },
+      "2023": {
+        "unemployment": 4.67,
+        "wageShare": 61.5504608675359,
+        "taxRevenue": 7.6382330077989e-9
+      },
+      "2024": {
+        "unemployment": 4.59,
+        "wageShare": 61.9498444163596
+      }
+    },
+    "COL": {
+      "2019": {
+        "unemployment": 10.28,
+        "wageShare": 53.9275242615818,
+        "taxRevenue": 1.49005246267221e-8
+      },
+      "2020": {
+        "unemployment": 15.983,
+        "wageShare": 52.6923695220801,
+        "taxRevenue": 1.40452385597579e-8
+      },
+      "2021": {
+        "unemployment": 13.898,
+        "wageShare": 52.6192334084788,
+        "taxRevenue": 1.44462991915374e-8
+      },
+      "2022": {
+        "unemployment": 10.541,
+        "wageShare": 52.8978207869029,
+        "taxRevenue": 1.52632926851651e-8
+      },
+      "2023": {
+        "unemployment": 9.591,
+        "wageShare": 53.4065231734757,
+        "taxRevenue": 1.75622334373789e-8
+      },
+      "2024": {
+        "unemployment": 9.619,
+        "wageShare": 54.2521957069496,
+        "taxRevenue": 1.52812370381266e-8
+      }
+    },
+    "COM": {
+      "2019": {
+        "unemployment": 3.926,
+        "wageShare": 41.7340336203632
+      },
+      "2020": {
+        "unemployment": 4.468,
+        "wageShare": 41.3194389538101
+      },
+      "2021": {
+        "unemployment": 4.394,
+        "wageShare": 41.7752589028199
+      },
+      "2022": {
+        "unemployment": 3.879,
+        "wageShare": 41.830081876074
+      },
+      "2023": {
+        "unemployment": 3.833,
+        "wageShare": 41.905752150007
+      },
+      "2024": {
+        "unemployment": 3.815,
+        "wageShare": 41.9836310651519
+      }
+    },
+    "COD": {
+      "2019": {
+        "unemployment": 4.605,
+        "wageShare": 14.7137421335535,
+        "taxRevenue": 7.04841775060897e-9
+      },
+      "2020": {
+        "unemployment": 5.355,
+        "wageShare": 13.4128670050381,
+        "taxRevenue": 6.70873789310741e-9
+      },
+      "2021": {
+        "unemployment": 5.289,
+        "wageShare": 13.8528825131539,
+        "taxRevenue": 7.86739721544676e-9
+      },
+      "2022": {
+        "unemployment": 4.54,
+        "wageShare": 14.1140702772327,
+        "taxRevenue": 1.06622824617649e-8
+      },
+      "2023": {
+        "unemployment": 4.469,
+        "wageShare": 14.370247100606
+      },
+      "2024": {
+        "unemployment": 4.421,
+        "wageShare": 14.6579898046651
+      }
+    },
+    "COG": {
+      "2019": {
+        "unemployment": 20.494,
+        "wageShare": 23.3429327909621,
+        "taxRevenue": 7.10154938182206e-9
+      },
+      "2020": {
+        "unemployment": 22.286,
+        "wageShare": 22.466428821531,
+        "taxRevenue": 8.32448488581498e-9
+      },
+      "2021": {
+        "unemployment": 21.998,
+        "wageShare": 22.9976443542873,
+        "taxRevenue": 6.50908825854792e-9
+      },
+      "2022": {
+        "unemployment": 20.131,
+        "wageShare": 23.0313507714506
+      },
+      "2023": {
+        "unemployment": 19.919,
+        "wageShare": 23.0229127167188
+      },
+      "2024": {
+        "unemployment": 19.895,
+        "wageShare": 23.1091028748925
+      }
+    },
+    "CRI": {
+      "2019": {
+        "unemployment": 10.807,
+        "wageShare": 71.5967524279362,
+        "taxRevenue": 1.33201329233421e-8
+      },
+      "2020": {
+        "unemployment": 16.432,
+        "wageShare": 71.2091670079514,
+        "taxRevenue": 1.22380289914727e-8
+      },
+      "2021": {
+        "unemployment": 15.139,
+        "wageShare": 71.7274098715218,
+        "taxRevenue": 1.4040585857592e-8
+      },
+      "2022": {
+        "unemployment": 11.325,
+        "wageShare": 72.3557565686548,
+        "taxRevenue": 1.43541941212592e-8
+      },
+      "2023": {
+        "unemployment": 8.325,
+        "wageShare": 73.3910125712155,
+        "taxRevenue": 1.39115296586432e-8
+      },
+      "2024": {
+        "unemployment": 6.936,
+        "wageShare": 73.1903175954611
+      }
+    },
+    "CIV": {
+      "2019": {
+        "unemployment": 2.401,
+        "wageShare": 26.3352331425605,
+        "taxRevenue": 1.16654955002548e-8
+      },
+      "2020": {
+        "unemployment": 2.588,
+        "wageShare": 26.0944969223387,
+        "taxRevenue": 1.17866882362427e-8
+      },
+      "2021": {
+        "unemployment": 2.623,
+        "wageShare": 27.1197663275488,
+        "taxRevenue": 1.23894127184877e-8
+      },
+      "2022": {
+        "unemployment": 2.31,
+        "wageShare": 28.0387768204995,
+        "taxRevenue": 1.18184021017749e-8
+      },
+      "2023": {
+        "unemployment": 2.263,
+        "wageShare": 28.350821497471,
+        "taxRevenue": 1.30371915904877e-8
+      },
+      "2024": {
+        "unemployment": 2.273,
+        "wageShare": 28.680418085423
+      }
+    },
+    "HRV": {
+      "2019": {
+        "unemployment": 6.551,
+        "wageShare": 84.8220289532913,
+        "taxRevenue": 0.000021973327179732
+      },
+      "2020": {
+        "unemployment": 7.389,
+        "wageShare": 85.2234473299367,
+        "taxRevenue": 0.0000208751842032435
+      },
+      "2021": {
+        "unemployment": 7.483,
+        "wageShare": 85.1416922466408,
+        "taxRevenue": 0.0000210722052505456
+      },
+      "2022": {
+        "unemployment": 6.811,
+        "wageShare": 85.8085433901827,
+        "taxRevenue": 0.0000216758671975929
+      },
+      "2023": {
+        "unemployment": 6.121,
+        "wageShare": 86.4397143586628,
+        "taxRevenue": 0.0000211834528152976
+      },
+      "2024": {
+        "unemployment": 5,
+        "wageShare": 86.9446193996342
+      }
+    },
+    "CUB": {
+      "2019": {
+        "unemployment": 1.705,
+        "wageShare": 73.0343753292502
+      },
+      "2020": {
+        "unemployment": 2.233,
+        "wageShare": 73.4821880824607
+      },
+      "2021": {
+        "unemployment": 2.11,
+        "wageShare": 73.9586281203355
+      },
+      "2022": {
+        "unemployment": 1.829,
+        "wageShare": 74.2316335497799
+      },
+      "2023": {
+        "unemployment": 1.73,
+        "wageShare": 75.0900264137786
+      },
+      "2024": {
+        "unemployment": 1.755,
+        "wageShare": 75.0823542278705
+      }
+    },
+    "CYP": {
+      "2019": {
+        "unemployment": 7.155,
+        "wageShare": 86.3469807299864,
+        "taxRevenue": 0.0000230747988940916
+      },
+      "2020": {
+        "unemployment": 7.755,
+        "wageShare": 86.2177449246189,
+        "taxRevenue": 0.0000219401064770959
+      },
+      "2021": {
+        "unemployment": 7.513,
+        "wageShare": 88.1479761378116,
+        "taxRevenue": 0.0000225522799224155
+      },
+      "2022": {
+        "unemployment": 6.806,
+        "wageShare": 89.0856185771873,
+        "taxRevenue": 0.0000229534539238281
+      },
+      "2023": {
+        "unemployment": 5.835,
+        "wageShare": 89.2196967494632,
+        "taxRevenue": 0.0000232663088788842
+      },
+      "2024": {
+        "unemployment": 4.9,
+        "wageShare": 90.0614901792812
+      }
+    },
+    "CZE": {
+      "2019": {
+        "unemployment": 2.015,
+        "wageShare": 83.1990389023809,
+        "taxRevenue": 1.4524571696195e-8
+      },
+      "2020": {
+        "unemployment": 2.55,
+        "wageShare": 83.1138660504341,
+        "taxRevenue": 1.40731168065984e-8
+      },
+      "2021": {
+        "unemployment": 2.803,
+        "wageShare": 84.0492604201421,
+        "taxRevenue": 1.29358385035563e-8
+      },
+      "2022": {
+        "unemployment": 2.224,
+        "wageShare": 83.5013694393545,
+        "taxRevenue": 1.26419883935481e-8
+      },
+      "2023": {
+        "unemployment": 2.579,
+        "wageShare": 83.7697202352481
+      },
+      "2024": {
+        "unemployment": 2.6,
+        "wageShare": 84.1483513153957
+      }
+    },
+    "DNK": {
+      "2019": {
+        "unemployment": 5.018,
+        "wageShare": 91.6612858400352,
+        "taxRevenue": 3.49773905428147e-8
+      },
+      "2020": {
+        "unemployment": 5.644,
+        "wageShare": 91.4789978276085,
+        "taxRevenue": 3.4470930251185e-8
+      },
+      "2021": {
+        "unemployment": 5.065,
+        "wageShare": 91.1733842321947,
+        "taxRevenue": 3.51995025742209e-8
+      },
+      "2022": {
+        "unemployment": 4.434,
+        "wageShare": 91.7390901060511,
+        "taxRevenue": 3.0809641082876e-8
+      },
+      "2023": {
+        "unemployment": 5.094,
+        "wageShare": 91.8445262918712,
+        "taxRevenue": 3.15935489663634e-8
+      },
+      "2024": {
+        "unemployment": 5.358,
+        "wageShare": 91.9524534369522
+      }
+    },
+    "DJI": {
+      "2019": {
+        "unemployment": 26.257,
+        "wageShare": 48.5593355512008
+      },
+      "2020": {
+        "unemployment": 27.701,
+        "wageShare": 47.7503261438021
+      },
+      "2021": {
+        "unemployment": 27.628,
+        "wageShare": 48.1128181098058
+      },
+      "2022": {
+        "unemployment": 26.272,
+        "wageShare": 48.3476237204339
+      },
+      "2023": {
+        "unemployment": 26.074,
+        "wageShare": 48.5896293189325
+      },
+      "2024": {
+        "unemployment": 26.007,
+        "wageShare": 48.7344048671202
+      }
+    },
+    "DOM": {
+      "2019": {
+        "unemployment": 6.356,
+        "wageShare": 57.5759694219112,
+        "taxRevenue": 1.3350797729342e-8
+      },
+      "2020": {
+        "unemployment": 6.126,
+        "wageShare": 56.8862917897219,
+        "taxRevenue": 1.25072744137302e-8
+      },
+      "2021": {
+        "unemployment": 7.702,
+        "wageShare": 56.1357069917479,
+        "taxRevenue": 1.43635003789511e-8
+      },
+      "2022": {
+        "unemployment": 5.504,
+        "wageShare": 56.949546331503,
+        "taxRevenue": 1.39061030287421e-8
+      },
+      "2023": {
+        "unemployment": 5.555,
+        "wageShare": 57.6344534280172,
+        "taxRevenue": 1.45126176833961e-8
+      },
+      "2024": {
+        "unemployment": 5.312,
+        "wageShare": 57.7665247994411,
+        "taxRevenue": 1.47034417622704e-8
+      }
+    },
+    "ECU": {
+      "2019": {
+        "unemployment": 3.812,
+        "wageShare": 45.7895542616887,
+        "taxRevenue": 0.000013400889588379
+      },
+      "2020": {
+        "unemployment": 6.116,
+        "wageShare": 45.6215148949452,
+        "taxRevenue": 0.0000129414345871949
+      },
+      "2021": {
+        "unemployment": 4.504,
+        "wageShare": 45.4535024450987,
+        "taxRevenue": 0.000012735868402819
+      },
+      "2022": {
+        "unemployment": 3.713,
+        "wageShare": 46.5411260133647,
+        "taxRevenue": 0.0000130891981797338
+      },
+      "2023": {
+        "unemployment": 3.51,
+        "wageShare": 49.07088916351
+      },
+      "2024": {
+        "unemployment": 3.453,
+        "wageShare": 47.6494811402311
+      }
+    },
+    "EGY": {
+      "2019": {
+        "unemployment": 7.851,
+        "wageShare": 71.0999383957734
+      },
+      "2020": {
+        "unemployment": 7.974,
+        "wageShare": 72.6445005279718
+      },
+      "2021": {
+        "unemployment": 7.441,
+        "wageShare": 72.5806185844399
+      },
+      "2022": {
+        "unemployment": 6.546,
+        "wageShare": 73.837400042228
+      },
+      "2023": {
+        "unemployment": 6.753,
+        "wageShare": 72.6626202782052
+      },
+      "2024": {
+        "unemployment": 6.817,
+        "wageShare": 72.8773734720114
+      }
+    },
+    "SLV": {
+      "2019": {
+        "unemployment": 4.17,
+        "wageShare": 60.8629465663315,
+        "taxRevenue": 0.0000180814504146774
+      },
+      "2020": {
+        "unemployment": 5.008,
+        "wageShare": 61.1773980707886,
+        "taxRevenue": 0.0000183907750793602
+      },
+      "2021": {
+        "unemployment": 4.327,
+        "wageShare": 63.1709256459819,
+        "taxRevenue": 0.0000196896754276569
+      },
+      "2022": {
+        "unemployment": 2.999,
+        "wageShare": 63.4687589761974,
+        "taxRevenue": 0.0000211624556167344
+      },
+      "2023": {
+        "unemployment": 2.992,
+        "wageShare": 63.6563966537441,
+        "taxRevenue": 0.0000207052378334693
+      },
+      "2024": {
+        "unemployment": 3.261,
+        "wageShare": 63.9775518468128,
+        "taxRevenue": 0.0000214969845858726
+      }
+    },
+    "GNQ": {
+      "2019": {
+        "unemployment": 7.917,
+        "wageShare": 72.1180929145622,
+        "taxRevenue": 9.3019436135355e-9
+      },
+      "2020": {
+        "unemployment": 8.625,
+        "wageShare": 72.7579890747388,
+        "taxRevenue": 8.01129013375148e-9
+      },
+      "2021": {
+        "unemployment": 8.821,
+        "wageShare": 73.5345577237469,
+        "taxRevenue": 5.39509912535224e-9
+      },
+      "2022": {
+        "unemployment": 8.334,
+        "wageShare": 73.2315943395777,
+        "taxRevenue": 6.5959868261885e-9
+      },
+      "2023": {
+        "unemployment": 8.218,
+        "wageShare": 72.962231547766
+      },
+      "2024": {
+        "unemployment": 8.293,
+        "wageShare": 72.738366392639
+      }
+    },
+    "ERI": {
+      "2019": {
+        "unemployment": 5.812,
+        "wageShare": 47.0945261014846
+      },
+      "2020": {
+        "unemployment": 6.375,
+        "wageShare": 46.4411592586062
+      },
+      "2021": {
+        "unemployment": 6.489,
+        "wageShare": 46.87439655571
+      },
+      "2022": {
+        "unemployment": 6.033,
+        "wageShare": 47.0463083030991
+      },
+      "2023": {
+        "unemployment": 5.909,
+        "wageShare": 47.2373308210529
+      },
+      "2024": {
+        "unemployment": 5.947,
+        "wageShare": 47.4314272647789
+      }
+    },
+    "EST": {
+      "2019": {
+        "unemployment": 4.514,
+        "wageShare": 87.938746364187,
+        "taxRevenue": 0.0000210626465669172
+      },
+      "2020": {
+        "unemployment": 6.956,
+        "wageShare": 87.8535949878702,
+        "taxRevenue": 0.0000207215984585967
+      },
+      "2021": {
+        "unemployment": 6.178,
+        "wageShare": 88.0018056064687,
+        "taxRevenue": 0.0000217424154968985
+      },
+      "2022": {
+        "unemployment": 5.571,
+        "wageShare": 88.2736067348996,
+        "taxRevenue": 0.000021098827586414
+      },
+      "2023": {
+        "unemployment": 6.378,
+        "wageShare": 88.0765720569812,
+        "taxRevenue": 0.0000213289742256328
+      },
+      "2024": {
+        "unemployment": 7.6,
+        "wageShare": 87.931603294498
+      }
+    },
+    "SWZ": {
+      "2019": {
+        "unemployment": 28.222,
+        "wageShare": 66.5882796279454,
+        "taxRevenue": 0.0000245275112529739
+      },
+      "2020": {
+        "unemployment": 32.978,
+        "wageShare": 66.8866022468258,
+        "taxRevenue": 0.0000270899428601234
+      },
+      "2021": {
+        "unemployment": 34.153,
+        "wageShare": 67.9379984811864,
+        "taxRevenue": 0.0000243477036729934
+      },
+      "2022": {
+        "unemployment": 36.472,
+        "wageShare": 68.6653666781675
+      },
+      "2023": {
+        "unemployment": 34.61,
+        "wageShare": 69.392868638984
+      },
+      "2024": {
+        "unemployment": 34.643,
+        "wageShare": 69.5524649602251
+      }
+    },
+    "ETH": {
+      "2019": {
+        "unemployment": 2.928,
+        "wageShare": 14.6179198627074,
+        "taxRevenue": 0.00000666173828015493
+      },
+      "2020": {
+        "unemployment": 3.998,
+        "wageShare": 14.0922166994057,
+        "taxRevenue": 0.00000619630068633641
+      },
+      "2021": {
+        "unemployment": 3.935,
+        "wageShare": 14.519400501367,
+        "taxRevenue": 0.00000532472596181248
+      },
+      "2022": {
+        "unemployment": 3.386,
+        "wageShare": 14.7936036639432,
+        "taxRevenue": 0.00000449688508975156
+      },
+      "2023": {
+        "unemployment": 3.375,
+        "wageShare": 15.0639892289357,
+        "taxRevenue": 0.00000393105822731496
+      },
+      "2024": {
+        "unemployment": 3.357,
+        "wageShare": 15.3708535773319,
+        "taxRevenue": 0.00000339819259746301
+      }
+    },
+    "FJI": {
+      "2019": {
+        "unemployment": 4.661,
+        "wageShare": 65.2326558037964,
+        "taxRevenue": 0.0000232487168120134
+      },
+      "2020": {
+        "unemployment": 5.054,
+        "wageShare": 64.5191215561278,
+        "taxRevenue": 0.0000180169143972691
+      },
+      "2021": {
+        "unemployment": 5.225,
+        "wageShare": 64.9339326027413,
+        "taxRevenue": 0.0000164195674853394
+      },
+      "2022": {
+        "unemployment": 5.403,
+        "wageShare": 65.0632333368602,
+        "taxRevenue": 0.0000184958647782959
+      },
+      "2023": {
+        "unemployment": 5.316,
+        "wageShare": 65.3203062878148,
+        "taxRevenue": 0.0000205379880712802
+      },
+      "2024": {
+        "unemployment": 5.361,
+        "wageShare": 65.6190855391261
+      }
+    },
+    "FIN": {
+      "2019": {
+        "unemployment": 6.695,
+        "wageShare": 86.8232222107867,
+        "taxRevenue": 0.0000207845948733429
+      },
+      "2020": {
+        "unemployment": 7.759,
+        "wageShare": 86.5624009992313,
+        "taxRevenue": 0.0000200057532774645
+      },
+      "2021": {
+        "unemployment": 7.617,
+        "wageShare": 86.0780907926565,
+        "taxRevenue": 0.0000208297824444051
+      },
+      "2022": {
+        "unemployment": 6.719,
+        "wageShare": 86.5366773473401,
+        "taxRevenue": 0.0000211993912863772
+      },
+      "2023": {
+        "unemployment": 7.149,
+        "wageShare": 87.1252898396099,
+        "taxRevenue": 0.0000253756670380578
+      },
+      "2024": {
+        "unemployment": 8.4,
+        "wageShare": 87.4575609741254
+      }
+    },
+    "FRA": {
+      "2019": {
+        "unemployment": 8.415,
+        "wageShare": 87.9070520695251,
+        "taxRevenue": 2.46605263993177e-8
+      },
+      "2020": {
+        "unemployment": 8.009,
+        "wageShare": 87.5955350766688,
+        "taxRevenue": 2.47888064416138e-8
+      },
+      "2021": {
+        "unemployment": 7.871,
+        "wageShare": 87.3864875566232,
+        "taxRevenue": 2.39794445386059e-8
+      },
+      "2022": {
+        "unemployment": 7.303,
+        "wageShare": 86.8931213231878,
+        "taxRevenue": 2.45475390855725e-8
+      },
+      "2023": {
+        "unemployment": 7.335,
+        "wageShare": 87.0811939245382,
+        "taxRevenue": 2.30769652594876e-8
+      },
+      "2024": {
+        "unemployment": 7.4,
+        "wageShare": 86.6614379280463
+      }
+    },
+    "PYF": {
+      "2019": {
+        "unemployment": 11.591,
+        "wageShare": 81.2773206780676
+      },
+      "2020": {
+        "unemployment": 12.963,
+        "wageShare": 81.0391181610431
+      },
+      "2021": {
+        "unemployment": 12.558,
+        "wageShare": 81.2163847347428
+      },
+      "2022": {
+        "unemployment": 11.793,
+        "wageShare": 81.3239926653815
+      },
+      "2023": {
+        "unemployment": 11.613,
+        "wageShare": 81.464565301155
+      },
+      "2024": {
+        "unemployment": 11.613,
+        "wageShare": 81.619685875685
+      }
+    },
+    "GAB": {
+      "2019": {
+        "unemployment": 20.371,
+        "wageShare": 66.8677284728728,
+        "taxRevenue": 1.14795282444447e-8
+      },
+      "2020": {
+        "unemployment": 21.279,
+        "wageShare": 66.9770351433541,
+        "taxRevenue": 1.24267778464103e-8
+      },
+      "2021": {
+        "unemployment": 21.223,
+        "wageShare": 67.4816127464049,
+        "taxRevenue": 9.49032554345705e-9
+      },
+      "2022": {
+        "unemployment": 20.319,
+        "wageShare": 67.4808783226438
+      },
+      "2023": {
+        "unemployment": 20.161,
+        "wageShare": 67.5116093987838
+      },
+      "2024": {
+        "unemployment": 20.091,
+        "wageShare": 67.552003387498
+      }
+    },
+    "GMB": {
+      "2019": {
+        "unemployment": 4.481,
+        "wageShare": 29.3115606784116
+      },
+      "2020": {
+        "unemployment": 5.84,
+        "wageShare": 28.2639617795664
+      },
+      "2021": {
+        "unemployment": 6.213,
+        "wageShare": 29.2484635410077
+      },
+      "2022": {
+        "unemployment": 6.067,
+        "wageShare": 30.0420313518691
+      },
+      "2023": {
+        "unemployment": 6.479,
+        "wageShare": 30.7600893329283
+      },
+      "2024": {
+        "unemployment": 6.48,
+        "wageShare": 31.0156574148887
+      }
+    },
+    "GEO": {
+      "2019": {
+        "unemployment": 11.565,
+        "wageShare": 49.8523018265809,
+        "taxRevenue": 0.0000228972770783896
+      },
+      "2020": {
+        "unemployment": 11.734,
+        "wageShare": 50.0882897883608,
+        "taxRevenue": 0.0000211807829038543
+      },
+      "2021": {
+        "unemployment": 11.785,
+        "wageShare": 50.861827044712,
+        "taxRevenue": 0.0000214728937487649
+      },
+      "2022": {
+        "unemployment": 11.621,
+        "wageShare": 51.2312382251538,
+        "taxRevenue": 0.0000229022783420258
+      },
+      "2023": {
+        "unemployment": 11.549,
+        "wageShare": 52.7987180224945,
+        "taxRevenue": 0.0000235992189173728
+      },
+      "2024": {
+        "unemployment": 11.557,
+        "wageShare": 53.4258516339287,
+        "taxRevenue": 0.0000242581681897327
+      }
+    },
+    "DEU": {
+      "2019": {
+        "unemployment": 3.163,
+        "wageShare": 90.4244931119561,
+        "taxRevenue": 1.19024787407273e-8
+      },
+      "2020": {
+        "unemployment": 3.881,
+        "wageShare": 91.1247938796972,
+        "taxRevenue": 1.11648293689433e-8
+      },
+      "2021": {
+        "unemployment": 3.594,
+        "wageShare": 91.0144045656523,
+        "taxRevenue": 1.14768326661851e-8
+      },
+      "2022": {
+        "unemployment": 3.137,
+        "wageShare": 91.5213527121689,
+        "taxRevenue": 1.1204620255227e-8
+      },
+      "2023": {
+        "unemployment": 3.071,
+        "wageShare": 91.7001969162557,
+        "taxRevenue": 1.06356015557046e-8
+      },
+      "2024": {
+        "unemployment": 3.4,
+        "wageShare": 91.8201665053189
+      }
+    },
+    "GHA": {
+      "2019": {
+        "unemployment": 3.067,
+        "wageShare": 29.5156320869625,
+        "taxRevenue": 0.0000119969959068106
+      },
+      "2020": {
+        "unemployment": 3.178,
+        "wageShare": 29.7997073994804,
+        "taxRevenue": 0.000011340431962023
+      },
+      "2021": {
+        "unemployment": 3.2,
+        "wageShare": 31.2720219637941,
+        "taxRevenue": 0.0000122446867253489
+      },
+      "2022": {
+        "unemployment": 2.87,
+        "wageShare": 31.585504788904,
+        "taxRevenue": 0.0000122975358068104
+      },
+      "2023": {
+        "unemployment": 2.829,
+        "wageShare": 31.8512533058542
+      },
+      "2024": {
+        "unemployment": 2.82,
+        "wageShare": 32.1492696227885
+      }
+    },
+    "GRC": {
+      "2019": {
+        "unemployment": 17.045,
+        "wageShare": 67.9569770946353,
+        "taxRevenue": 0.0000259324359654947
+      },
+      "2020": {
+        "unemployment": 15.899,
+        "wageShare": 67.9966175675924,
+        "taxRevenue": 0.0000249917156858479
+      },
+      "2021": {
+        "unemployment": 14.656,
+        "wageShare": 68.1753718440954,
+        "taxRevenue": 0.0000255777359596935
+      },
+      "2022": {
+        "unemployment": 12.426,
+        "wageShare": 69.6564315042871,
+        "taxRevenue": 0.0000277824123127756
+      },
+      "2023": {
+        "unemployment": 11.023,
+        "wageShare": 69.0475548487297,
+        "taxRevenue": 0.0000266941129395794
+      },
+      "2024": {
+        "unemployment": 10.02,
+        "wageShare": 69.2978950319207
+      }
+    },
+    "GUM": {
+      "2019": {
+        "unemployment": 5.405,
+        "wageShare": 84.3172441078393
+      },
+      "2020": {
+        "unemployment": 6.241,
+        "wageShare": 84.085766942867
+      },
+      "2021": {
+        "unemployment": 6,
+        "wageShare": 84.1455165720672
+      },
+      "2022": {
+        "unemployment": 5.383,
+        "wageShare": 84.1757019738671
+      },
+      "2023": {
+        "unemployment": 5.262,
+        "wageShare": 84.2487160775999
+      },
+      "2024": {
+        "unemployment": 5.252,
+        "wageShare": 84.3479566487401
+      }
+    },
+    "GTM": {
+      "2019": {
+        "unemployment": 2.193,
+        "wageShare": 63.4392144014298,
+        "taxRevenue": 0.0000104353893768797
+      },
+      "2020": {
+        "unemployment": 2.965,
+        "wageShare": 58.2930658768262,
+        "taxRevenue": 0.00000995508945163219
+      },
+      "2021": {
+        "unemployment": 2.174,
+        "wageShare": 53.8131198756428,
+        "taxRevenue": 0.0000115588951013521
+      },
+      "2022": {
+        "unemployment": 3.051,
+        "wageShare": 56.0715760393474,
+        "taxRevenue": 0.0000118188537119783
+      },
+      "2023": {
+        "unemployment": 2.344,
+        "wageShare": 60.4591600424912,
+        "taxRevenue": 0.0000115678620103716
+      },
+      "2024": {
+        "unemployment": 2.613,
+        "wageShare": 60.7101225552854
+      }
+    },
+    "GIN": {
+      "2019": {
+        "unemployment": 5.018,
+        "wageShare": 17.4353023863358
+      },
+      "2020": {
+        "unemployment": 6.007,
+        "wageShare": 16.5477157940204
+      },
+      "2021": {
+        "unemployment": 5.815,
+        "wageShare": 16.9490173860807
+      },
+      "2022": {
+        "unemployment": 5.174,
+        "wageShare": 17.1765609099232
+      },
+      "2023": {
+        "unemployment": 5.141,
+        "wageShare": 17.4812665761381
+      },
+      "2024": {
+        "unemployment": 5.132,
+        "wageShare": 17.7548785260132
+      }
+    },
+    "GNB": {
+      "2019": {
+        "unemployment": 2.413,
+        "wageShare": 23.9839808041931,
+        "taxRevenue": 0.0000085338507606032
+      },
+      "2020": {
+        "unemployment": 2.887,
+        "wageShare": 23.2750695037023,
+        "taxRevenue": 0.0000069456646136516
+      },
+      "2021": {
+        "unemployment": 3.016,
+        "wageShare": 23.6966445313064,
+        "taxRevenue": 0.00000878805445875264
+      },
+      "2022": {
+        "unemployment": 2.666,
+        "wageShare": 23.8927206508254,
+        "taxRevenue": 0.00000869743380915367
+      },
+      "2023": {
+        "unemployment": 2.632,
+        "wageShare": 24.1050703392664,
+        "taxRevenue": 0.00000864191716838539
+      },
+      "2024": {
+        "unemployment": 2.647,
+        "wageShare": 24.3156192095158
+      }
+    },
+    "GUY": {
+      "2019": {
+        "unemployment": 13.172,
+        "wageShare": 65.6648007494638
+      },
+      "2020": {
+        "unemployment": 15.308,
+        "wageShare": 64.7440480811267
+      },
+      "2021": {
+        "unemployment": 14.576,
+        "wageShare": 64.22478894736
+      },
+      "2022": {
+        "unemployment": 11.907,
+        "wageShare": 65.8872799597144
+      },
+      "2023": {
+        "unemployment": 11.917,
+        "wageShare": 67.427034211209
+      },
+      "2024": {
+        "unemployment": 11.874,
+        "wageShare": 68.3547091456317
+      }
+    },
+    "HTI": {
+      "2019": {
+        "unemployment": 14.095,
+        "wageShare": 24.9643425555543
+      },
+      "2020": {
+        "unemployment": 15.573,
+        "wageShare": 22.7036602877122
+      },
+      "2021": {
+        "unemployment": 15.296,
+        "wageShare": 23.2461523318784
+      },
+      "2022": {
+        "unemployment": 14.54,
+        "wageShare": 23.3460330345982
+      },
+      "2023": {
+        "unemployment": 14.459,
+        "wageShare": 23.3256031912503
+      },
+      "2024": {
+        "unemployment": 14.609,
+        "wageShare": 23.2102347844363
+      }
+    },
+    "HND": {
+      "2019": {
+        "unemployment": 5.698,
+        "wageShare": 54.8097478733004
+      },
+      "2020": {
+        "unemployment": 10.982,
+        "wageShare": 54.4091700811356,
+        "taxRevenue": 0.0000150661315517441
+      },
+      "2021": {
+        "unemployment": 8.506,
+        "wageShare": 54.8318873937223
+      },
+      "2022": {
+        "unemployment": 8.774,
+        "wageShare": 55.1162527290977
+      },
+      "2023": {
+        "unemployment": 6.07,
+        "wageShare": 55.3732679872729
+      },
+      "2024": {
+        "unemployment": 4.91,
+        "wageShare": 55.6282929764351
+      }
+    },
+    "HKG": {
+      "2019": {
+        "unemployment": 2.917,
+        "wageShare": 91.3476563967578
+      },
+      "2020": {
+        "unemployment": 5.808,
+        "wageShare": 91.3087632377699
+      },
+      "2021": {
+        "unemployment": 5.174,
+        "wageShare": 91.6309364241308
+      },
+      "2022": {
+        "unemployment": 4.318,
+        "wageShare": 91.5452280688031
+      },
+      "2023": {
+        "unemployment": 2.949,
+        "wageShare": 91.5354366444782
+      },
+      "2024": {
+        "unemployment": 2.988,
+        "wageShare": 92.196707386366
+      }
+    },
+    "HUN": {
+      "2019": {
+        "unemployment": 3.411,
+        "wageShare": 89.2181967332715,
+        "taxRevenue": 2.22398241353197e-8
+      },
+      "2020": {
+        "unemployment": 4.248,
+        "wageShare": 87.9985370583289,
+        "taxRevenue": 2.26858959289388e-8
+      },
+      "2021": {
+        "unemployment": 4.021,
+        "wageShare": 87.4436249524784,
+        "taxRevenue": 2.13456992963306e-8
+      },
+      "2022": {
+        "unemployment": 3.583,
+        "wageShare": 87.6186120860002,
+        "taxRevenue": 2.34285893294636e-8
+      },
+      "2023": {
+        "unemployment": 4.096,
+        "wageShare": 87.9404783242514
+      },
+      "2024": {
+        "unemployment": 4.5,
+        "wageShare": 88.2065859165708
+      }
+    },
+    "ISL": {
+      "2019": {
+        "unemployment": 3.507,
+        "wageShare": 84.1197881577962,
+        "taxRevenue": 2.16648659515767e-8
+      },
+      "2020": {
+        "unemployment": 5.478,
+        "wageShare": 84.2330621998021,
+        "taxRevenue": 2.19901621397724e-8
+      },
+      "2021": {
+        "unemployment": 6.029,
+        "wageShare": 82.9729871843286,
+        "taxRevenue": 2.10561506210511e-8
+      },
+      "2022": {
+        "unemployment": 3.789,
+        "wageShare": 83.2772852338734,
+        "taxRevenue": 2.21634978708807e-8
+      },
+      "2023": {
+        "unemployment": 3.518,
+        "wageShare": 84.9441567627514,
+        "taxRevenue": 2.31751062205462e-8
+      },
+      "2024": {
+        "unemployment": 3.6,
+        "wageShare": 86.6614045567028
+      }
+    },
+    "IND": {
+      "2019": {
+        "unemployment": 6.51,
+        "wageShare": 22.7744331809652
+      },
+      "2020": {
+        "unemployment": 7.859,
+        "wageShare": 22.7981662885246
+      },
+      "2021": {
+        "unemployment": 6.38,
+        "wageShare": 23.3458977405958
+      },
+      "2022": {
+        "unemployment": 4.822,
+        "wageShare": 23.1304436080318,
+        "taxRevenue": 6.73444285965496e-9
+      },
+      "2023": {
+        "unemployment": 4.172,
+        "wageShare": 23.8734130526665
+      },
+      "2024": {
+        "unemployment": 4.173,
+        "wageShare": 24.605844538728
+      }
+    },
+    "IDN": {
+      "2019": {
+        "unemployment": 3.59,
+        "wageShare": 47.5775031459638
+      },
+      "2020": {
+        "unemployment": 4.255,
+        "wageShare": 46.505420538306
+      },
+      "2021": {
+        "unemployment": 3.827,
+        "wageShare": 46.8746721035605
+      },
+      "2022": {
+        "unemployment": 3.462,
+        "wageShare": 46.5551647862799
+      },
+      "2023": {
+        "unemployment": 3.308,
+        "wageShare": 45.95436882353
+      },
+      "2024": {
+        "unemployment": 3.301,
+        "wageShare": 46.3180697399496
+      }
+    },
+    "IRN": {
+      "2019": {
+        "unemployment": 10.74,
+        "wageShare": 55.0383160360609
+      },
+      "2020": {
+        "unemployment": 9.687,
+        "wageShare": 56.2702246082337
+      },
+      "2021": {
+        "unemployment": 9.282,
+        "wageShare": 57.2283816935101
+      },
+      "2022": {
+        "unemployment": 9.085,
+        "wageShare": 57.2200501921925
+      },
+      "2023": {
+        "unemployment": 8.129,
+        "wageShare": 56.6028468384874
+      },
+      "2024": {
+        "unemployment": 8.146,
+        "wageShare": 56.8339633232039
+      }
+    },
+    "IRQ": {
+      "2019": {
+        "unemployment": 14.096,
+        "wageShare": 68.9739529142776,
+        "taxRevenue": 1.34459361823375e-9
+      },
+      "2020": {
+        "unemployment": 15.766,
+        "wageShare": 68.6158307429414
+      },
+      "2021": {
+        "unemployment": 16.173,
+        "wageShare": 68.5519533252512
+      },
+      "2022": {
+        "unemployment": 15.41,
+        "wageShare": 68.4887672372953
+      },
+      "2023": {
+        "unemployment": 15.239,
+        "wageShare": 68.4457595072273
+      },
+      "2024": {
+        "unemployment": 15.293,
+        "wageShare": 68.4344021783388
+      }
+    },
+    "IRL": {
+      "2019": {
+        "unemployment": 4.95,
+        "wageShare": 85.6014076857682,
+        "taxRevenue": 0.0000173529630618998
+      },
+      "2020": {
+        "unemployment": 5.623,
+        "wageShare": 85.478185364604,
+        "taxRevenue": 0.0000159251337703346
+      },
+      "2021": {
+        "unemployment": 6.357,
+        "wageShare": 85.8346634216679,
+        "taxRevenue": 0.0000166215641952694
+      },
+      "2022": {
+        "unemployment": 4.465,
+        "wageShare": 85.9771370525843,
+        "taxRevenue": 0.0000167926964316008
+      },
+      "2023": {
+        "unemployment": 4.243,
+        "wageShare": 85.9151734662122
+      },
+      "2024": {
+        "unemployment": 4.3,
+        "wageShare": 86.5598250316762
+      }
+    },
+    "ISR": {
+      "2019": {
+        "unemployment": 3.731,
+        "wageShare": 88.8089622611222,
+        "taxRevenue": 0.0000222161560038026
+      },
+      "2020": {
+        "unemployment": 4.169,
+        "wageShare": 88.66582732738,
+        "taxRevenue": 0.0000220388122136025
+      },
+      "2021": {
+        "unemployment": 4.812,
+        "wageShare": 88.8126794593459,
+        "taxRevenue": 0.0000245642567326344
+      },
+      "2022": {
+        "unemployment": 3.695,
+        "wageShare": 88.3727519664573,
+        "taxRevenue": 0.000025001722534697
+      },
+      "2023": {
+        "unemployment": 3.371,
+        "wageShare": 88.4727977743051,
+        "taxRevenue": 0.0000221364060336696
+      },
+      "2024": {
+        "unemployment": 3.595,
+        "wageShare": 88.5725980077812
+      }
+    },
+    "ITA": {
+      "2019": {
+        "unemployment": 9.884,
+        "wageShare": 77.1945733999865,
+        "taxRevenue": 2.46616145255819e-8
+      },
+      "2020": {
+        "unemployment": 9.192,
+        "wageShare": 77.4326783099876,
+        "taxRevenue": 2.48458109789517e-8
+      },
+      "2021": {
+        "unemployment": 9.497,
+        "wageShare": 78.168173103786,
+        "taxRevenue": 2.48769150126615e-8
+      },
+      "2022": {
+        "unemployment": 8.069,
+        "wageShare": 78.5758441085737,
+        "taxRevenue": 2.46064132004012e-8
+      },
+      "2023": {
+        "unemployment": 7.627,
+        "wageShare": 78.7045749624284,
+        "taxRevenue": 2.47080453637277e-8
+      },
+      "2024": {
+        "unemployment": 6.5,
+        "wageShare": 78.7528905228471
+      }
+    },
+    "JAM": {
+      "2019": {
+        "unemployment": 4.987,
+        "wageShare": 62.2956732126523,
+        "taxRevenue": 2.5526258009488e-8
+      },
+      "2020": {
+        "unemployment": 6.501,
+        "wageShare": 61.328309273162,
+        "taxRevenue": 2.36736609376178e-8
+      },
+      "2021": {
+        "unemployment": 5.188,
+        "wageShare": 61.5873330384786
+      },
+      "2022": {
+        "unemployment": 4.083,
+        "wageShare": 62.693062571036
+      },
+      "2023": {
+        "unemployment": 3.022,
+        "wageShare": 64.0990769708095
+      },
+      "2024": {
+        "unemployment": 3.151,
+        "wageShare": 64.1518452430799
+      }
+    },
+    "JPN": {
+      "2019": {
+        "unemployment": 2.351,
+        "wageShare": 90.0676875647287
+      },
+      "2020": {
+        "unemployment": 2.809,
+        "wageShare": 90.1185679147072
+      },
+      "2021": {
+        "unemployment": 2.808,
+        "wageShare": 89.6480637107958
+      },
+      "2022": {
+        "unemployment": 2.614,
+        "wageShare": 90.45702302916
+      },
+      "2023": {
+        "unemployment": 2.6,
+        "wageShare": 90.4974668127093
+      },
+      "2024": {
+        "unemployment": 2.5,
+        "wageShare": 90.7514423692644
+      }
+    },
+    "JOR": {
+      "2019": {
+        "unemployment": 16.801,
+        "wageShare": 87.5866222433489,
+        "taxRevenue": 0.0000148140015671358
+      },
+      "2020": {
+        "unemployment": 19.213,
+        "wageShare": 88.86571697195,
+        "taxRevenue": 0.0000159811020446786
+      },
+      "2021": {
+        "unemployment": 19.837,
+        "wageShare": 88.3365009502851,
+        "taxRevenue": 0.000017118346332527
+      },
+      "2022": {
+        "unemployment": 18.2,
+        "wageShare": 88.2830267762441,
+        "taxRevenue": 0.0000174675167960003
+      },
+      "2023": {
+        "unemployment": 16.62,
+        "wageShare": 88.492520181812,
+        "taxRevenue": 0.0000170491301941353
+      },
+      "2024": {
+        "unemployment": 16.693,
+        "wageShare": 88.6512006347344
+      }
+    },
+    "KAZ": {
+      "2019": {
+        "unemployment": 4.8,
+        "wageShare": 73.2147991980232,
+        "taxRevenue": 1.17869427411893e-8
+      },
+      "2020": {
+        "unemployment": 4.89,
+        "wageShare": 73.478988948858,
+        "taxRevenue": 8.318809313869e-9
+      },
+      "2021": {
+        "unemployment": 5.568,
+        "wageShare": 73.6492154669136,
+        "taxRevenue": 9.44711136309549e-9
+      },
+      "2022": {
+        "unemployment": 4.86,
+        "wageShare": 73.6758518171118,
+        "taxRevenue": 1.20616921084291e-8
+      },
+      "2023": {
+        "unemployment": 4.835,
+        "wageShare": 73.7161432286666,
+        "taxRevenue": 1.1892477417904e-8
+      },
+      "2024": {
+        "unemployment": 4.833,
+        "wageShare": 73.7908596143508
+      }
+    },
+    "KEN": {
+      "2019": {
+        "unemployment": 5.014,
+        "wageShare": 37.9943253091996,
+        "taxRevenue": 1.51001093504447e-8
+      },
+      "2020": {
+        "unemployment": 5.613,
+        "wageShare": 35.6446832533821,
+        "taxRevenue": 1.42998226329833e-8
+      },
+      "2021": {
+        "unemployment": 5.693,
+        "wageShare": 34.1196367764998,
+        "taxRevenue": 1.35546443273847e-8
+      },
+      "2022": {
+        "unemployment": 5.565,
+        "wageShare": 34.428597948861,
+        "taxRevenue": 1.45993496343343e-8
+      },
+      "2023": {
+        "unemployment": 5.409,
+        "wageShare": 34.7450319213435,
+        "taxRevenue": 1.40631113817639e-8
+      },
+      "2024": {
+        "unemployment": 5.487,
+        "wageShare": 35.0546797833925
+      }
+    },
+    "PRK": {
+      "2019": {
+        "unemployment": 3.439,
+        "wageShare": 38.3842895309655
+      },
+      "2020": {
+        "unemployment": 3.624,
+        "wageShare": 37.2721375402246
+      },
+      "2021": {
+        "unemployment": 3.692,
+        "wageShare": 37.774032499742
+      },
+      "2022": {
+        "unemployment": 3.457,
+        "wageShare": 37.7343031296601
+      },
+      "2023": {
+        "unemployment": 3.463,
+        "wageShare": 37.8167668538583
+      },
+      "2024": {
+        "unemployment": 3.539,
+        "wageShare": 37.8711065571122
+      }
+    },
+    "KOR": {
+      "2019": {
+        "unemployment": 3.746,
+        "wageShare": 75.3630153909251,
+        "taxRevenue": 1.43348126131686e-11
+      },
+      "2020": {
+        "unemployment": 3.931,
+        "wageShare": 75.5718677475756,
+        "taxRevenue": 1.40112224949981e-11
+      },
+      "2021": {
+        "unemployment": 3.639,
+        "wageShare": 76.0943599653368,
+        "taxRevenue": 1.56673866198806e-11
+      },
+      "2022": {
+        "unemployment": 2.857,
+        "wageShare": 76.5483148616001,
+        "taxRevenue": 1.715867474201e-11
+      },
+      "2023": {
+        "unemployment": 2.675,
+        "wageShare": 76.8167270448522,
+        "taxRevenue": 1.45990997877101e-11
+      },
+      "2024": {
+        "unemployment": 2.784,
+        "wageShare": 77.1387791313607
+      }
+    },
+    "KWT": {
+      "2019": {
+        "unemployment": 2.213,
+        "wageShare": 97.7894415648232
+      },
+      "2020": {
+        "unemployment": 3.489,
+        "wageShare": 97.2501251774777
+      },
+      "2021": {
+        "unemployment": 2.97,
+        "wageShare": 97.1860705506139
+      },
+      "2022": {
+        "unemployment": 2.133,
+        "wageShare": 97.2989853125145
+      },
+      "2023": {
+        "unemployment": 2.08,
+        "wageShare": 97.0716981766992
+      },
+      "2024": {
+        "unemployment": 2.151,
+        "wageShare": 96.9051352019439
+      }
+    },
+    "KGZ": {
+      "2019": {
+        "unemployment": 5.45,
+        "wageShare": 66.9579449975759,
+        "taxRevenue": 0.0000159638338680814
+      },
+      "2020": {
+        "unemployment": 5.945,
+        "wageShare": 66.0253294537637,
+        "taxRevenue": 0.000014036328193124
+      },
+      "2021": {
+        "unemployment": 5.149,
+        "wageShare": 67.698929102647,
+        "taxRevenue": 0.0000164912602766568
+      },
+      "2022": {
+        "unemployment": 4.767,
+        "wageShare": 67.8685891341747,
+        "taxRevenue": 0.0000195419794530385
+      },
+      "2023": {
+        "unemployment": 3.498,
+        "wageShare": 68.5128165138211,
+        "taxRevenue": 0.0000196084664812218
+      },
+      "2024": {
+        "unemployment": 3.491,
+        "wageShare": 68.9671884287549,
+        "taxRevenue": 0.0000203821895007982
+      }
+    },
+    "LAO": {
+      "2019": {
+        "unemployment": 2.531,
+        "wageShare": 21.1591881218011,
+        "taxRevenue": 1.14655560904234e-8
+      },
+      "2020": {
+        "unemployment": 2.349,
+        "wageShare": 21.3903206264153,
+        "taxRevenue": 9.40187747055082e-9
+      },
+      "2021": {
+        "unemployment": 2.08,
+        "wageShare": 21.8185397085538,
+        "taxRevenue": 1.03910216640385e-8
+      },
+      "2022": {
+        "unemployment": 1.209,
+        "wageShare": 22.083781461221,
+        "taxRevenue": 1.21129327823146e-8
+      },
+      "2023": {
+        "unemployment": 1.186,
+        "wageShare": 22.3386649733264
+      },
+      "2024": {
+        "unemployment": 1.174,
+        "wageShare": 22.6043245853565
+      }
+    },
+    "LVA": {
+      "2019": {
+        "unemployment": 6.312,
+        "wageShare": 86.9942111795577,
+        "taxRevenue": 0.0000161998506375401
+      },
+      "2020": {
+        "unemployment": 8.098,
+        "wageShare": 86.5075351023882,
+        "taxRevenue": 0.0000162818527296083
+      },
+      "2021": {
+        "unemployment": 7.513,
+        "wageShare": 86.8818145145253,
+        "taxRevenue": 0.0000164537367202272
+      },
+      "2022": {
+        "unemployment": 6.815,
+        "wageShare": 87.0118083580547,
+        "taxRevenue": 0.000017154863262059
+      },
+      "2023": {
+        "unemployment": 6.465,
+        "wageShare": 86.8114278644501,
+        "taxRevenue": 0.0000166322142422569
+      },
+      "2024": {
+        "unemployment": 6.9,
+        "wageShare": 86.254528505752
+      }
+    },
+    "LBN": {
+      "2019": {
+        "unemployment": 11.301,
+        "wageShare": 70.6757396750188,
+        "taxRevenue": 1.54053905217734e-8
+      },
+      "2020": {
+        "unemployment": 13.252,
+        "wageShare": 71.0267541956061,
+        "taxRevenue": 8.90172832336972e-9
+      },
+      "2021": {
+        "unemployment": 12.715,
+        "wageShare": 71.740590887121,
+        "taxRevenue": 5.68479554527678e-9
+      },
+      "2022": {
+        "unemployment": 11.105,
+        "wageShare": 71.6462267863129
+      },
+      "2023": {
+        "unemployment": 10.985,
+        "wageShare": 71.6217620888944
+      }
+    },
+    "LSO": {
+      "2019": {
+        "unemployment": 16.876,
+        "wageShare": 60.9454151148825,
+        "taxRevenue": 0.0000325421709727294
+      },
+      "2020": {
+        "unemployment": 18.385,
+        "wageShare": 60.8143703976271,
+        "taxRevenue": 0.0000359943566400862
+      },
+      "2021": {
+        "unemployment": 18.214,
+        "wageShare": 61.3556045281413,
+        "taxRevenue": 0.0000318702314104686
+      },
+      "2022": {
+        "unemployment": 16.623,
+        "wageShare": 61.3068756283869,
+        "taxRevenue": 0.0000304425485967987
+      },
+      "2023": {
+        "unemployment": 16.348,
+        "wageShare": 61.2562896082808,
+        "taxRevenue": 0.0000402247629322737
+      },
+      "2024": {
+        "unemployment": 16.34,
+        "wageShare": 61.3540788292577,
+        "taxRevenue": 0.0000372829803739764
+      }
+    },
+    "LBR": {
+      "2019": {
+        "unemployment": 3.071,
+        "wageShare": 21.5036786791931
+      },
+      "2020": {
+        "unemployment": 4.102,
+        "wageShare": 20.257274283512
+      },
+      "2021": {
+        "unemployment": 3.844,
+        "wageShare": 20.7250978747449
+      },
+      "2022": {
+        "unemployment": 2.956,
+        "wageShare": 20.8743187767605
+      },
+      "2023": {
+        "unemployment": 2.905,
+        "wageShare": 21.118158528571
+      },
+      "2024": {
+        "unemployment": 2.914,
+        "wageShare": 21.3808953771829
+      }
+    },
+    "LBY": {
+      "2019": {
+        "unemployment": 19.087,
+        "wageShare": 72.3688509973334
+      },
+      "2020": {
+        "unemployment": 19.651,
+        "wageShare": 72.7632831269508
+      },
+      "2021": {
+        "unemployment": 19.779,
+        "wageShare": 73.2833088479681
+      },
+      "2022": {
+        "unemployment": 19.238,
+        "wageShare": 73.3271332019496
+      },
+      "2023": {
+        "unemployment": 18.713,
+        "wageShare": 73.5194366110307
+      },
+      "2024": {
+        "unemployment": 19.085,
+        "wageShare": 73.7251980120654
+      }
+    },
+    "LTU": {
+      "2019": {
+        "unemployment": 6.255,
+        "wageShare": 88.3430005997375,
+        "taxRevenue": 0.0000200889400531483
+      },
+      "2020": {
+        "unemployment": 8.487,
+        "wageShare": 88.2402609666318,
+        "taxRevenue": 0.0000205030171627523
+      },
+      "2021": {
+        "unemployment": 7.112,
+        "wageShare": 88.3732144548123,
+        "taxRevenue": 0.0000212744476140313
+      },
+      "2022": {
+        "unemployment": 5.955,
+        "wageShare": 88.0667047650611,
+        "taxRevenue": 0.0000212820773125213
+      },
+      "2023": {
+        "unemployment": 6.841,
+        "wageShare": 88.0781346508021,
+        "taxRevenue": 0.000021418435814263
+      },
+      "2024": {
+        "unemployment": 6.851,
+        "wageShare": 88.3180647447685
+      }
+    },
+    "LUX": {
+      "2019": {
+        "unemployment": 5.592,
+        "wageShare": 89.6913816522649,
+        "taxRevenue": 0.0000268884834309941
+      },
+      "2020": {
+        "unemployment": 6.766,
+        "wageShare": 90.5117626256673,
+        "taxRevenue": 0.0000256864231937241
+      },
+      "2021": {
+        "unemployment": 5.571,
+        "wageShare": 88.1287861575042,
+        "taxRevenue": 0.0000260024291787653
+      },
+      "2022": {
+        "unemployment": 4.588,
+        "wageShare": 89.199389152449,
+        "taxRevenue": 0.0000266829703355982
+      },
+      "2023": {
+        "unemployment": 5.184,
+        "wageShare": 89.6885283538685,
+        "taxRevenue": 0.0000268469729272694
+      },
+      "2024": {
+        "unemployment": 6.4,
+        "wageShare": 89.686361389311
+      }
+    },
+    "MAC": {
+      "2019": {
+        "unemployment": 1.73,
+        "wageShare": 93.5020114869823,
+        "taxRevenue": 0.0000298091792451343
+      },
+      "2020": {
+        "unemployment": 2.542,
+        "wageShare": 93.2484353046366,
+        "taxRevenue": 0.0000218821760808857
+      },
+      "2021": {
+        "unemployment": 2.221,
+        "wageShare": 93.3316523072084,
+        "taxRevenue": 0.0000195195200639371
+      },
+      "2022": {
+        "unemployment": 2.446,
+        "wageShare": 92.6683206651315,
+        "taxRevenue": 0.0000167484467074505
+      },
+      "2023": {
+        "unemployment": 2.206,
+        "wageShare": 92.7029877839376,
+        "taxRevenue": 0.0000229306249864095
+      },
+      "2024": {
+        "unemployment": 2.262,
+        "wageShare": 92.9322490605251
+      }
+    },
+    "MDG": {
+      "2019": {
+        "unemployment": 2.479,
+        "wageShare": 11.2308704687553,
+        "taxRevenue": 1.05318646220852e-8
+      },
+      "2020": {
+        "unemployment": 3.292,
+        "wageShare": 10.5603628242286,
+        "taxRevenue": 9.52072872460036e-9
+      },
+      "2021": {
+        "unemployment": 3.498,
+        "wageShare": 11.0262057984294,
+        "taxRevenue": 1.0381196752261e-8
+      },
+      "2022": {
+        "unemployment": 3.186,
+        "wageShare": 11.1566298082559,
+        "taxRevenue": 9.24054268135003e-9
+      },
+      "2023": {
+        "unemployment": 3.044,
+        "wageShare": 11.3032694342962,
+        "taxRevenue": 9.61487095893803e-9
+      },
+      "2024": {
+        "unemployment": 3.051,
+        "wageShare": 11.4810915856587
+      }
+    },
+    "MWI": {
+      "2019": {
+        "unemployment": 4.964,
+        "wageShare": 38.1522683150921,
+        "taxRevenue": 1.1975212669565e-8
+      },
+      "2020": {
+        "unemployment": 5.72,
+        "wageShare": 38.0552686564367,
+        "taxRevenue": 1.21305627479425e-8
+      },
+      "2021": {
+        "unemployment": 5.652,
+        "wageShare": 38.5481817731241,
+        "taxRevenue": 1.1587752882388e-8
+      },
+      "2022": {
+        "unemployment": 5.02,
+        "wageShare": 38.5914522058824,
+        "taxRevenue": 1.35038573905772e-8
+      },
+      "2023": {
+        "unemployment": 5.009,
+        "wageShare": 38.6448823848473
+      },
+      "2024": {
+        "unemployment": 5.051,
+        "wageShare": 38.6820705180988
+      }
+    },
+    "MYS": {
+      "2019": {
+        "unemployment": 3.33,
+        "wageShare": 74.024459603824,
+        "taxRevenue": 0.0000119363488299638
+      },
+      "2020": {
+        "unemployment": 4.54,
+        "wageShare": 74.0399542928215,
+        "taxRevenue": 0.0000108846712025214
+      },
+      "2021": {
+        "unemployment": 4.64,
+        "wageShare": 74.191934850332,
+        "taxRevenue": 0.0000112160748421804
+      },
+      "2022": {
+        "unemployment": 3.93,
+        "wageShare": 74.2900267102271,
+        "taxRevenue": 0.0000116310545373191
+      },
+      "2023": {
+        "unemployment": 3.858,
+        "wageShare": 74.3836177936594,
+        "taxRevenue": 0.0000125648395418319
+      },
+      "2024": {
+        "unemployment": 3.846,
+        "wageShare": 74.5073123921254
+      }
+    },
+    "MDV": {
+      "2019": {
+        "unemployment": 4.562,
+        "wageShare": 78.2155941554243,
+        "taxRevenue": 0.0000199413849021842
+      },
+      "2020": {
+        "unemployment": 5.42,
+        "wageShare": 78.6086055331111,
+        "taxRevenue": 0.0000201121885797816
+      },
+      "2021": {
+        "unemployment": 5.016,
+        "wageShare": 78.9805708183337,
+        "taxRevenue": 0.000019453248279288
+      },
+      "2022": {
+        "unemployment": 4.303,
+        "wageShare": 79.1533902688446
+      },
+      "2023": {
+        "unemployment": 4.019,
+        "wageShare": 79.3936880650676
+      },
+      "2024": {
+        "unemployment": 4.278,
+        "wageShare": 79.6615516435582
+      }
+    },
+    "MLI": {
+      "2019": {
+        "unemployment": 3.29,
+        "wageShare": 17.2674128069368,
+        "taxRevenue": 1.22370535475778e-8
+      },
+      "2020": {
+        "unemployment": 3.528,
+        "wageShare": 14.6960902001778,
+        "taxRevenue": 1.19520025009648e-8
+      },
+      "2021": {
+        "unemployment": 4.006,
+        "wageShare": 18.9204896064544
+      },
+      "2022": {
+        "unemployment": 2.387,
+        "wageShare": 22.808844252564
+      },
+      "2023": {
+        "unemployment": 2.947,
+        "wageShare": 22.9514070181162
+      },
+      "2024": {
+        "unemployment": 2.924,
+        "wageShare": 23.1103231815346
+      }
+    },
+    "MLT": {
+      "2019": {
+        "unemployment": 4.08,
+        "wageShare": 85.5024947108954,
+        "taxRevenue": 0.0000251029746671995
+      },
+      "2020": {
+        "unemployment": 4.856,
+        "wageShare": 85.4496176261225,
+        "taxRevenue": 0.0000224854638057187
+      },
+      "2021": {
+        "unemployment": 3.754,
+        "wageShare": 85.8310985581584,
+        "taxRevenue": 0.0000224082685021821
+      },
+      "2022": {
+        "unemployment": 3.471,
+        "wageShare": 85.7822331763194,
+        "taxRevenue": 0.000022991051755472
+      },
+      "2023": {
+        "unemployment": 3.479,
+        "wageShare": 85.9161403093379,
+        "taxRevenue": 0.0000214831065249643
+      },
+      "2024": {
+        "unemployment": 3.1,
+        "wageShare": 85.9457199357056
+      }
+    },
+    "MRT": {
+      "2019": {
+        "unemployment": 10.416,
+        "wageShare": 41.8373966953375
+      },
+      "2020": {
+        "unemployment": 11.051,
+        "wageShare": 41.1040272740243
+      },
+      "2021": {
+        "unemployment": 11.131,
+        "wageShare": 41.5757341048363
+      },
+      "2022": {
+        "unemployment": 10.52,
+        "wageShare": 41.7571871089665
+      },
+      "2023": {
+        "unemployment": 10.37,
+        "wageShare": 42.0103080504368
+      },
+      "2024": {
+        "unemployment": 10.257,
+        "wageShare": 42.2785089636073
+      }
+    },
+    "MUS": {
+      "2019": {
+        "unemployment": 6.331,
+        "wageShare": 80.7863728352437,
+        "taxRevenue": 0.00001913062550287
+      },
+      "2020": {
+        "unemployment": 8.626,
+        "wageShare": 81.0271529565922,
+        "taxRevenue": 0.0000204233655246973
+      },
+      "2021": {
+        "unemployment": 7.719,
+        "wageShare": 80.9830315724178,
+        "taxRevenue": 0.0000180479952450531
+      },
+      "2022": {
+        "unemployment": 6.322,
+        "wageShare": 81.2872622209397,
+        "taxRevenue": 0.0000190380322201383
+      },
+      "2023": {
+        "unemployment": 5.571,
+        "wageShare": 81.5411823314513,
+        "taxRevenue": 0.0000205916033814226
+      },
+      "2024": {
+        "unemployment": 5.548,
+        "wageShare": 81.8214089295535,
+        "taxRevenue": 0.0000205324115436094
+      }
+    },
+    "MEX": {
+      "2019": {
+        "unemployment": 3.477,
+        "wageShare": 69.7377933930709,
+        "taxRevenue": 0.0000127877486080424
+      },
+      "2020": {
+        "unemployment": 4.44,
+        "wageShare": 69.6401978798531,
+        "taxRevenue": 0.0000138975134533104
+      },
+      "2021": {
+        "unemployment": 4.019,
+        "wageShare": 68.0903777480959,
+        "taxRevenue": 0.0000134112621210704
+      },
+      "2022": {
+        "unemployment": 3.256,
+        "wageShare": 68.1508178958773,
+        "taxRevenue": 0.0000134041093602603
+      },
+      "2023": {
+        "unemployment": 2.765,
+        "wageShare": 68.6460874171069,
+        "taxRevenue": 0.0000141935866614195
+      },
+      "2024": {
+        "unemployment": 2.678,
+        "wageShare": 69.1654059389637
+      }
+    },
+    "MDA": {
+      "2019": {
+        "unemployment": 1.502,
+        "wageShare": 40.5070046541305,
+        "taxRevenue": 0.000017656290127877
+      },
+      "2020": {
+        "unemployment": 1.206,
+        "wageShare": 40.668361361664,
+        "taxRevenue": 0.0000179098984894955
+      },
+      "2021": {
+        "unemployment": 0.794,
+        "wageShare": 40.946897840161,
+        "taxRevenue": 0.0000183881163669346
+      },
+      "2022": {
+        "unemployment": 0.909,
+        "wageShare": 41.1459957265741,
+        "taxRevenue": 0.0000189210049545943
+      },
+      "2023": {
+        "unemployment": 1.57,
+        "wageShare": 41.2341051974052,
+        "taxRevenue": 0.0000185850270257317
+      },
+      "2024": {
+        "unemployment": 1.427,
+        "wageShare": 41.2795938933855
+      }
+    },
+    "MNG": {
+      "2019": {
+        "unemployment": 9.024,
+        "wageShare": 54.2830360342974,
+        "taxRevenue": 1.68505209175799e-8
+      },
+      "2020": {
+        "unemployment": 6.413,
+        "wageShare": 54.908656243695,
+        "taxRevenue": 1.41457872338315e-8
+      },
+      "2021": {
+        "unemployment": 7.871,
+        "wageShare": 55.7327586548152,
+        "taxRevenue": 1.6908849519801e-8
+      },
+      "2022": {
+        "unemployment": 5.954,
+        "wageShare": 56.5402228074213,
+        "taxRevenue": 1.57742886705877e-8
+      },
+      "2023": {
+        "unemployment": 5.178,
+        "wageShare": 57.9516055737277,
+        "taxRevenue": 1.42955117783966e-8
+      },
+      "2024": {
+        "unemployment": 5.158,
+        "wageShare": 58.4359774009958,
+        "taxRevenue": 1.6854871862883e-8
+      }
+    },
+    "MNE": {
+      "2019": {
+        "unemployment": 15.128,
+        "wageShare": 79.4092571354381
+      },
+      "2020": {
+        "unemployment": 17.878,
+        "wageShare": 78.4761867617019
+      },
+      "2021": {
+        "unemployment": 16.543,
+        "wageShare": 80.7821941517627
+      },
+      "2022": {
+        "unemployment": 14.851,
+        "wageShare": 81.1297244327302
+      },
+      "2023": {
+        "unemployment": 13.146,
+        "wageShare": 81.9850217150934
+      },
+      "2024": {
+        "unemployment": 13.206,
+        "wageShare": 82.2200270236514
+      }
+    },
+    "MAR": {
+      "2019": {
+        "unemployment": 9.191,
+        "wageShare": 58.6772355234251,
+        "taxRevenue": 0.0000199144279404695
+      },
+      "2020": {
+        "unemployment": 11.189,
+        "wageShare": 58.568121792353,
+        "taxRevenue": 0.0000200221120421492
+      },
+      "2021": {
+        "unemployment": 10.551,
+        "wageShare": 58.9923487988194,
+        "taxRevenue": 0.0000196652056341912
+      },
+      "2022": {
+        "unemployment": 9.413,
+        "wageShare": 59.0788362788818,
+        "taxRevenue": 0.000022059101413607
+      },
+      "2023": {
+        "unemployment": 8.896,
+        "wageShare": 59.3191375088068,
+        "taxRevenue": 0.0000207438772425044
+      },
+      "2024": {
+        "unemployment": 9.103,
+        "wageShare": 59.5884403057537
+      }
+    },
+    "MOZ": {
+      "2019": {
+        "unemployment": 4.462,
+        "wageShare": 14.2264824308844,
+        "taxRevenue": 0.0000266828600594733
+      },
+      "2020": {
+        "unemployment": 5.019,
+        "wageShare": 13.8236650207841,
+        "taxRevenue": 0.0000215267029366581
+      },
+      "2021": {
+        "unemployment": 5.413,
+        "wageShare": 14.2540913450087,
+        "taxRevenue": 0.0000227477557091156
+      },
+      "2022": {
+        "unemployment": 6.789,
+        "wageShare": 14.3034460167606,
+        "taxRevenue": 0.0000226615908818801
+      },
+      "2023": {
+        "unemployment": 6.661,
+        "wageShare": 14.407554639098,
+        "taxRevenue": 0.0000223596241293103
+      },
+      "2024": {
+        "unemployment": 6.668,
+        "wageShare": 14.5360771803522,
+        "taxRevenue": 0.0000218525035902837
+      }
+    },
+    "MMR": {
+      "2019": {
+        "unemployment": 0.407,
+        "wageShare": 34.4600297054035,
+        "taxRevenue": 6.01765247726484e-9
+      },
+      "2020": {
+        "unemployment": 1.476,
+        "wageShare": 34.27603722848
+      },
+      "2021": {
+        "unemployment": 4.34,
+        "wageShare": 34.7824761493515
+      },
+      "2022": {
+        "unemployment": 3.063,
+        "wageShare": 34.6799457556151
+      },
+      "2023": {
+        "unemployment": 2.977,
+        "wageShare": 34.6023441637733
+      },
+      "2024": {
+        "unemployment": 2.887,
+        "wageShare": 34.5370004234963
+      }
+    },
+    "NAM": {
+      "2019": {
+        "unemployment": 19.929,
+        "wageShare": 62.4801586546331,
+        "taxRevenue": 0.0000303930951920007
+      },
+      "2020": {
+        "unemployment": 21.003,
+        "wageShare": 62.2288838179908,
+        "taxRevenue": 0.0000312059110714252
+      },
+      "2021": {
+        "unemployment": 20.931,
+        "wageShare": 62.7715829259483,
+        "taxRevenue": 0.0000280639865897267
+      },
+      "2022": {
+        "unemployment": 19.615,
+        "wageShare": 62.8475119859932,
+        "taxRevenue": 0.0000271668398520557
+      },
+      "2023": {
+        "unemployment": 19.154,
+        "wageShare": 62.9930444257074,
+        "taxRevenue": 0.0000329629020947691
+      },
+      "2024": {
+        "unemployment": 19.157,
+        "wageShare": 63.2070208872717
+      }
+    },
+    "NPL": {
+      "2019": {
+        "unemployment": 10.477,
+        "wageShare": 20.1237020602981,
+        "taxRevenue": 0.0000198090602391943
+      },
+      "2020": {
+        "unemployment": 13.037,
+        "wageShare": 20.0318721699972,
+        "taxRevenue": 0.0000157736497317824
+      },
+      "2021": {
+        "unemployment": 12.241,
+        "wageShare": 20.4492186796655,
+        "taxRevenue": 0.0000174853032787772
+      },
+      "2022": {
+        "unemployment": 10.661,
+        "wageShare": 20.7019381241497
+      },
+      "2023": {
+        "unemployment": 10.437,
+        "wageShare": 20.9131116733795,
+        "taxRevenue": 0.0000139448572554799
+      },
+      "2024": {
+        "unemployment": 10.5,
+        "wageShare": 21.158294539591
+      }
+    },
+    "NLD": {
+      "2019": {
+        "unemployment": 3.379,
+        "wageShare": 85.3801594136406,
+        "taxRevenue": 0.000023575774886203
+      },
+      "2020": {
+        "unemployment": 3.82,
+        "wageShare": 84.1076178382467,
+        "taxRevenue": 0.0000239228232020312
+      },
+      "2021": {
+        "unemployment": 4.209,
+        "wageShare": 84.187816400475,
+        "taxRevenue": 0.0000243086759015198
+      },
+      "2022": {
+        "unemployment": 3.526,
+        "wageShare": 83.3450171319993,
+        "taxRevenue": 0.000023898794550321
+      },
+      "2023": {
+        "unemployment": 3.535,
+        "wageShare": 83.2123998645944,
+        "taxRevenue": 0.0000252540392502664
+      },
+      "2024": {
+        "unemployment": 3.7,
+        "wageShare": 83.1712869133384
+      }
+    },
+    "NCL": {
+      "2019": {
+        "unemployment": 10.88,
+        "wageShare": 85.7872476258878
+      },
+      "2020": {
+        "unemployment": 13.558,
+        "wageShare": 83.0792849097053
+      },
+      "2021": {
+        "unemployment": 11.574,
+        "wageShare": 83.1387566594864
+      },
+      "2022": {
+        "unemployment": 10.71,
+        "wageShare": 83.1368271611351
+      },
+      "2023": {
+        "unemployment": 10.922,
+        "wageShare": 83.1247090467077
+      },
+      "2024": {
+        "unemployment": 10.991,
+        "wageShare": 83.0177190003259
+      }
+    },
+    "NZL": {
+      "2019": {
+        "unemployment": 4.109,
+        "wageShare": 80.5338843687786,
+        "taxRevenue": 0.0000281486899853704
+      },
+      "2020": {
+        "unemployment": 4.595,
+        "wageShare": 80.3853413166651,
+        "taxRevenue": 0.0000273341846674622
+      },
+      "2021": {
+        "unemployment": 3.776,
+        "wageShare": 80.6194506168574,
+        "taxRevenue": 0.0000290219318859065
+      },
+      "2022": {
+        "unemployment": 3.299,
+        "wageShare": 80.9312942872348,
+        "taxRevenue": 0.0000296007619884988
+      },
+      "2023": {
+        "unemployment": 3.734,
+        "wageShare": 81.1627328457389,
+        "taxRevenue": 0.0000306677718688638
+      },
+      "2024": {
+        "unemployment": 4.724,
+        "wageShare": 81.4011113747783
+      }
+    },
+    "NIC": {
+      "2019": {
+        "unemployment": 5.457,
+        "wageShare": 54.9765370583926,
+        "taxRevenue": 0.0000174217765048676
+      },
+      "2020": {
+        "unemployment": 6.18,
+        "wageShare": 54.3652511348979,
+        "taxRevenue": 0.0000170109140687159
+      },
+      "2021": {
+        "unemployment": 6.076,
+        "wageShare": 54.7926297531819,
+        "taxRevenue": 0.0000188207923792213
+      },
+      "2022": {
+        "unemployment": 4.969,
+        "wageShare": 55.0012797230923,
+        "taxRevenue": 0.0000198606394420617
+      },
+      "2023": {
+        "unemployment": 4.698,
+        "wageShare": 55.2519369176185,
+        "taxRevenue": 0.0000199424179242094
+      },
+      "2024": {
+        "unemployment": 4.98,
+        "wageShare": 55.4887598907721
+      }
+    },
+    "NER": {
+      "2019": {
+        "unemployment": 0.531,
+        "wageShare": 8.89254469760601
+      },
+      "2020": {
+        "unemployment": 0.591,
+        "wageShare": 8.66737808739778
+      },
+      "2021": {
+        "unemployment": 0.806,
+        "wageShare": 9.42000438452376
+      },
+      "2022": {
+        "unemployment": 0.403,
+        "wageShare": 9.90003143320567
+      },
+      "2023": {
+        "unemployment": 0.407,
+        "wageShare": 10.0525209625374
+      },
+      "2024": {
+        "unemployment": 0.376,
+        "wageShare": 10.2634379689337
+      }
+    },
+    "NGA": {
+      "2019": {
+        "unemployment": 5.206,
+        "wageShare": 13.4246174889053
+      },
+      "2020": {
+        "unemployment": 5.714,
+        "wageShare": 12.3884994382293
+      },
+      "2021": {
+        "unemployment": 5.404,
+        "wageShare": 12.8653611334404
+      },
+      "2022": {
+        "unemployment": 3.827,
+        "wageShare": 13.0762030947675
+      },
+      "2023": {
+        "unemployment": 3.074,
+        "wageShare": 13.3302690338131
+      },
+      "2024": {
+        "unemployment": 3.045,
+        "wageShare": 13.5827209227682
+      }
+    },
+    "MKD": {
+      "2019": {
+        "unemployment": 17.414,
+        "wageShare": 79.3955424747452,
+        "taxRevenue": 0.0000170832810823999
+      },
+      "2020": {
+        "unemployment": 16.575,
+        "wageShare": 82.4009547177037,
+        "taxRevenue": 0.0000161270346641167
+      },
+      "2021": {
+        "unemployment": 15.801,
+        "wageShare": 83.1046381721205,
+        "taxRevenue": 0.0000173929631432116
+      },
+      "2022": {
+        "unemployment": 14.476,
+        "wageShare": 83.7522582216667,
+        "taxRevenue": 0.0000176879383127227
+      },
+      "2023": {
+        "unemployment": 13.174,
+        "wageShare": 84.0695039180556,
+        "taxRevenue": 0.0000177577976514035
+      },
+      "2024": {
+        "unemployment": 12.265,
+        "wageShare": 83.1773628484497
+      }
+    },
+    "NOR": {
+      "2019": {
+        "unemployment": 3.684,
+        "wageShare": 94.8271975850745,
+        "taxRevenue": 2.32830044006887e-8
+      },
+      "2020": {
+        "unemployment": 4.424,
+        "wageShare": 95.0598616576684,
+        "taxRevenue": 2.12531867719174e-8
+      },
+      "2021": {
+        "unemployment": 4.359,
+        "wageShare": 95.1400455382481,
+        "taxRevenue": 2.55055180112726e-8
+      },
+      "2022": {
+        "unemployment": 3.231,
+        "wageShare": 94.9863396791696,
+        "taxRevenue": 3.13445975469679e-8
+      },
+      "2023": {
+        "unemployment": 3.574,
+        "wageShare": 95.0567643146203,
+        "taxRevenue": 2.70526715460901e-8
+      },
+      "2024": {
+        "unemployment": 4,
+        "wageShare": 95.0618332989157
+      }
+    },
+    "OMN": {
+      "2019": {
+        "unemployment": 2.045,
+        "wageShare": 95.1734060066125
+      },
+      "2020": {
+        "unemployment": 2.94,
+        "wageShare": 94.8546230815842
+      },
+      "2021": {
+        "unemployment": 1.9,
+        "wageShare": 94.8634370133028
+      },
+      "2022": {
+        "unemployment": 3.3,
+        "wageShare": 95.0757559312262
+      },
+      "2023": {
+        "unemployment": 3.176,
+        "wageShare": 95.042578600565
+      },
+      "2024": {
+        "unemployment": 3.203,
+        "wageShare": 95.0436793119362
+      }
+    },
+    "PAK": {
+      "2019": {
+        "unemployment": 4.83,
+        "wageShare": 40.2747265385806
+      },
+      "2020": {
+        "unemployment": 5.994,
+        "wageShare": 40.9260558641831
+      },
+      "2021": {
+        "unemployment": 6.338,
+        "wageShare": 42.2276568745029
+      },
+      "2022": {
+        "unemployment": 5.291,
+        "wageShare": 42.4717404977417
+      },
+      "2023": {
+        "unemployment": 5.237,
+        "wageShare": 42.6224714561389
+      },
+      "2024": {
+        "unemployment": 5.492,
+        "wageShare": 42.7847325775806
+      }
+    },
+    "PAN": {
+      "2019": {
+        "unemployment": 6.256,
+        "wageShare": 58.701010592779,
+        "taxRevenue": 0.00000864837791556334
+      },
+      "2020": {
+        "unemployment": 14.663,
+        "wageShare": 58.7575066816028,
+        "taxRevenue": 0.00000804998951454701
+      },
+      "2021": {
+        "unemployment": 10.177,
+        "wageShare": 59.1462947098648,
+        "taxRevenue": 0.00000746060570161025
+      },
+      "2022": {
+        "unemployment": 8.086,
+        "wageShare": 55.678500585552
+      },
+      "2023": {
+        "unemployment": 6.544,
+        "wageShare": 61.0854834217033
+      },
+      "2024": {
+        "unemployment": 8.451,
+        "wageShare": 59.3783874088435
+      }
+    },
+    "PNG": {
+      "2019": {
+        "unemployment": 2.651,
+        "wageShare": 20.7047069660215,
+        "taxRevenue": 0.0000130219558619549
+      },
+      "2020": {
+        "unemployment": 2.903,
+        "wageShare": 20.3213104693835,
+        "taxRevenue": 0.0000118791955056371
+      },
+      "2021": {
+        "unemployment": 3.03,
+        "wageShare": 20.7869154737881,
+        "taxRevenue": 0.0000121484232076807
+      },
+      "2022": {
+        "unemployment": 2.689,
+        "wageShare": 20.9445230191098,
+        "taxRevenue": 0.0000147704952075626
+      },
+      "2023": {
+        "unemployment": 2.649,
+        "wageShare": 21.0044886410018,
+        "taxRevenue": 0.0000159347989235859
+      },
+      "2024": {
+        "unemployment": 2.625,
+        "wageShare": 21.152779186295
+      }
+    },
+    "PRY": {
+      "2019": {
+        "unemployment": 6.595,
+        "wageShare": 57.0745483342039,
+        "taxRevenue": 9.99575607464088e-9
+      },
+      "2020": {
+        "unemployment": 7.548,
+        "wageShare": 54.4787661587633,
+        "taxRevenue": 9.51499928527675e-9
+      },
+      "2021": {
+        "unemployment": 7.311,
+        "wageShare": 55.7605378352775,
+        "taxRevenue": 9.79425359961369e-9
+      },
+      "2022": {
+        "unemployment": 6.755,
+        "wageShare": 57.7913701848352,
+        "taxRevenue": 1.02661363910434e-8
+      },
+      "2023": {
+        "unemployment": 5.794,
+        "wageShare": 58.6794503496491,
+        "taxRevenue": 1.01382749909056e-8
+      },
+      "2024": {
+        "unemployment": 5.686,
+        "wageShare": 58.4134918115618,
+        "taxRevenue": 1.14048611893673e-8
+      }
+    },
+    "PER": {
+      "2019": {
+        "unemployment": 3.379,
+        "wageShare": 44.3971632626386,
+        "taxRevenue": 0.0000145254040636024
+      },
+      "2020": {
+        "unemployment": 7.179,
+        "wageShare": 44.0839445783504,
+        "taxRevenue": 0.0000132210909612666
+      },
+      "2021": {
+        "unemployment": 5.097,
+        "wageShare": 46.9623439506686,
+        "taxRevenue": 0.0000159243395223169
+      },
+      "2022": {
+        "unemployment": 4.291,
+        "wageShare": 47.0632678949792
+      },
+      "2023": {
+        "unemployment": 4.899,
+        "wageShare": 47.3978520604532
+      },
+      "2024": {
+        "unemployment": 5.199,
+        "wageShare": 48.2852196053186
+      }
+    },
+    "PHL": {
+      "2019": {
+        "unemployment": 2.237,
+        "wageShare": 64.4844431941304,
+        "taxRevenue": 1.44884730214742e-8
+      },
+      "2020": {
+        "unemployment": 2.522,
+        "wageShare": 63.2267573500892,
+        "taxRevenue": 1.39509857073772e-8
+      },
+      "2021": {
+        "unemployment": 3.398,
+        "wageShare": 63.5681539262577,
+        "taxRevenue": 1.41300039313538e-8
+      },
+      "2022": {
+        "unemployment": 2.598,
+        "wageShare": 62.9093922858045,
+        "taxRevenue": 1.46190058206626e-8
+      },
+      "2023": {
+        "unemployment": 2.2,
+        "wageShare": 63.2044072521124,
+        "taxRevenue": 1.41044353413959e-8
+      },
+      "2024": {
+        "unemployment": 2.202,
+        "wageShare": 63.5429639493369
+      }
+    },
+    "POL": {
+      "2019": {
+        "unemployment": 3.267,
+        "wageShare": 76.1560612356865,
+        "taxRevenue": 0.0000171407592886385
+      },
+      "2020": {
+        "unemployment": 3.155,
+        "wageShare": 75.6841267514073,
+        "taxRevenue": 0.000017291144093996
+      },
+      "2021": {
+        "unemployment": 3.268,
+        "wageShare": 77.1560227768175,
+        "taxRevenue": 0.0000189590677200004
+      },
+      "2022": {
+        "unemployment": 2.811,
+        "wageShare": 78.3644002247146,
+        "taxRevenue": 0.0000171225309189416
+      },
+      "2023": {
+        "unemployment": 2.743,
+        "wageShare": 79.5306854102465,
+        "taxRevenue": 0.0000179988487014512
+      },
+      "2024": {
+        "unemployment": 2.807,
+        "wageShare": 80.9904350667349
+      }
+    },
+    "PRT": {
+      "2019": {
+        "unemployment": 6.422,
+        "wageShare": 84.2452506795163,
+        "taxRevenue": 0.0000224472570141358
+      },
+      "2020": {
+        "unemployment": 6.85,
+        "wageShare": 84.3058572131738,
+        "taxRevenue": 0.0000222595830862446
+      },
+      "2021": {
+        "unemployment": 6.712,
+        "wageShare": 84.3860749480274,
+        "taxRevenue": 0.0000222832932193953
+      },
+      "2022": {
+        "unemployment": 6.138,
+        "wageShare": 84.8089067013875,
+        "taxRevenue": 0.0000231729317343953
+      },
+      "2023": {
+        "unemployment": 6.498,
+        "wageShare": 85.1116181857766,
+        "taxRevenue": 0.0000226188283771548
+      },
+      "2024": {
+        "unemployment": 6.5,
+        "wageShare": 85.4699691599095
+      }
+    },
+    "PRI": {
+      "2019": {
+        "unemployment": 8.3,
+        "wageShare": 85.0660754642675
+      },
+      "2020": {
+        "unemployment": 8.89,
+        "wageShare": 87.2598546562623
+      },
+      "2021": {
+        "unemployment": 7.9,
+        "wageShare": 87.3399963467474
+      },
+      "2022": {
+        "unemployment": 6,
+        "wageShare": 87.3262769539365
+      },
+      "2023": {
+        "unemployment": 5.725,
+        "wageShare": 87.3226684363053
+      },
+      "2024": {
+        "unemployment": 5.639,
+        "wageShare": 87.3533279231347
+      }
+    },
+    "QAT": {
+      "2019": {
+        "unemployment": 0.1,
+        "wageShare": 99.240756083194
+      },
+      "2020": {
+        "unemployment": 0.14,
+        "wageShare": 99.1429968836691
+      },
+      "2021": {
+        "unemployment": 0.14,
+        "wageShare": 99.217215599308
+      },
+      "2022": {
+        "unemployment": 0.13,
+        "wageShare": 99.1400793363914
+      },
+      "2023": {
+        "unemployment": 0.13,
+        "wageShare": 99.1813753039695
+      },
+      "2024": {
+        "unemployment": 0.13,
+        "wageShare": 99.1720409509823
+      }
+    },
+    "ROU": {
+      "2019": {
+        "unemployment": 3.912,
+        "wageShare": 84.0016715838685,
+        "taxRevenue": 0.0000146150377502035
+      },
+      "2020": {
+        "unemployment": 5.035,
+        "wageShare": 84.4627434258028,
+        "taxRevenue": 0.0000142260236372711
+      },
+      "2021": {
+        "unemployment": 5.59,
+        "wageShare": 84.8996458662963,
+        "taxRevenue": 0.0000150026298140817
+      },
+      "2022": {
+        "unemployment": 5.614,
+        "wageShare": 85.1785658240034,
+        "taxRevenue": 0.0000162141886979742
+      },
+      "2023": {
+        "unemployment": 5.589,
+        "wageShare": 85.284022100494
+      },
+      "2024": {
+        "unemployment": 5.4,
+        "wageShare": 85.3401132935557
+      }
+    },
+    "RUS": {
+      "2019": {
+        "unemployment": 4.513,
+        "wageShare": 93.2410738729459,
+        "taxRevenue": 1.0938399737976e-8
+      },
+      "2020": {
+        "unemployment": 5.62,
+        "wageShare": 93.2000268913409,
+        "taxRevenue": 1.07991196203537e-8
+      },
+      "2021": {
+        "unemployment": 4.749,
+        "wageShare": 93.278121248207,
+        "taxRevenue": 1.16966312097742e-8
+      },
+      "2022": {
+        "unemployment": 3.867,
+        "wageShare": 93.4544759401312,
+        "taxRevenue": 1.0847869154279e-8
+      },
+      "2023": {
+        "unemployment": 3.076,
+        "wageShare": 93.4152681492244,
+        "taxRevenue": 1.20728013906636e-8
+      },
+      "2024": {
+        "unemployment": 2.43,
+        "wageShare": 93.5993735965863
+      }
+    },
+    "RWA": {
+      "2019": {
+        "unemployment": 11.236,
+        "wageShare": 57.0720956107562,
+        "taxRevenue": 1.46053573051595e-8
+      },
+      "2020": {
+        "unemployment": 11.829,
+        "wageShare": 56.5698052480301,
+        "taxRevenue": 1.50744687983707e-8
+      },
+      "2021": {
+        "unemployment": 15.775,
+        "wageShare": 62.1217998062133,
+        "taxRevenue": 1.44637097844237e-8
+      },
+      "2022": {
+        "unemployment": 15.084,
+        "wageShare": 61.0145241044767,
+        "taxRevenue": 1.36800512047892e-8
+      },
+      "2023": {
+        "unemployment": 12.352,
+        "wageShare": 58.7452365223772,
+        "taxRevenue": 1.35080695479594e-8
+      },
+      "2024": {
+        "unemployment": 11.331,
+        "wageShare": 59.0728449171388
+      }
+    },
+    "WSM": {
+      "2019": {
+        "unemployment": 7.858,
+        "wageShare": 54.7121735340463,
+        "taxRevenue": 0.024394748337384
+      },
+      "2020": {
+        "unemployment": 7.467,
+        "wageShare": 54.9252011800234,
+        "taxRevenue": 0.0244229937431695
+      },
+      "2021": {
+        "unemployment": 6.664,
+        "wageShare": 55.4048964218456,
+        "taxRevenue": 0.024568945416021
+      },
+      "2022": {
+        "unemployment": 5.048,
+        "wageShare": 55.0787674988121,
+        "taxRevenue": 0.0240176542849306
+      },
+      "2023": {
+        "unemployment": 4.92,
+        "wageShare": 55.1032319252936,
+        "taxRevenue": 0.0239562772523711
+      },
+      "2024": {
+        "unemployment": 4.855,
+        "wageShare": 55.2522956632421
+      }
+    },
+    "STP": {
+      "2019": {
+        "unemployment": 8.835,
+        "wageShare": 56.5878193680067
+      },
+      "2020": {
+        "unemployment": 9.679,
+        "wageShare": 55.0960551400499
+      },
+      "2021": {
+        "unemployment": 9.563,
+        "wageShare": 55.5786580208627
+      },
+      "2022": {
+        "unemployment": 8.964,
+        "wageShare": 55.7339449541284
+      },
+      "2023": {
+        "unemployment": 9.032,
+        "wageShare": 55.8388996742457
+      },
+      "2024": {
+        "unemployment": 9.057,
+        "wageShare": 55.9115277198164
+      }
+    },
+    "SAU": {
+      "2019": {
+        "unemployment": 5.636,
+        "wageShare": 94.7679772436902,
+        "taxRevenue": 6.60159133877213e-9
+      },
+      "2020": {
+        "unemployment": 7.66,
+        "wageShare": 94.4210721208923,
+        "taxRevenue": 7.8762006474717e-9
+      },
+      "2021": {
+        "unemployment": 6.621,
+        "wageShare": 93.4257319040606,
+        "taxRevenue": 8.60534583507803e-9
+      },
+      "2022": {
+        "unemployment": 5.589,
+        "wageShare": 93.5547942865246,
+        "taxRevenue": 6.95344592267954e-9
+      },
+      "2023": {
+        "unemployment": 4.008,
+        "wageShare": 94.9875555786826,
+        "taxRevenue": 7.80440393794593e-9
+      },
+      "2024": {
+        "unemployment": 3.518,
+        "wageShare": 94.4287268703548,
+        "taxRevenue": 8.18471656930006e-9
+      }
+    },
+    "SEN": {
+      "2019": {
+        "unemployment": 2.863,
+        "wageShare": 34.3226669101588,
+        "taxRevenue": 1.84192836341952e-8
+      },
+      "2020": {
+        "unemployment": 3.432,
+        "wageShare": 33.4744146866463,
+        "taxRevenue": 1.74488278980298e-8
+      },
+      "2021": {
+        "unemployment": 3.436,
+        "wageShare": 34.3148462218994,
+        "taxRevenue": 1.7550132975177e-8
+      },
+      "2022": {
+        "unemployment": 2.837,
+        "wageShare": 34.9390092705614,
+        "taxRevenue": 1.8592484196448e-8
+      },
+      "2023": {
+        "unemployment": 2.784,
+        "wageShare": 35.1193423860042,
+        "taxRevenue": 1.95370790010841e-8
+      },
+      "2024": {
+        "unemployment": 2.788,
+        "wageShare": 35.338272567752
+      }
+    },
+    "SRB": {
+      "2019": {
+        "unemployment": 10.395,
+        "wageShare": 72.3005376271625,
+        "taxRevenue": 2.30002958070958e-8
+      },
+      "2020": {
+        "unemployment": 9.011,
+        "wageShare": 73.0105751509507,
+        "taxRevenue": 2.24302344894846e-8
+      },
+      "2021": {
+        "unemployment": 9.843,
+        "wageShare": 72.6075488551998,
+        "taxRevenue": 1.96609961125446e-8
+      },
+      "2022": {
+        "unemployment": 8.439,
+        "wageShare": 72.879719043133,
+        "taxRevenue": 2.38929959453301e-8
+      },
+      "2023": {
+        "unemployment": 8.268,
+        "wageShare": 72.8905175503402
+      },
+      "2024": {
+        "unemployment": 7.24,
+        "wageShare": 72.775512549184
+      }
+    },
+    "SLE": {
+      "2019": {
+        "unemployment": 3.204,
+        "wageShare": 11.0777996793521
+      },
+      "2020": {
+        "unemployment": 3.509,
+        "wageShare": 9.85082877890764
+      },
+      "2021": {
+        "unemployment": 3.551,
+        "wageShare": 10.3118668045609
+      },
+      "2022": {
+        "unemployment": 3.137,
+        "wageShare": 10.4882375973344
+      },
+      "2023": {
+        "unemployment": 3.092,
+        "wageShare": 10.7394672331597
+      },
+      "2024": {
+        "unemployment": 3.103,
+        "wageShare": 10.9599993088558
+      }
+    },
+    "SGP": {
+      "2019": {
+        "unemployment": 3.1,
+        "wageShare": 86.2729987361309,
+        "taxRevenue": 0.0000131773611696825
+      },
+      "2020": {
+        "unemployment": 4.1,
+        "wageShare": 86.1578818560938,
+        "taxRevenue": 0.0000127433047948475
+      },
+      "2021": {
+        "unemployment": 4.64,
+        "wageShare": 86.3591803545787,
+        "taxRevenue": 0.000012740121146747
+      },
+      "2022": {
+        "unemployment": 3.591,
+        "wageShare": 86.7489167982585,
+        "taxRevenue": 0.0000117839491106795
+      },
+      "2023": {
+        "unemployment": 3.444,
+        "wageShare": 87.7820595924957,
+        "taxRevenue": 0.0000138948735640483
+      },
+      "2024": {
+        "unemployment": 2.737,
+        "wageShare": 87.1803414114388,
+        "taxRevenue": 0.0000141917409326666
+      }
+    },
+    "SVK": {
+      "2019": {
+        "unemployment": 5.761,
+        "wageShare": 84.6294524230537,
+        "taxRevenue": 0.0000187604262425428
+      },
+      "2020": {
+        "unemployment": 6.719,
+        "wageShare": 84.7383061664018,
+        "taxRevenue": 0.0000184644586007277
+      },
+      "2021": {
+        "unemployment": 6.894,
+        "wageShare": 85.0612101356296,
+        "taxRevenue": 0.0000189752480894666
+      },
+      "2022": {
+        "unemployment": 6.143,
+        "wageShare": 84.9925187977045,
+        "taxRevenue": 0.0000195730907262736
+      },
+      "2023": {
+        "unemployment": 5.843,
+        "wageShare": 84.8291919830253,
+        "taxRevenue": 0.000019307890876428
+      },
+      "2024": {
+        "unemployment": 5.3,
+        "wageShare": 85.0513808005116
+      }
+    },
+    "SVN": {
+      "2019": {
+        "unemployment": 4.446,
+        "wageShare": 85.082188684829,
+        "taxRevenue": 0.0000216992617438153
+      },
+      "2020": {
+        "unemployment": 4.971,
+        "wageShare": 85.2068935261986,
+        "taxRevenue": 0.0000204885506119886
+      },
+      "2021": {
+        "unemployment": 4.744,
+        "wageShare": 85.4879893131363,
+        "taxRevenue": 0.0000216087104347701
+      },
+      "2022": {
+        "unemployment": 4.011,
+        "wageShare": 85.5046994475399,
+        "taxRevenue": 0.0000210307739977541
+      },
+      "2023": {
+        "unemployment": 3.652,
+        "wageShare": 85.6968545023828,
+        "taxRevenue": 0.0000203151075328515
+      },
+      "2024": {
+        "unemployment": 3.7,
+        "wageShare": 85.8874126609191
+      }
+    },
+    "SLB": {
+      "2019": {
+        "unemployment": 0.746,
+        "wageShare": 30.0157724060551,
+        "taxRevenue": 0.0000222322071370969
+      },
+      "2020": {
+        "unemployment": 0.868,
+        "wageShare": 29.0171890479101,
+        "taxRevenue": 0.0000210515655711092
+      },
+      "2021": {
+        "unemployment": 0.879,
+        "wageShare": 29.5851553407207,
+        "taxRevenue": 0.0000209597979980943
+      },
+      "2022": {
+        "unemployment": 1.475,
+        "wageShare": 29.662089374822,
+        "taxRevenue": 0.0000220746646402949
+      },
+      "2023": {
+        "unemployment": 1.443,
+        "wageShare": 29.7738056626665
+      },
+      "2024": {
+        "unemployment": 1.444,
+        "wageShare": 29.9053543905629
+      }
+    },
+    "SOM": {
+      "2019": {
+        "unemployment": 18.828,
+        "wageShare": 48.227434207491,
+        "taxRevenue": 7.98543135298208e-11
+      },
+      "2020": {
+        "unemployment": 19.414,
+        "wageShare": 47.175589789313,
+        "taxRevenue": 6.27946654117399e-11
+      },
+      "2021": {
+        "unemployment": 19.662,
+        "wageShare": 47.6537379744959,
+        "taxRevenue": 6.59168014301673e-11
+      },
+      "2022": {
+        "unemployment": 19.112,
+        "wageShare": 47.6644825488732,
+        "taxRevenue": 6.63660668120026e-11
+      },
+      "2023": {
+        "unemployment": 18.96,
+        "wageShare": 47.6982303974032,
+        "taxRevenue": 7.5916654951987e-11
+      },
+      "2024": {
+        "unemployment": 18.949,
+        "wageShare": 47.7498095519766,
+        "taxRevenue": 7.96182509481436e-11
+      }
+    },
+    "ZAF": {
+      "2019": {
+        "unemployment": 28.468,
+        "wageShare": 83.6611184450972,
+        "taxRevenue": 2.48673453266234e-8
+      },
+      "2020": {
+        "unemployment": 29.217,
+        "wageShare": 83.2779845542643,
+        "taxRevenue": 2.3264944033831e-8
+      },
+      "2021": {
+        "unemployment": 34.007,
+        "wageShare": 83.0258176610146,
+        "taxRevenue": 2.5950154202709e-8
+      },
+      "2022": {
+        "unemployment": 33.268,
+        "wageShare": 83.0607891226182,
+        "taxRevenue": 2.6018376592419e-8
+      },
+      "2023": {
+        "unemployment": 32.098,
+        "wageShare": 83.686608245756,
+        "taxRevenue": 2.54004573761785e-8
+      },
+      "2024": {
+        "unemployment": 32.279,
+        "wageShare": 82.7097858550046
+      }
+    },
+    "SSD": {
+      "2019": {
+        "unemployment": 12.656,
+        "wageShare": 16.4479452505511
+      },
+      "2020": {
+        "unemployment": 14.246,
+        "wageShare": 16.0306223638182
+      },
+      "2021": {
+        "unemployment": 13.95,
+        "wageShare": 16.5761617471081
+      },
+      "2022": {
+        "unemployment": 12.475,
+        "wageShare": 17.0272175775898
+      },
+      "2023": {
+        "unemployment": 12.374,
+        "wageShare": 17.4536591470348
+      }
+    },
+    "ESP": {
+      "2019": {
+        "unemployment": 14.104,
+        "wageShare": 84.2558226330608,
+        "taxRevenue": 1.36580229877723e-8
+      },
+      "2020": {
+        "unemployment": 15.532,
+        "wageShare": 83.8651028953925,
+        "taxRevenue": 1.34462555370373e-8
+      },
+      "2021": {
+        "unemployment": 14.914,
+        "wageShare": 83.8661494076123,
+        "taxRevenue": 1.48775287865224e-8
+      },
+      "2022": {
+        "unemployment": 13.033,
+        "wageShare": 84.6258622682033,
+        "taxRevenue": 1.5471017099813e-8
+      },
+      "2023": {
+        "unemployment": 12.179,
+        "wageShare": 85.1578228191866,
+        "taxRevenue": 1.49983875932141e-8
+      },
+      "2024": {
+        "unemployment": 11.4,
+        "wageShare": 85.3014226341261
+      }
+    },
+    "LKA": {
+      "2019": {
+        "unemployment": 4.67,
+        "wageShare": 57.9198412595971,
+        "taxRevenue": 1.09039513327855e-8
+      },
+      "2020": {
+        "unemployment": 5.364,
+        "wageShare": 57.4529096179958,
+        "taxRevenue": 7.77529251770974e-9
+      },
+      "2021": {
+        "unemployment": 4.981,
+        "wageShare": 57.257259470836,
+        "taxRevenue": 7.36992822515173e-9
+      },
+      "2022": {
+        "unemployment": 4.528,
+        "wageShare": 58.0336351165784,
+        "taxRevenue": 7.2772315851375e-9
+      },
+      "2023": {
+        "unemployment": 4.528,
+        "wageShare": 57.9115280690834,
+        "taxRevenue": 9.92189093067548e-9
+      },
+      "2024": {
+        "unemployment": 4.239,
+        "wageShare": 57.8474565010284
+      }
+    },
+    "LCA": {
+      "2019": {
+        "unemployment": 15.613,
+        "wageShare": 70.432980303829
+      },
+      "2020": {
+        "unemployment": 25.224,
+        "wageShare": 70.8876634197461
+      },
+      "2021": {
+        "unemployment": 20.514,
+        "wageShare": 69.8652909899331
+      },
+      "2022": {
+        "unemployment": 15.934,
+        "wageShare": 70.1822671683913
+      },
+      "2023": {
+        "unemployment": 12.094,
+        "wageShare": 69.9384774868166
+      },
+      "2024": {
+        "unemployment": 10.199,
+        "wageShare": 73.1393902022749
+      }
+    },
+    "VCT": {
+      "2019": {
+        "unemployment": 19.248,
+        "wageShare": 73.8494770350159
+      },
+      "2020": {
+        "unemployment": 20.635,
+        "wageShare": 73.3259611312409
+      },
+      "2021": {
+        "unemployment": 20.356,
+        "wageShare": 73.4926185838008
+      },
+      "2022": {
+        "unemployment": 19.277,
+        "wageShare": 73.8125920471281
+      },
+      "2023": {
+        "unemployment": 18.348,
+        "wageShare": 74.0350079563537
+      },
+      "2024": {
+        "unemployment": 18.093,
+        "wageShare": 74.1208193601015
+      }
+    },
+    "SDN": {
+      "2019": {
+        "unemployment": 11.697,
+        "wageShare": 52.0381377261842
+      },
+      "2020": {
+        "unemployment": 11.995,
+        "wageShare": 52.2206052776322
+      },
+      "2021": {
+        "unemployment": 11.087,
+        "wageShare": 53.0043071362465
+      },
+      "2022": {
+        "unemployment": 7.53,
+        "wageShare": 53.4789486830785
+      }
+    },
+    "SUR": {
+      "2019": {
+        "unemployment": 7.755,
+        "wageShare": 76.3246658608637
+      },
+      "2020": {
+        "unemployment": 8.973,
+        "wageShare": 76.619971498561
+      },
+      "2021": {
+        "unemployment": 8.706,
+        "wageShare": 77.2151038149325
+      },
+      "2022": {
+        "unemployment": 7.973,
+        "wageShare": 77.0414510295244
+      },
+      "2023": {
+        "unemployment": 7.699,
+        "wageShare": 77.0553937125813
+      },
+      "2024": {
+        "unemployment": 7.621,
+        "wageShare": 77.2337278737016
+      }
+    },
+    "SWE": {
+      "2019": {
+        "unemployment": 6.833,
+        "wageShare": 89.3494464800979,
+        "taxRevenue": 2.77012981685122e-8
+      },
+      "2020": {
+        "unemployment": 8.291,
+        "wageShare": 89.2754220706201,
+        "taxRevenue": 2.70128699114576e-8
+      },
+      "2021": {
+        "unemployment": 8.803,
+        "wageShare": 89.3556368405463,
+        "taxRevenue": 2.80126472933463e-8
+      },
+      "2022": {
+        "unemployment": 7.417,
+        "wageShare": 89.5473710607578,
+        "taxRevenue": 2.81710469421456e-8
+      },
+      "2023": {
+        "unemployment": 7.611,
+        "wageShare": 89.5958467237469,
+        "taxRevenue": 2.75821816916854e-8
+      },
+      "2024": {
+        "unemployment": 8.4,
+        "wageShare": 89.6980798249954
+      }
+    },
+    "CHE": {
+      "2019": {
+        "unemployment": 4.394,
+        "wageShare": 85.6717382267555,
+        "taxRevenue": 0.00000990716918606817
+      },
+      "2020": {
+        "unemployment": 4.817,
+        "wageShare": 85.7109170478523,
+        "taxRevenue": 0.00000934487114946415
+      },
+      "2021": {
+        "unemployment": 5.013,
+        "wageShare": 84.354436009876,
+        "taxRevenue": 0.0000100701481847201
+      },
+      "2022": {
+        "unemployment": 4.122,
+        "wageShare": 83.6273555615804,
+        "taxRevenue": 0.00000898993332404232
+      },
+      "2023": {
+        "unemployment": 4.043,
+        "wageShare": 83.2744441871474,
+        "taxRevenue": 0.00000900355781857989
+      },
+      "2024": {
+        "unemployment": 4.343,
+        "wageShare": 83.1510010805457
+      }
+    },
+    "SYR": {
+      "2019": {
+        "unemployment": 13.369,
+        "wageShare": 57.1391170261407
+      },
+      "2020": {
+        "unemployment": 15.179,
+        "wageShare": 56.7145677162551
+      },
+      "2021": {
+        "unemployment": 14.887,
+        "wageShare": 57.2906702321449
+      },
+      "2022": {
+        "unemployment": 13.245,
+        "wageShare": 57.2349847123461
+      },
+      "2023": {
+        "unemployment": 13.27,
+        "wageShare": 57.4735213097114
+      },
+      "2024": {
+        "unemployment": 13.359,
+        "wageShare": 57.5257197090884
+      }
+    },
+    "TJK": {
+      "2019": {
+        "unemployment": 7.026,
+        "wageShare": 67.2452348297652
+      },
+      "2020": {
+        "unemployment": 7.576,
+        "wageShare": 67.3711511970889
+      },
+      "2021": {
+        "unemployment": 7.687,
+        "wageShare": 67.6209264314243,
+        "taxRevenue": 0.0000103459805513261
+      },
+      "2022": {
+        "unemployment": 7.051,
+        "wageShare": 67.9015907738377,
+        "taxRevenue": 0.0000103442793427409
+      },
+      "2023": {
+        "unemployment": 7.037,
+        "wageShare": 68.1593044982032,
+        "taxRevenue": 0.000010752156064593
+      },
+      "2024": {
+        "unemployment": 7.041,
+        "wageShare": 68.4538997425161
+      }
+    },
+    "TZA": {
+      "2019": {
+        "unemployment": 1.735,
+        "wageShare": 13.8878869330096,
+        "taxRevenue": 1.10191174811563e-8
+      },
+      "2020": {
+        "unemployment": 1.792,
+        "wageShare": 13.4086421241303,
+        "taxRevenue": 1.16267688573291e-8
+      },
+      "2021": {
+        "unemployment": 1.876,
+        "wageShare": 13.8524735215545,
+        "taxRevenue": 1.08557996451701e-8
+      },
+      "2022": {
+        "unemployment": 1.573,
+        "wageShare": 14.0661160345981,
+        "taxRevenue": 1.17926807942271e-8
+      },
+      "2023": {
+        "unemployment": 1.565,
+        "wageShare": 14.2714883028479,
+        "taxRevenue": 1.14914890206943e-8
+      },
+      "2024": {
+        "unemployment": 1.557,
+        "wageShare": 14.4510912290818,
+        "taxRevenue": 1.28029080708118e-8
+      }
+    },
+    "THA": {
+      "2019": {
+        "unemployment": 0.716,
+        "wageShare": 49.7169148170984,
+        "taxRevenue": 1.53979482181899e-8
+      },
+      "2020": {
+        "unemployment": 1.099,
+        "wageShare": 49.4768760318866,
+        "taxRevenue": 1.51931521673405e-8
+      },
+      "2021": {
+        "unemployment": 1.215,
+        "wageShare": 47.3026648982517,
+        "taxRevenue": 1.50844438504015e-8
+      },
+      "2022": {
+        "unemployment": 0.94,
+        "wageShare": 47.9630662581379,
+        "taxRevenue": 1.51390495981787e-8
+      },
+      "2023": {
+        "unemployment": 0.733,
+        "wageShare": 47.8997087171599,
+        "taxRevenue": 1.5486772180917e-8
+      },
+      "2024": {
+        "unemployment": 0.781,
+        "wageShare": 49.1662443629146,
+        "taxRevenue": 1.52576732483721e-8
+      }
+    },
+    "TLS": {
+      "2019": {
+        "unemployment": 3.148,
+        "wageShare": 25.4459623963529,
+        "taxRevenue": 0.0000228133908864064
+      },
+      "2020": {
+        "unemployment": 2.808,
+        "wageShare": 24.8043494654211,
+        "taxRevenue": 0.0000126427114830487
+      },
+      "2021": {
+        "unemployment": 2.344,
+        "wageShare": 25.2233385467752,
+        "taxRevenue": 0.000015087537991755
+      },
+      "2022": {
+        "unemployment": 1.537,
+        "wageShare": 25.3231918357296,
+        "taxRevenue": 0.0000216431379455773
+      },
+      "2023": {
+        "unemployment": 1.525,
+        "wageShare": 24.8077586755704
+      },
+      "2024": {
+        "unemployment": 1.523,
+        "wageShare": 24.9484380831407
+      }
+    },
+    "TGO": {
+      "2019": {
+        "unemployment": 2.036,
+        "wageShare": 19.9729646840181,
+        "taxRevenue": 1.35836337307146e-8
+      },
+      "2020": {
+        "unemployment": 2.231,
+        "wageShare": 19.604402201378,
+        "taxRevenue": 1.27192270521983e-8
+      },
+      "2021": {
+        "unemployment": 2.344,
+        "wageShare": 21.128726314117,
+        "taxRevenue": 1.38708614439377e-8
+      },
+      "2022": {
+        "unemployment": 1.965,
+        "wageShare": 22.4500831704161,
+        "taxRevenue": 1.34049128206821e-8
+      },
+      "2023": {
+        "unemployment": 1.942,
+        "wageShare": 22.7015201854629,
+        "taxRevenue": 1.37896420898615e-8
+      },
+      "2024": {
+        "unemployment": 1.948,
+        "wageShare": 22.9503754564034
+      }
+    },
+    "TON": {
+      "2019": {
+        "unemployment": 2.165,
+        "wageShare": 50.1964331138182,
+        "taxRevenue": 0.0000211401215612848
+      },
+      "2020": {
+        "unemployment": 2.712,
+        "wageShare": 51.8452157327399,
+        "taxRevenue": 0.0000203876000913108
+      },
+      "2021": {
+        "unemployment": 2.111,
+        "wageShare": 54.0799768183135,
+        "taxRevenue": 0.0000206950996884666
+      },
+      "2022": {
+        "unemployment": 2.002,
+        "wageShare": 55.9567529453242,
+        "taxRevenue": 0.0000204015705804568
+      },
+      "2023": {
+        "unemployment": 1.652,
+        "wageShare": 57.8304983586989,
+        "taxRevenue": 0.0000204538603855689
+      },
+      "2024": {
+        "unemployment": 1.965,
+        "wageShare": 57.9344707836328
+      }
+    },
+    "TTO": {
+      "2019": {
+        "unemployment": 3.523,
+        "wageShare": 75.682727480162,
+        "taxRevenue": 0.0000167568469467377
+      },
+      "2020": {
+        "unemployment": 4.206,
+        "wageShare": 74.3812069774082
+      },
+      "2021": {
+        "unemployment": 4.446,
+        "wageShare": 75.4149284327124
+      },
+      "2022": {
+        "unemployment": 4.383,
+        "wageShare": 74.1882121749842
+      },
+      "2023": {
+        "unemployment": 3.361,
+        "wageShare": 74.3737086593865
+      },
+      "2024": {
+        "unemployment": 3.318,
+        "wageShare": 74.3118937069597
+      }
+    },
+    "TUN": {
+      "2019": {
+        "unemployment": 17.153,
+        "wageShare": 73.7463721611469
+      },
+      "2020": {
+        "unemployment": 17.651,
+        "wageShare": 74.2957588312936
+      },
+      "2021": {
+        "unemployment": 16.632,
+        "wageShare": 74.7830316143457
+      },
+      "2022": {
+        "unemployment": 15.3,
+        "wageShare": 74.9455927172065
+      },
+      "2023": {
+        "unemployment": 15.106,
+        "wageShare": 74.8535468864863
+      },
+      "2024": {
+        "unemployment": 15.341,
+        "wageShare": 74.9518544796775
+      }
+    },
+    "TUR": {
+      "2019": {
+        "unemployment": 13.73,
+        "wageShare": 68.2241449656164,
+        "taxRevenue": 1.65299780626821e-8
+      },
+      "2020": {
+        "unemployment": 13.148,
+        "wageShare": 69.5973819877924,
+        "taxRevenue": 1.74856241859009e-8
+      },
+      "2021": {
+        "unemployment": 11.969,
+        "wageShare": 69.9096535253293,
+        "taxRevenue": 1.74752698219595e-8
+      },
+      "2022": {
+        "unemployment": 10.465,
+        "wageShare": 70.6983633959883,
+        "taxRevenue": 1.71801094092697e-8
+      },
+      "2023": {
+        "unemployment": 9.388,
+        "wageShare": 71.4014947127505,
+        "taxRevenue": 1.82219303841014e-8
+      },
+      "2024": {
+        "unemployment": 8.8,
+        "wageShare": 71.1590209676105,
+        "taxRevenue": 1.76239296511937e-8
+      }
+    },
+    "TKM": {
+      "2019": {
+        "unemployment": 4.035,
+        "wageShare": 66.380712498439
+      },
+      "2020": {
+        "unemployment": 4.489,
+        "wageShare": 66.9212911825013
+      },
+      "2021": {
+        "unemployment": 4.458,
+        "wageShare": 67.2663755729357
+      },
+      "2022": {
+        "unemployment": 4.017,
+        "wageShare": 67.4827238896428
+      },
+      "2023": {
+        "unemployment": 4.007,
+        "wageShare": 67.7215046341944
+      },
+      "2024": {
+        "unemployment": 4.02,
+        "wageShare": 67.8600411439837
+      }
+    },
+    "UGA": {
+      "2019": {
+        "unemployment": 3.057,
+        "wageShare": 20.1216546433271,
+        "taxRevenue": 1.22363794666895e-8
+      },
+      "2020": {
+        "unemployment": 3.819,
+        "wageShare": 19.1094415668005,
+        "taxRevenue": 1.1391163306811e-8
+      },
+      "2021": {
+        "unemployment": 3.416,
+        "wageShare": 18.6724836506669,
+        "taxRevenue": 1.24588666765954e-8
+      },
+      "2022": {
+        "unemployment": 2.885,
+        "wageShare": 18.8464724199959,
+        "taxRevenue": 1.25499042686332e-8
+      },
+      "2023": {
+        "unemployment": 2.754,
+        "wageShare": 19.0489622980089,
+        "taxRevenue": 1.29683684791221e-8
+      },
+      "2024": {
+        "unemployment": 2.74,
+        "wageShare": 19.2938139283934
+      }
+    },
+    "UKR": {
+      "2019": {
+        "unemployment": 8.194,
+        "wageShare": 78.5434181130966,
+        "taxRevenue": 0.0000191961400966208
+      },
+      "2020": {
+        "unemployment": 9.475,
+        "wageShare": 78.7326440166297,
+        "taxRevenue": 0.0000191514002992876
+      },
+      "2021": {
+        "unemployment": 9.834,
+        "wageShare": 78.9951654717593,
+        "taxRevenue": 0.0000190823227721039
+      },
+      "2022": {
+        "taxRevenue": 0.0000166915073808281
+      },
+      "2023": {
+        "taxRevenue": 0.0000174590616933322
+      },
+      "2024": {
+        "taxRevenue": 0.0000210279684733319
+      }
+    },
+    "ARE": {
+      "2019": {
+        "unemployment": 2.331,
+        "wageShare": 95.0581262619078,
+        "taxRevenue": 9.3653171008425e-7
+      },
+      "2020": {
+        "unemployment": 4.294,
+        "wageShare": 95.220896502369,
+        "taxRevenue": 6.67404502327936e-7
+      },
+      "2021": {
+        "unemployment": 3.105,
+        "wageShare": 95.5882213162279,
+        "taxRevenue": 5.2604178034776e-7
+      },
+      "2022": {
+        "unemployment": 2.872,
+        "wageShare": 95.1242268397036,
+        "taxRevenue": 5.68698432322806e-7
+      },
+      "2023": {
+        "unemployment": 2.151,
+        "wageShare": 94.8313372079653,
+        "taxRevenue": 6.16670610056634e-7
+      },
+      "2024": {
+        "unemployment": 2.16,
+        "wageShare": 94.8590310453799,
+        "taxRevenue": 6.4751617298844e-7
+      }
+    },
+    "GBR": {
+      "2019": {
+        "unemployment": 3.657,
+        "wageShare": 84.9861076064304,
+        "taxRevenue": 2.49143682469426e-8
+      },
+      "2020": {
+        "unemployment": 4.472,
+        "wageShare": 85.4829332058235,
+        "taxRevenue": 2.45433751270756e-8
+      },
+      "2021": {
+        "unemployment": 4.864,
+        "wageShare": 86.4154876753677,
+        "taxRevenue": 2.59910653856023e-8
+      },
+      "2022": {
+        "unemployment": 3.768,
+        "wageShare": 86.6934804594799,
+        "taxRevenue": 2.65536048949437e-8
+      },
+      "2023": {
+        "unemployment": 4.025,
+        "wageShare": 86.5812685936669,
+        "taxRevenue": 2.68736892132882e-8
+      },
+      "2024": {
+        "unemployment": 4.361,
+        "wageShare": 86.7824939964226,
+        "taxRevenue": 2.69583697121296e-8
+      }
+    },
+    "USA": {
+      "2019": {
+        "unemployment": 3.669,
+        "wageShare": 93.4584275732255,
+        "taxRevenue": 9.95830072560589e-9
+      },
+      "2020": {
+        "unemployment": 8.055,
+        "wageShare": 93.6933515212802,
+        "taxRevenue": 1.02949840532629e-8
+      },
+      "2021": {
+        "unemployment": 5.349,
+        "wageShare": 93.4165879610081,
+        "taxRevenue": 1.15735962955643e-8
+      },
+      "2022": {
+        "unemployment": 3.65,
+        "wageShare": 93.7164154427621,
+        "taxRevenue": 1.27967300718031e-8
+      },
+      "2023": {
+        "unemployment": 3.638,
+        "wageShare": 93.9177931274305,
+        "taxRevenue": 1.08130735453764e-8
+      },
+      "2024": {
+        "unemployment": 4.022,
+        "wageShare": 93.8132403280586,
+        "taxRevenue": 1.08905153823848e-8
+      }
+    },
+    "URY": {
+      "2019": {
+        "unemployment": 8.836,
+        "wageShare": 72.1706656541519,
+        "taxRevenue": 0.0000178650944056789
+      },
+      "2020": {
+        "unemployment": 10.413,
+        "wageShare": 71.5691432500776,
+        "taxRevenue": 0.0000185526476965432
+      },
+      "2021": {
+        "unemployment": 9.328,
+        "wageShare": 71.5793042105209,
+        "taxRevenue": 0.0000178174131088485
+      },
+      "2022": {
+        "unemployment": 7.877,
+        "wageShare": 71.6640080734423,
+        "taxRevenue": 0.0000185974753271705
+      },
+      "2023": {
+        "unemployment": 8.355,
+        "wageShare": 71.7830720018839,
+        "taxRevenue": 0.0000186579991591649
+      },
+      "2024": {
+        "unemployment": 8.209,
+        "wageShare": 71.9033241775543,
+        "taxRevenue": 0.0000181623555727699
+      }
+    },
+    "UZB": {
+      "2019": {
+        "unemployment": 4.936,
+        "wageShare": 53.6882972823073,
+        "taxRevenue": 1.13019651116535e-8
+      },
+      "2020": {
+        "unemployment": 5.293,
+        "wageShare": 53.391457444822,
+        "taxRevenue": 1.34020276228784e-8
+      },
+      "2021": {
+        "unemployment": 5.364,
+        "wageShare": 53.7386856391275,
+        "taxRevenue": 1.33629025586761e-8
+      },
+      "2022": {
+        "unemployment": 4.456,
+        "wageShare": 53.9107517869433,
+        "taxRevenue": 1.19887402782307e-8
+      },
+      "2023": {
+        "unemployment": 4.434,
+        "wageShare": 54.1071529015752,
+        "taxRevenue": 1.15296953038943e-8
+      },
+      "2024": {
+        "unemployment": 4.439,
+        "wageShare": 54.331823212731
+      }
+    },
+    "VUT": {
+      "2019": {
+        "unemployment": 5.444,
+        "wageShare": 38.9799248066965,
+        "taxRevenue": 0.0000175946605583993
+      },
+      "2020": {
+        "unemployment": 4.046,
+        "wageShare": 38.9300419630016,
+        "taxRevenue": 0.0000140402557920117
+      },
+      "2021": {
+        "unemployment": 4.776,
+        "wageShare": 39.4464335691331,
+        "taxRevenue": 0.000015877161704623
+      },
+      "2022": {
+        "unemployment": 5.077,
+        "wageShare": 39.4296961078831,
+        "taxRevenue": 0.0000157243472991405
+      },
+      "2023": {
+        "unemployment": 5.011,
+        "wageShare": 39.3943559991568,
+        "taxRevenue": 0.0000175712891365028
+      },
+      "2024": {
+        "unemployment": 4.988,
+        "wageShare": 39.3781505107731
+      }
+    },
+    "VEN": {
+      "2019": {
+        "unemployment": 5.89,
+        "wageShare": 60.699620013832
+      },
+      "2020": {
+        "unemployment": 7.53,
+        "wageShare": 60.3090212704444
+      },
+      "2021": {
+        "unemployment": 7.027,
+        "wageShare": 61.2315045471495
+      },
+      "2022": {
+        "unemployment": 5.646,
+        "wageShare": 60.2813863836977
+      },
+      "2023": {
+        "unemployment": 5.407,
+        "wageShare": 59.7647608212277
+      },
+      "2024": {
+        "unemployment": 5.321,
+        "wageShare": 59.6546899478671
+      }
+    },
+    "VNM": {
+      "2019": {
+        "unemployment": 1.681,
+        "wageShare": 44.3473160334712
+      },
+      "2020": {
+        "unemployment": 2.103,
+        "wageShare": 44.1491159909334
+      },
+      "2021": {
+        "unemployment": 2.383,
+        "wageShare": 44.7785493075313
+      },
+      "2022": {
+        "unemployment": 1.57,
+        "wageShare": 45.3477061385786
+      },
+      "2023": {
+        "unemployment": 1.645,
+        "wageShare": 45.7156818633744
+      },
+      "2024": {
+        "unemployment": 1.602,
+        "wageShare": 46.1884543538158
+      }
+    },
+    "VIR": {
+      "2019": {
+        "unemployment": 11.774,
+        "wageShare": 91.4788136828906
+      },
+      "2020": {
+        "unemployment": 14.366,
+        "wageShare": 90.7903132691197
+      },
+      "2021": {
+        "unemployment": 13.508,
+        "wageShare": 90.7719662172174
+      },
+      "2022": {
+        "unemployment": 12.092,
+        "wageShare": 90.8371367496678
+      },
+      "2023": {
+        "unemployment": 11.358,
+        "wageShare": 90.8880732884432
+      },
+      "2024": {
+        "unemployment": 11.423,
+        "wageShare": 90.9173292797007
+      }
+    },
+    "PSE": {
+      "2019": {
+        "unemployment": 25.34,
+        "wageShare": 71.4345392937796
+      },
+      "2020": {
+        "unemployment": 25.895,
+        "wageShare": 72.3156844826459
+      },
+      "2021": {
+        "unemployment": 26.39,
+        "wageShare": 72.2198112721494
+      },
+      "2022": {
+        "unemployment": 24.42,
+        "wageShare": 76.1727423962967
+      }
+    },
+    "YEM": {
+      "2019": {
+        "unemployment": 17.213,
+        "wageShare": 47.7519144891408
+      },
+      "2020": {
+        "unemployment": 17.963,
+        "wageShare": 47.0893110107299
+      },
+      "2021": {
+        "unemployment": 18.312,
+        "wageShare": 47.7707817437434
+      },
+      "2022": {
+        "unemployment": 17.224,
+        "wageShare": 47.6237196739128
+      },
+      "2023": {
+        "unemployment": 16.944,
+        "wageShare": 47.5094208559348
+      },
+      "2024": {
+        "unemployment": 16.97,
+        "wageShare": 47.424320977096
+      }
+    },
+    "ZMB": {
+      "2019": {
+        "unemployment": 5.538,
+        "wageShare": 25.6143200745931,
+        "taxRevenue": 0.0000166776226624707
+      },
+      "2020": {
+        "unemployment": 6.032,
+        "wageShare": 24.6763348052991,
+        "taxRevenue": 0.0000164180055087603
+      },
+      "2021": {
+        "unemployment": 5.197,
+        "wageShare": 26.6470974558301,
+        "taxRevenue": 0.0000167804106780344
+      },
+      "2022": {
+        "unemployment": 5.993,
+        "wageShare": 26.0989096470039
+      },
+      "2023": {
+        "unemployment": 5.861,
+        "wageShare": 27.7007316954984
+      },
+      "2024": {
+        "unemployment": 5.898,
+        "wageShare": 27.937246474809
+      }
+    },
+    "ZWE": {
+      "2019": {
+        "unemployment": 7.373,
+        "wageShare": 29.0801286270802
+      },
+      "2020": {
+        "unemployment": 8.617,
+        "wageShare": 28.6470926993959
+      },
+      "2021": {
+        "unemployment": 9.54,
+        "wageShare": 28.6656453688895
+      },
+      "2022": {
+        "unemployment": 10.087,
+        "wageShare": 28.2443736028754
+      },
+      "2023": {
+        "unemployment": 9.348,
+        "wageShare": 29.0099424971316
+      },
+      "2024": {
+        "unemployment": 9.435,
+        "wageShare": 29.1012141910129
+      }
+    },
+    "AND": {
+      "2019": {
+        "taxRevenue": 0.0000137632458363196
+      },
+      "2020": {
+        "taxRevenue": 0.0000126582711954138
+      },
+      "2021": {
+        "taxRevenue": 0.0000131108385219337
+      },
+      "2022": {
+        "taxRevenue": 0.0000149845975404244
+      },
+      "2023": {
+        "taxRevenue": 0.0000139472972221746
+      }
+    },
+    "KIR": {
+      "2019": {
+        "taxRevenue": 0.0222989855863649
+      },
+      "2020": {
+        "taxRevenue": 0.0215255535516456
+      },
+      "2021": {
+        "taxRevenue": 0.0218430816274509
+      },
+      "2022": {
+        "taxRevenue": 0.0202549472550754
+      },
+      "2023": {
+        "taxRevenue": 0.0177169834832785
+      }
+    },
+    "MHL": {
+      "2019": {
+        "taxRevenue": 0.0186008967883212
+      },
+      "2020": {
+        "taxRevenue": 0.0171555004135649
+      }
+    },
+    "FSM": {
+      "2019": {
+        "taxRevenue": 0.0199137218274112
+      },
+      "2020": {
+        "taxRevenue": 0.00703115450759675
+      }
+    },
+    "NRU": {
+      "2019": {
+        "taxRevenue": 0.0000341487355771429
+      },
+      "2020": {
+        "taxRevenue": 0.0000443468321505376
+      }
+    },
+    "PLW": {
+      "2019": {
+        "taxRevenue": 0.0183602588642263
+      },
+      "2020": {
+        "taxRevenue": 0.0178945573584821
+      }
+    },
+    "SMR": {
+      "2019": {
+        "taxRevenue": 0.0000169127343335333
+      },
+      "2020": {
+        "taxRevenue": 0.000016136261134649
+      },
+      "2021": {
+        "taxRevenue": 0.0000172959731609496
+      },
+      "2022": {
+        "taxRevenue": 0.0000178114069282582
+      },
+      "2023": {
+        "taxRevenue": 0.0000172694010169446
+      }
+    },
+    "KNA": {
+      "2020": {
+        "taxRevenue": 0.0000150423826463699
+      }
+    }
+  }
+}

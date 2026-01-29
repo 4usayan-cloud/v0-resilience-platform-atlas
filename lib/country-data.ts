@@ -3,6 +3,7 @@
 // All 253 World Bank recognized economies
 
 import type { CountryData, YearlyScore, EconomicIndicators, SocialIndicators, InstitutionalIndicators, InfrastructureIndicators } from './types';
+import { buildGiniValidationMap } from './worldbank';
 
 // Generate historical and forecast data with BSTS+DFM simulation
 function generateHistoricalData(baseScores: { economic: number; social: number; institutional: number; infrastructure: number }, volatility: number = 0.1): YearlyScore[] {
@@ -263,7 +264,7 @@ function createCountryData(
 }
 
 // All 253 World Bank recognized economies
-export const countries: CountryData[] = [
+const countriesRaw: CountryData[] = [
   // ================================
   // NORTH AMERICA (3)
   // ================================
@@ -591,6 +592,20 @@ export const countries: CountryData[] = [
 ];
 
 // Alias for backward compatibility
+const validatedGiniMap = buildGiniValidationMap(countriesRaw.map(c => c.code));
+
+export const countries: CountryData[] = countriesRaw.map((country) => {
+  const validatedGini = validatedGiniMap.get(country.code);
+  if (validatedGini === undefined) return country;
+  return {
+    ...country,
+    social: {
+      ...country.social,
+      giniCoefficient: validatedGini,
+    },
+  };
+});
+
 export const countryData = countries;
 
 // Country map for quick lookup by code
