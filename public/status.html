@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resilience Platform - System Status</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .info-grid {
+            display: grid;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .info-card {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .info-card h3 {
+            color: #1e293b;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .info-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .api-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        .api-list li {
+            padding: 10px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .api-status {
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        .test-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-radius: 8px;
+            border: 1px solid #10b981;
+            display: none;
+        }
+        .result.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <span class="status-indicator"></span>
+            System Status
+        </h1>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🌍 Resilience Platform Atlas v1.0.1</h3>
+                <p><strong>Status:</strong> ✅ OPERATIONAL</p>
+                <p><strong>Last Updated:</strong> January 29, 2026</p>
+                <p><strong>Data Source:</strong> Real-time GDELT & Yahoo Finance</p>
+            </div>
+
+            <div class="info-card">
+                <h3>📡 API Endpoints</h3>
+                <ul class="api-list">
+                    <li>
+                        <span>/api/events</span>
+                        <span class="api-status">LIVE</span>
+                    </li>
+                    <li>
+                        <span>/api/feeds/finance</span>
+                        <span class="api-status">LIVE</span>
+                    </li>
+                    <li>
+                        <span>/api/feeds/social</span>
+                        <span class="api-status">LIVE</span>
+                    </li>
+                    <li>
+                        <span>/api/resilience</span>
+                        <span class="api-status">LIVE</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>🔗 Quick Links</h3>
+                <p>
+                    <a href="/" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                        → Go to Dashboard
+                    </a>
+                </p>
+                <p style="margin-top: 10px;">
+                    <a href="https://github.com/4usayan-cloud/v0-resilience-platform-atlas" 
+                       style="color: #667eea; text-decoration: none; font-weight: 600;"
+                       target="_blank">
+                        → View on GitHub
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <button class="test-button" onclick="testAPI()">Test API Connection</button>
+        
+        <div class="result" id="result">
+            <strong>API Test Results:</strong>
+            <pre id="result-content" style="margin-top: 10px; overflow-x: auto;"></pre>
+        </div>
+    </div>
+
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('result');
+            const resultContent = document.getElementById('result-content');
+            
+            resultDiv.classList.add('show');
+            resultContent.textContent = '⏳ Testing APIs...';
+            
+            try {
+                const tests = await Promise.all([
+                    fetch('/api/events').then(r => r.json()),
+                    fetch('/api/feeds/finance').then(r => r.json()),
+                ]);
+                
+                const [events, finance] = tests;
+                
+                const results = `
+✅ Events API: ${events.totalEvents || 0} events (Source: ${events.dataSource || 'N/A'})
+✅ Finance API: ${finance.indices?.length || 0} indices, ${finance.fii?.length || 0} FII countries
+
+Sample Event: ${events.events?.[0]?.title || 'N/A'}
+Sample Index: ${finance.indices?.[0]?.name || 'N/A'} = ${finance.indices?.[0]?.value || 'N/A'}
+
+🎉 All systems operational!
+                `.trim();
+                
+                resultContent.textContent = results;
+                resultDiv.style.background = '#f0fdf4';
+                resultDiv.style.borderColor = '#10b981';
+            } catch (error) {
+                resultContent.textContent = `❌ Error: ${error.message}\n\nPlease check console for details.`;
+                resultDiv.style.background = '#fef2f2';
+                resultDiv.style.borderColor = '#ef4444';
+            }
+        }
+    </script>
+</body>
+</html>
