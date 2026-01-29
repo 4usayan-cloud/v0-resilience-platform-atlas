@@ -1,3 +1,48 @@
+.analytics-bg3[data-width] {
+  width: attr(data-width %);
+}
+/* Analytics page dynamic styles for data attributes */
+[data-color] {
+  --analytics-color: attr(data-color);
+  color: var(--analytics-color, inherit);
+}
+[data-bgcolor] {
+  --analytics-bgcolor: attr(data-bgcolor);
+  background-color: var(--analytics-bgcolor, inherit);
+}
+.analytics-benchmark {
+  position: absolute;
+  top: -0.5rem;
+  width: 0.125rem;
+  height: 0.5rem;
+  background: var(--foreground, #888);
+  left: 0;
+}
+[data-left] {
+  left: attr(data-left %);
+}
+/* Analytics page custom styles for moved inline styles */
+.analytics-color {
+  /* Will be set via data-color attribute in JS/TSX */
+  color: var(--analytics-color, inherit);
+}
+.analytics-bg {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+.analytics-bg2 {
+  background: rgba(255,255,255,0.8);
+}
+.analytics-bg3 {
+  /* Will be set via data-bgcolor attribute in JS/TSX */
+  background-color: var(--analytics-bgcolor, inherit);
+}
+/* Dynamic color assignment for analytics-color and analytics-bg3 */
+[data-color] {
+  --analytics-color: attr(data-color);
+}
+[data-bgcolor] {
+  --analytics-bgcolor: attr(data-bgcolor);
+}
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -261,7 +306,7 @@
 }
 
 .card-interactive:hover {
-  border-color: oklch(0.75 0.18 85 / 0.3);
+  border-color: rgba(200, 200, 220, 0.3);
   background: oklch(0.18 0.01 260);
 }
 

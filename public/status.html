@@ -151,14 +151,14 @@
             <div class="info-card">
                 <h3>🔗 Quick Links</h3>
                 <p>
-                    <a href="/" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                    <a href="/" class="status-link">
                         → Go to Dashboard
                     </a>
                 </p>
-                <p style="margin-top: 10px;">
-                    <a href="https://github.com/4usayan-cloud/v0-resilience-platform-atlas" 
-                       style="color: #667eea; text-decoration: none; font-weight: 600;"
-                       target="_blank">
+                <p class="status-margin">
+                          <a href="https://github.com/4usayan-cloud/v0-resilience-platform-atlas"
+                              class="status-link"
+                              target="_blank" rel="noopener">
                         → View on GitHub
                     </a>
                 </p>
@@ -169,7 +169,21 @@
         
         <div class="result" id="result">
             <strong>API Test Results:</strong>
-            <pre id="result-content" style="margin-top: 10px; overflow-x: auto;"></pre>
+            <pre id="result-content" class="status-pre"></pre>
+                <style>
+                    .status-link {
+                        color: #667eea;
+                        text-decoration: none;
+                        font-weight: 600;
+                    }
+                    .status-margin {
+                        margin-top: 10px;
+                    }
+                    .status-pre {
+                        margin-top: 10px;
+                        overflow-x: auto;
+                    }
+                </style>
         </div>
     </div>
 
