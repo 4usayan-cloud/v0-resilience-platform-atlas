@@ -173,6 +173,12 @@ export default function AnalyticsPage() {
     return [...historical, ...forecastData];
   }, [country, ginisSeriesMap]);
 
+  const ginisColor = useMemo(() => {
+    if (!country) return "#94a3b8";
+    const base = getResilienceColor(100 - (country.social.giniCoefficient || 0));
+    return base.toLowerCase() === "#f5f5f5" ? "#94a3b8" : base;
+  }, [country]);
+
   // Global z-statistics for the selected pillar
   const globalStats = useMemo(() => {
     const allScores = countries.map(c => c.scores[pillar === 'overall' ? 'overall' : pillar]);
@@ -808,12 +814,12 @@ export default function AnalyticsPage() {
                     <ComposedChart data={ginisChartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
                       <defs>
                         <linearGradient id="ginis95" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.05}/>
+                          <stop offset="5%" stopColor={ginisColor} stopOpacity={0.1}/>
+                          <stop offset="95%" stopColor={ginisColor} stopOpacity={0.05}/>
                         </linearGradient>
                         <linearGradient id="ginis80" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor={getResilienceColor(100 - (country.social.giniCoefficient || 0))} stopOpacity={0.1}/>
+                          <stop offset="5%" stopColor={ginisColor} stopOpacity={0.2}/>
+                          <stop offset="95%" stopColor={ginisColor} stopOpacity={0.1}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -847,14 +853,15 @@ export default function AnalyticsPage() {
                       <Line
                         type="natural"
                         dataKey="value"
-                        stroke={getResilienceColor(100 - (country.social.giniCoefficient || 0))}
+                        stroke={ginisColor}
                         strokeWidth={2.5}
+                        connectNulls
                         dot={(props) => {
                           const { cx, cy, payload } = props;
                           if (payload.type === 'forecast') {
-                            return <circle cx={cx} cy={cy} r={4} fill={getResilienceColor(100 - (country.social.giniCoefficient || 0))} strokeWidth={2} stroke="hsl(var(--background))" />;
+                            return <circle cx={cx} cy={cy} r={4} fill={ginisColor} strokeWidth={2} stroke="hsl(var(--background))" />;
                           }
-                          return <circle cx={cx} cy={cy} r={3} fill={getResilienceColor(100 - (country.social.giniCoefficient || 0))} />;
+                          return <circle cx={cx} cy={cy} r={3} fill={ginisColor} />;
                         }}
                         activeDot={{ r: 6 }}
                       />
