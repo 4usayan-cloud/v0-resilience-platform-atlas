@@ -39,8 +39,11 @@ interface FinanceResponse {
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
-  if (!res.ok) throw new Error("Failed to load finance data");
-  return res.json();
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    return { error: data?.error || "Failed to load finance data", dataSource: "error" };
+  }
+  return data;
 };
 
 interface FinanceFeedsProps {
@@ -48,7 +51,7 @@ interface FinanceFeedsProps {
 }
 
 export function FinanceFeeds({ selectedCountry }: FinanceFeedsProps) {
-  const { data, isLoading } = useSWR<FinanceResponse>(
+  const { data, error, isLoading } = useSWR<FinanceResponse & { error?: string }>(
     "/api/feeds/finance?type=all",
     fetcher,
     { refreshInterval: 120000 }
@@ -110,6 +113,11 @@ export function FinanceFeeds({ selectedCountry }: FinanceFeedsProps) {
           <div className="space-y-1 p-2">
             {isLoading && (
               <div className="p-3 text-xs text-muted-foreground">Loading finance data...</div>
+            )}
+            {!isLoading && (data?.error || error) && (
+              <div className="p-3 text-xs text-red-500">
+                {data?.error || "Failed to load finance data."}
+              </div>
             )}
             {!isLoading && indices.length === 0 && (
               <div className="p-3 text-xs text-muted-foreground">No finance data available.</div>

@@ -67,12 +67,15 @@ export function DatafixChat() {
       const data = await res.json();
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
+      const reason =
+        error instanceof Error ? error.message : "Unknown error";
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
           content:
-            "I hit a snag fetching a response. Check the OpenAI API key and try again.",
+            `I hit a snag fetching a response (${reason}). ` +
+            "If you’re on Vercel/Netlify, set OPENAI_API_KEY and redeploy.",
         },
       ]);
     } finally {
@@ -85,14 +88,14 @@ export function DatafixChat() {
       <CardHeader className="py-3 px-4">
         <CardTitle className="text-sm font-medium flex items-center gap-2">
           {avatarError ? (
-            <div className="w-7 h-7 rounded-full border border-border bg-secondary/60 text-[10px] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full border border-border bg-secondary/60 text-[10px] flex items-center justify-center">
               DF
             </div>
           ) : (
             <img
               src={avatarSrc}
               alt={isLoading ? "Datafix thinking" : "Datafix answering"}
-              className="w-7 h-7 rounded-full border border-border"
+              className="w-10 h-10 rounded-full border border-border"
               onError={() => setAvatarError(true)}
             />
           )}
