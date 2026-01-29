@@ -32,6 +32,81 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
   const [activeTab, setActiveTab] = useState("overview");
 
   const allScores = [...country.historicalScores, ...country.forecastScores];
+  const indicatorCategoryMap: Record<string, "economic" | "social" | "institutional" | "infrastructure"> = {
+    "GDP Growth": "economic",
+    "GDP Diversification": "economic",
+    "Inflation Control": "economic",
+    "Monetary Credibility": "economic",
+    "Debt-to-GDP": "economic",
+    "Deficit Level": "economic",
+    "Forex Reserves": "economic",
+    "Balance of Payments": "economic",
+    "Employment Level": "economic",
+    "Labor Productivity": "economic",
+    "Banking NPL": "economic",
+    "Capital Adequacy": "economic",
+    "Trade Balance": "economic",
+    "Export Diversification": "economic",
+    "Capital Market Access": "economic",
+    "Education Level": "social",
+    "Human Capital Index": "social",
+    "Healthcare Access": "social",
+    "Health System Capacity": "social",
+    "Ginis Index": "social",
+    "Poverty Rate": "social",
+    "Social Safety Nets": "social",
+    "Employment Rate": "social",
+    "Youth Unemployment": "social",
+    "Age Dependency Ratio": "social",
+    "Social Cohesion": "social",
+    "Trust Indicator": "social",
+    "Communal Violence": "social",
+    "Social Violence": "social",
+    "Rule of Law": "institutional",
+    "Judicial Independence": "institutional",
+    "Government Effectiveness": "institutional",
+    "Regulatory Quality": "institutional",
+    "Policy Continuity": "institutional",
+    "Corruption Control": "institutional",
+    "Political Stability": "institutional",
+    "Absence of Violence": "institutional",
+    "Bureaucratic Efficiency": "institutional",
+    "Central Bank Independence": "institutional",
+    "Transport Quality": "infrastructure",
+    "Logistics Quality": "infrastructure",
+    "Energy Security": "infrastructure",
+    "Grid Reliability": "infrastructure",
+    "Digital Infrastructure": "infrastructure",
+    "Broadband Penetration": "infrastructure",
+    "Water Systems": "infrastructure",
+    "Sanitation Systems": "infrastructure",
+    "Urban Resilience": "infrastructure",
+    "Housing Quality": "infrastructure",
+    "Climate Preparedness": "infrastructure",
+    "Disaster Preparedness": "infrastructure",
+    "Supply Chain Redundancy": "infrastructure",
+  };
+
+  const buildSyntheticSeries = (label: string, baseValue: number) => {
+    const category = indicatorCategoryMap[label];
+    if (!category || allScores.length === 0) return [];
+    const baseSeries = allScores.map((s) => ({
+      year: s.year,
+      score: s[category],
+    }));
+    const scores = baseSeries.map((s) => s.score);
+    const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const variance = scores.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / scores.length;
+    const stdDev = Math.sqrt(variance);
+    const span = Math.max(2, Math.abs(baseValue) * 0.2);
+    const min = baseValue - span * 1.5;
+    const max = baseValue + span * 1.5;
+    return baseSeries.map((point) => {
+      const z = stdDev > 0 ? (point.score - mean) / stdDev : 0;
+      const value = baseValue + z * span;
+      return { year: point.year, value: Math.max(min, Math.min(max, value)) };
+    });
+  };
 
   const ScoreCard = ({
     label,
@@ -103,25 +178,34 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
 
     return (
       <div 
-        className="flex items-center justify-between py-2 border-b border-border/50 last:border-0 hover:bg-secondary/30 rounded px-1 transition-colors animate-fade-in-up"
+        className="flex flex-col gap-2 py-2 border-b border-border/50 last:border-0 hover:bg-secondary/30 rounded px-1 transition-colors animate-fade-in-up"
         style={{ animationDelay: `${index * 30}ms` }}
       >
-        <span className="text-xs text-muted-foreground">{label}</span>
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-medium text-foreground number-roll">
-            {displayValue}
-            {unit}
-          </span>
-          <div className="w-16 h-1.5 rounded-full bg-secondary overflow-hidden">
-            <div
-              className="h-full rounded-full progress-animated"
-              style={{
-                width: `${normalizedValue}%`,
-                backgroundColor: getResilienceColor(normalizedValue),
-                transitionDelay: `${index * 30}ms`,
-              }}
-            />
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">{label}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono font-medium text-foreground number-roll">
+              {displayValue}
+              {unit}
+            </span>
+            <div className="w-16 h-1.5 rounded-full bg-secondary overflow-hidden">
+              <div
+                className="h-full rounded-full progress-animated"
+                style={{
+                  width: `${normalizedValue}%`,
+                  backgroundColor: getResilienceColor(normalizedValue),
+                  transitionDelay: `${index * 30}ms`,
+                }}
+              />
+            </div>
           </div>
+        </div>
+        <div className="h-8 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={buildSyntheticSeries(label, value)}>
+              <Line type="monotone" dataKey="value" stroke={getResilienceColor(normalizedValue)} strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     );

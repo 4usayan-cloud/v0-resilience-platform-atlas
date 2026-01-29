@@ -375,6 +375,38 @@ export default function AnalyticsPage() {
     return categoryData[mapping.key] ?? 0;
   };
 
+  const buildSyntheticIndicatorSeries = (c: CountryData, indicatorName: string) => {
+    const mapping = indicatorKeyMap[indicatorName];
+    if (!mapping) return [];
+    const baseSeries = [...c.historicalScores, ...c.forecastScores].map((s) => ({
+      year: s.year,
+      score: mapping.category === "economic"
+        ? s.economic
+        : mapping.category === "social"
+          ? s.social
+          : mapping.category === "institutional"
+            ? s.institutional
+            : s.infrastructure,
+    }));
+    if (baseSeries.length === 0) return [];
+    const baseValue = getIndicatorValue(c, indicatorName);
+    const scores = baseSeries.map((s) => s.score);
+    const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const variance = scores.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / scores.length;
+    const stdDev = Math.sqrt(variance);
+    const span = Math.max(2, Math.abs(baseValue) * 0.2);
+    const min = baseValue - span * 1.5;
+    const max = baseValue + span * 1.5;
+    return baseSeries.map((point) => {
+      const z = stdDev > 0 ? (point.score - mean) / stdDev : 0;
+      const value = baseValue + z * span;
+      return {
+        year: point.year,
+        value: Math.max(min, Math.min(max, value)),
+      };
+    });
+  };
+
   // Indicator component with detailed view
   const IndicatorRow = ({ ind, color }: { ind: { name: string; value: number; unit: string; description?: string; inverted?: boolean; benchmark?: number }; color: string }) => {
     const normalizedValue = ind.inverted 
@@ -387,6 +419,8 @@ export default function AnalyticsPage() {
     const zScore = stats.stdDev > 0 ? (ind.value - stats.mean) / stats.stdDev : 0;
     const percentile = stats.stdDev > 0 ? zScoreNormalize(ind.value, stats.mean, stats.stdDev) : 50;
     
+    const indicatorSeries = country ? buildSyntheticIndicatorSeries(country, ind.name) : [];
+
     return (
       <div className="p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
         <div className="flex items-center justify-between mb-2">
@@ -431,6 +465,15 @@ export default function AnalyticsPage() {
             style={{ left: `${Math.max(0, Math.min(100, normalizedValue))}%` }}
           />
         </div>
+        {indicatorSeries.length > 0 && (
+          <div className="mt-2 h-10">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={indicatorSeries}>
+                <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
         {ind.benchmark && (
           <div className="relative h-0">
             <div 
