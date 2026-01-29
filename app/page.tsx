@@ -8,6 +8,7 @@ import { LiveFeeds } from "@/components/live-feeds";
 import { FinanceFeeds } from "@/components/finance-feeds";
 import { TimeZones } from "@/components/time-zones";
 import { LiveEvents } from "@/components/live-events";
+import { DatafixChat } from "@/components/datafix-chat";
 import { CountryData } from "@/lib/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -31,6 +32,13 @@ export default function HomePage() {
       />
 
       <div className="flex-1 flex">
+        {/* Left Sidebar - Datafix */}
+        <div className="w-[320px] border-r border-border bg-card/50 p-4 flex flex-col gap-4">
+          <div className="flex-1 min-h-0">
+            <DatafixChat />
+          </div>
+        </div>
+
         {/* Main Map Area */}
         <div className="flex-1 p-4 flex flex-col animate-fade-in-up stagger-1">
           <div className="flex-1 rounded-xl border border-border bg-card overflow-hidden hover-glow transition-all duration-300">
