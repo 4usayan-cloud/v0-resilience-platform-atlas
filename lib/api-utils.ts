@@ -172,10 +172,11 @@ export async function fetchYahooFinanceQuote(symbol: string = '^GSPC') {
         interval: '1d',
         range: '1d',
       },
+      timeout: 5000, // 5 second timeout
     });
     return response.data;
   } catch (error) {
-    console.error('Yahoo Finance API error:', error);
+    console.error(`Yahoo Finance API error for ${symbol}:`, error instanceof Error ? error.message : error);
     return null;
   }
 }

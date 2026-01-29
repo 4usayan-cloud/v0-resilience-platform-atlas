@@ -110,8 +110,11 @@ export async function GET(request: Request) {
     const cacheKey = `finance-${type}`;
     const cached = getCachedData(cacheKey);
     if (cached) {
+      console.log(`📦 Returning cached finance data for: ${type}`);
       return NextResponse.json(cached);
     }
+
+    console.log(`🔍 Fetching fresh finance data for: ${type}`);
 
     let response: any = {};
 
@@ -120,11 +123,20 @@ export async function GET(request: Request) {
       const fiiData = generateFIIData(); // For now, use generated data
       // TODO: Integrate actual FII data sources when available
       response.fii = fiiData;
+      console.log(`✅ FII data generated: ${fiiData.length} countries`);
     }
 
     if (type === "indices" || type === "all") {
-      const liveIndices = await fetchLiveMarketIndices();
-      response.indices = liveIndices;
+      try {
+        const liveIndices = await fetchLiveMarketIndices();
+        response.indices = liveIndices;
+        console.log(`✅ Market indices fetched: ${liveIndices.length} indices`);
+      } catch (indicesError) {
+        console.error('❌ Market indices fetch failed:', indicesError);
+        // Fallback to generated data
+        response.indices = generateMarketIndices();
+        console.log(`⚠️  Using fallback market indices: ${response.indices.length} indices`);
+      }
     }
 
     response.timestamp = new Date().toISOString();
@@ -135,9 +147,14 @@ export async function GET(request: Request) {
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Finance API error:', error);
+    console.error('❌ Finance API CRITICAL error:', error);
+    // Return error details for debugging
     return NextResponse.json(
-      { error: "Failed to fetch financial data" },
+      { 
+        error: "Failed to fetch financial data",
+        details: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     );
   }
