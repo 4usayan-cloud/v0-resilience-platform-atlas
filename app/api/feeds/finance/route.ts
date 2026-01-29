@@ -1,26 +1,12 @@
 import { NextResponse } from "next/server"
 import { 
   fetchYahooFinanceQuote, 
-  fetchMarketData, 
   getCachedData, 
   setCachedData 
 } from "@/lib/api-utils"
 
 // Financial data API - integrates Yahoo Finance, Alpha Vantage, and World Bank APIs
 // Uses free public APIs with fallback to mock data
-
-interface FIIData {
-  country: string
-  countryCode: string
-  fiiInflow: number
-  fiiOutflow: number
-  netFII: number
-  change24h: number
-  changePercent: number
-  marketCap: string
-  currency: string
-  lastUpdated: string
-}
 
 interface MarketIndex {
   name: string
@@ -29,76 +15,6 @@ interface MarketIndex {
   change: number
   changePercent: number
   currency: string
-}
-
-function generateFIIData(): FIIData[] {
-  const countries = [
-    { name: "United States", code: "USA", currency: "USD", marketCap: "45.2T" },
-    { name: "China", code: "CHN", currency: "CNY", marketCap: "12.1T" },
-    { name: "Japan", code: "JPN", currency: "JPY", marketCap: "6.3T" },
-    { name: "Germany", code: "DEU", currency: "EUR", marketCap: "2.4T" },
-    { name: "United Kingdom", code: "GBR", currency: "GBP", marketCap: "3.1T" },
-    { name: "India", code: "IND", currency: "INR", marketCap: "4.2T" },
-    { name: "France", code: "FRA", currency: "EUR", marketCap: "2.9T" },
-    { name: "Brazil", code: "BRA", currency: "BRL", marketCap: "1.1T" },
-    { name: "Canada", code: "CAN", currency: "CAD", marketCap: "2.8T" },
-    { name: "Australia", code: "AUS", currency: "AUD", marketCap: "1.9T" },
-    { name: "South Korea", code: "KOR", currency: "KRW", marketCap: "1.8T" },
-    { name: "Mexico", code: "MEX", currency: "MXN", marketCap: "0.6T" },
-    { name: "Indonesia", code: "IDN", currency: "IDR", marketCap: "0.7T" },
-    { name: "Saudi Arabia", code: "SAU", currency: "SAR", marketCap: "2.8T" },
-    { name: "Singapore", code: "SGP", currency: "SGD", marketCap: "0.7T" },
-  ]
-
-  return countries.map((c) => {
-    const inflow = Math.random() * 50000 - 10000
-    const outflow = Math.random() * 40000 - 5000
-    const net = inflow - outflow
-    const change = (Math.random() - 0.5) * 2000
-
-    return {
-      country: c.name,
-      countryCode: c.code,
-      fiiInflow: Math.round(inflow * 100) / 100,
-      fiiOutflow: Math.round(outflow * 100) / 100,
-      netFII: Math.round(net * 100) / 100,
-      change24h: Math.round(change * 100) / 100,
-      changePercent: Math.round((change / Math.abs(net || 1)) * 10000) / 100,
-      marketCap: c.marketCap,
-      currency: c.currency,
-      lastUpdated: new Date().toISOString(),
-    }
-  })
-}
-
-function generateMarketIndices(): MarketIndex[] {
-  const indices = [
-    { name: "S&P 500", country: "USA", baseValue: 5200, currency: "USD" },
-    { name: "NASDAQ", country: "USA", baseValue: 16500, currency: "USD" },
-    { name: "Dow Jones", country: "USA", baseValue: 39500, currency: "USD" },
-    { name: "FTSE 100", country: "GBR", baseValue: 8100, currency: "GBP" },
-    { name: "DAX", country: "DEU", baseValue: 18200, currency: "EUR" },
-    { name: "Nikkei 225", country: "JPN", baseValue: 38500, currency: "JPY" },
-    { name: "Shanghai Composite", country: "CHN", baseValue: 3050, currency: "CNY" },
-    { name: "BSE Sensex", country: "IND", baseValue: 74500, currency: "INR" },
-    { name: "Nifty 50", country: "IND", baseValue: 22600, currency: "INR" },
-    { name: "CAC 40", country: "FRA", baseValue: 8050, currency: "EUR" },
-    { name: "Hang Seng", country: "HKG", baseValue: 17200, currency: "HKD" },
-    { name: "KOSPI", country: "KOR", baseValue: 2680, currency: "KRW" },
-  ]
-
-  return indices.map((idx) => {
-    const variance = idx.baseValue * 0.02
-    const change = (Math.random() - 0.5) * variance
-    return {
-      name: idx.name,
-      country: idx.country,
-      value: Math.round((idx.baseValue + change) * 100) / 100,
-      change: Math.round(change * 100) / 100,
-      changePercent: Math.round((change / idx.baseValue) * 10000) / 100,
-      currency: idx.currency,
-    }
-  })
 }
 
 export async function GET(request: Request) {
@@ -118,29 +34,27 @@ export async function GET(request: Request) {
 
     let response: any = {};
 
-    if (type === "fii" || type === "all") {
-      // Try to fetch live FII data, fallback to mock
-      const fiiData = generateFIIData(); // For now, use generated data
-      // TODO: Integrate actual FII data sources when available
-      response.fii = fiiData;
-      console.log(`✅ FII data generated: ${fiiData.length} countries`);
+    if (type === "fii") {
+      return NextResponse.json(
+        { error: "FII data is not available from free live sources", dataSource: "live" },
+        { status: 503 }
+      );
     }
 
     if (type === "indices" || type === "all") {
-      try {
-        const liveIndices = await fetchLiveMarketIndices();
-        response.indices = liveIndices;
-        console.log(`✅ Market indices fetched: ${liveIndices.length} indices`);
-      } catch (indicesError) {
-        console.error('❌ Market indices fetch failed:', indicesError);
-        // Fallback to generated data
-        response.indices = generateMarketIndices();
-        console.log(`⚠️  Using fallback market indices: ${response.indices.length} indices`);
+      const liveIndices = await fetchLiveMarketIndices();
+      if (!liveIndices || liveIndices.length === 0) {
+        return NextResponse.json(
+          { error: "No live market indices available", dataSource: "live" },
+          { status: 503 }
+        );
       }
+      response.indices = liveIndices;
+      console.log(`✅ Market indices fetched: ${liveIndices.length} indices`);
     }
 
     response.timestamp = new Date().toISOString();
-    response.dataSource = 'mixed'; // Will be 'live' when fully integrated
+    response.dataSource = 'live';
 
     // Cache the response
     setCachedData(cacheKey, response, 120000); // 2 minutes
@@ -209,13 +123,6 @@ async function fetchLiveMarketIndices(): Promise<MarketIndex[]> {
   results.forEach(result => {
     if (result) indices.push(result);
   });
-
-  // If live data failed, use generated data as fallback
-  if (indices.length === 0) {
-    console.log('Using fallback market indices data');
-    return generateMarketIndices();
-  }
-
 
   return indices;
 }
