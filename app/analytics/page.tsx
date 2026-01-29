@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useState, useMemo } from "react";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";

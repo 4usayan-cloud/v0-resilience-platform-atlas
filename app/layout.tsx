@@ -36,9 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        {children}
         <Analytics />
       </body>
     </html>

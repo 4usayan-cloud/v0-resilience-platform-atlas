@@ -26,8 +26,7 @@ const VALID_CREDENTIALS = [
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Default to authenticated as guest user for public access
-  const [user, setUser] = useState<User | null>({ username: 'guest', role: 'user' });
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Check for existing session on mount
@@ -38,7 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(JSON.parse(storedUser));
       } catch {
         sessionStorage.removeItem('atlas_user');
-        // Keep default guest user if storage fails
       }
     }
     setIsLoading(false);
@@ -77,16 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    if (typeof window !== 'undefined') {
-      console.warn('useAuth used outside AuthProvider; falling back to unauthenticated state.');
-    }
-    return {
-      user: null,
-      isAuthenticated: false,
-      isLoading: false,
-      login: async () => ({ success: false, error: 'AuthProvider missing' }),
-      logout: () => {},
-    } as AuthContextType;
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 }
