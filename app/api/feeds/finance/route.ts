@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server"
-import { 
-  fetchYahooFinanceQuote, 
-  getCachedData, 
-  setCachedData 
+import {
+  fetchYahooFinanceQuote,
+  fetchYahooFinanceQuotes,
+  getCachedData,
+  setCachedData
 } from "@/lib/api-utils"
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Financial data API - integrates Yahoo Finance, Alpha Vantage, and World Bank APIs
 // Uses free public APIs with fallback to mock data
@@ -89,6 +93,34 @@ async function fetchLiveMarketIndices(): Promise<MarketIndex[]> {
   ];
 
   const indices: MarketIndex[] = [];
+  const symbolList = symbols.map((s) => s.symbol);
+
+  // Try batch quote endpoint first (more reliable)
+  try {
+    const batch = await fetchYahooFinanceQuotes(symbolList);
+    if (Array.isArray(batch) && batch.length > 0) {
+      const bySymbol = new Map(batch.map((item: any) => [item.symbol, item]));
+      symbols.forEach((idx) => {
+        const quote = bySymbol.get(idx.symbol);
+        if (!quote) return;
+        const current = quote.regularMarketPrice ?? quote.postMarketPrice ?? quote.preMarketPrice;
+        const change = quote.regularMarketChange ?? 0;
+        const changePercent = quote.regularMarketChangePercent ?? 0;
+        if (typeof current !== "number") return;
+        indices.push({
+          name: idx.name,
+          country: idx.country,
+          value: Math.round(current * 100) / 100,
+          change: Math.round(change * 100) / 100,
+          changePercent: Math.round(changePercent * 100) / 100,
+          currency: quote.currency || idx.currency,
+        });
+      });
+      if (indices.length > 0) return indices;
+    }
+  } catch (error) {
+    console.error("Yahoo batch quote failed:", error);
+  }
 
   // Fetch live data with rate limiting
   const fetchPromises = symbols.map(async (idx) => {

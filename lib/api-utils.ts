@@ -181,6 +181,21 @@ export async function fetchYahooFinanceQuote(symbol: string = '^GSPC') {
   }
 }
 
+export async function fetchYahooFinanceQuotes(symbols: string[]) {
+  try {
+    const response = await axios.get(`https://query1.finance.yahoo.com/v7/finance/quote`, {
+      params: {
+        symbols: symbols.join(","),
+      },
+      timeout: 5000,
+    });
+    return response.data?.quoteResponse?.result ?? [];
+  } catch (error) {
+    console.error('Yahoo Finance batch API error:', error instanceof Error ? error.message : error);
+    return null;
+  }
+}
+
 // IMF World Economic Outlook API (Public, no key required)
 export async function fetchIMFData(countryCode: string) {
   try {

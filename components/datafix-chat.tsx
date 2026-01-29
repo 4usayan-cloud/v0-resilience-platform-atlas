@@ -34,11 +34,11 @@ export function DatafixChat() {
   const [avatarError, setAvatarError] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
-  // Show both avatars on the left, larger
-  const avatarList = [
-    { src: "/avatar1.png", alt: "Avatar 1" },
-    { src: "/avatar2.png", alt: "Avatar 2" },
-  ];
+  const avatarSrc = useMemo(() => {
+    if (isLoading) return "/datafix-thinking.svg";
+    return "/datafix-answering.svg";
+  }, [isLoading]);
+  const resolvedAvatarSrc = avatarError ? "/avatar1.png" : avatarSrc;
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -88,17 +88,15 @@ export function DatafixChat() {
     <Card className="h-full bg-card border-border">
       <CardHeader className="py-3 px-4">
         <div className="flex items-center gap-4">
-          {/* Both avatars on the left, larger */}
-          <div className="flex flex-col gap-2 items-center mr-2">
-            {avatarList.map((a) => (
-              <img
-                key={a.src}
-                src={a.src}
-                alt={a.alt}
-                className="w-24 h-24 rounded-full border border-border shadow-lg"
-                style={{ objectFit: 'cover' }}
-              />
-            ))}
+          {/* Datafix avatar */}
+          <div className="mr-2">
+            <img
+              src={resolvedAvatarSrc}
+              alt={isLoading ? "Datafix thinking" : "Datafix answering"}
+              className="w-20 h-20 rounded-full border border-border shadow-lg"
+              style={{ objectFit: "cover" }}
+              onError={() => setAvatarError(true)}
+            />
           </div>
           <CardTitle className="text-sm font-medium flex flex-col items-start gap-2">
             <span>Datafix</span>
