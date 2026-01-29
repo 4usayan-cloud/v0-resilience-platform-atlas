@@ -137,6 +137,14 @@ export function DatafixChat() {
                 {prompt}
               </button>
             ))}
+            <button
+              className="text-[10px] px-2 py-1 rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              onClick={() =>
+                setInput("Translate to English: ")
+              }
+            >
+              Translate
+            </button>
           </div>
           <div className="flex gap-2">
             <Input
