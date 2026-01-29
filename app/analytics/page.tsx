@@ -811,17 +811,7 @@ export default function AnalyticsPage() {
               <CardContent>
                 <div className="h-[320px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={ginisChartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
-                      <defs>
-                        <linearGradient id="ginis95" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={ginisColor} stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor={ginisColor} stopOpacity={0.05}/>
-                        </linearGradient>
-                        <linearGradient id="ginis80" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={ginisColor} stopOpacity={0.2}/>
-                          <stop offset="95%" stopColor={ginisColor} stopOpacity={0.1}/>
-                        </linearGradient>
-                      </defs>
+                    <LineChart data={ginisChartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                       <XAxis dataKey="year" tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
                       <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
@@ -832,40 +822,19 @@ export default function AnalyticsPage() {
                           borderRadius: '8px',
                           fontSize: '11px',
                         }}
-                        formatter={(value: number, name: string) => {
-                          const labels: Record<string, string> = {
-                            value: 'Ginis Index',
-                            lower95: '95% CI Lower',
-                            upper95: '95% CI Upper',
-                            lower80: '80% CI Lower',
-                            upper80: '80% CI Upper',
-                          };
-                          return [value?.toFixed(1), labels[name] || name];
-                        }}
+                        formatter={(value: number) => [value?.toFixed(1), 'Ginis Index']}
                       />
                       <ReferenceLine x={2024} stroke="hsl(var(--muted-foreground))" strokeDasharray="5 5" label={{ value: 'Forecast Start', fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
-
-                      <Area type="natural" dataKey="upper95" stroke="none" fill="url(#ginis95)" />
-                      <Area type="natural" dataKey="lower95" stroke="none" fill="transparent" />
-                      <Area type="natural" dataKey="upper80" stroke="none" fill="url(#ginis80)" />
-                      <Area type="natural" dataKey="lower80" stroke="none" fill="transparent" />
-
                       <Line
-                        type="natural"
+                        type="monotone"
                         dataKey="value"
                         stroke={ginisColor}
-                        strokeWidth={2.5}
+                        strokeWidth={3}
                         connectNulls
-                        dot={(props) => {
-                          const { cx, cy, payload } = props;
-                          if (payload.type === 'forecast') {
-                            return <circle cx={cx} cy={cy} r={4} fill={ginisColor} strokeWidth={2} stroke="hsl(var(--background))" />;
-                          }
-                          return <circle cx={cx} cy={cy} r={3} fill={ginisColor} />;
-                        }}
+                        dot={false}
                         activeDot={{ r: 6 }}
                       />
-                    </ComposedChart>
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
