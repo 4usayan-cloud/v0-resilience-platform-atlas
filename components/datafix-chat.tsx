@@ -38,7 +38,10 @@ export function DatafixChat() {
     if (isLoading) return "/datafix-thinking.svg";
     return "/datafix-answering.svg";
   }, [isLoading]);
-  const resolvedAvatarSrc = avatarError ? "/avatar1.png" : avatarSrc;
+  const cacheBuster = "v=20260129";
+  const resolvedAvatarSrc = avatarError
+    ? `/avatar1.png?${cacheBuster}`
+    : `${avatarSrc}?${cacheBuster}`;
 
   useEffect(() => {
     if (!scrollRef.current) return;
@@ -91,6 +94,7 @@ export function DatafixChat() {
           {/* Datafix avatar */}
           <div className="mr-2">
             <img
+              key={resolvedAvatarSrc}
               src={resolvedAvatarSrc}
               alt={isLoading ? "Datafix thinking" : "Datafix answering"}
               className="w-20 h-20 rounded-full border border-border shadow-lg"
