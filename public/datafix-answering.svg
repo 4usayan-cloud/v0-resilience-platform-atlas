@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Datafix answering">
+  <defs>
+    <radialGradient id="bg2" cx="70%" cy="10%" r="80%">
+      <stop offset="0%" stop-color="#f5f9ff"/>
+      <stop offset="100%" stop-color="#e7eef8"/>
+    </radialGradient>
+    <linearGradient id="coat2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e6e6e6"/>
+    </linearGradient>
+    <linearGradient id="vest2" x1="0" x2="1">
+      <stop offset="0%" stop-color="#7bc96f"/>
+      <stop offset="100%" stop-color="#4aa05b"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="36" fill="url(#bg2)"/>
+
+  <!-- sparkle / idea -->
+  <circle cx="420" cy="80" r="18" fill="#ffd166" stroke="#caa34f" stroke-width="3"/>
+  <line x1="420" y1="45" x2="420" y2="18" stroke="#caa34f" stroke-width="4"/>
+  <line x1="445" y1="80" x2="472" y2="80" stroke="#caa34f" stroke-width="4"/>
+
+  <!-- head -->
+  <circle cx="256" cy="210" r="78" fill="#ffd9b3" stroke="#d9a982" stroke-width="4"/>
+  <circle cx="224" cy="202" r="16" fill="#7dc4ff" stroke="#3e6f8c" stroke-width="3"/>
+  <circle cx="288" cy="202" r="16" fill="#7dc4ff" stroke="#3e6f8c" stroke-width="3"/>
+  <circle cx="224" cy="202" r="6" fill="#1a2a3a"/>
+  <circle cx="288" cy="202" r="6" fill="#1a2a3a"/>
+
+  <!-- glasses -->
+  <circle cx="224" cy="202" r="26" fill="none" stroke="#5b5b5b" stroke-width="4"/>
+  <circle cx="288" cy="202" r="26" fill="none" stroke="#5b5b5b" stroke-width="4"/>
+  <line x1="250" y1="202" x2="262" y2="202" stroke="#5b5b5b" stroke-width="4"/>
+
+  <!-- hair -->
+  <path d="M160 200 Q150 130 210 110 Q230 70 270 110 Q320 90 350 140 Q380 150 380 200" fill="none" stroke="#f2f2f2" stroke-width="18" stroke-linecap="round"/>
+
+  <!-- moustache & beard -->
+  <path d="M205 245 Q256 270 307 245" stroke="#f2f2f2" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <path d="M220 260 Q256 330 292 260" stroke="#f2f2f2" stroke-width="16" stroke-linecap="round" fill="none"/>
+
+  <!-- body -->
+  <rect x="196" y="300" width="120" height="140" rx="20" fill="url(#vest2)" stroke="#3f7f4a" stroke-width="3"/>
+  <rect x="160" y="280" width="192" height="200" rx="24" fill="url(#coat2)" stroke="#cfcfcf" stroke-width="3"/>
+
+  <!-- bow tie -->
+  <polygon points="238,300 256,285 274,300 256,312" fill="#d23b3b"/>
+
+  <!-- beaker -->
+  <path d="M90 140 h40 v80 q0 30 -20 40 q-20 -10 -20 -40 z" fill="#8be28b" stroke="#3d8f3d" stroke-width="4"/>
+  <circle cx="110" cy="170" r="8" fill="#3d8f3d"/>
+
+  <!-- satchel -->
+  <rect x="330" y="340" width="120" height="80" rx="10" fill="#c78f5c" stroke="#8a5a2f" stroke-width="4"/>
+  <circle cx="390" cy="400" r="8" fill="#8a5a2f"/>
+
+  <!-- label -->
+  <text x="256" y="480" text-anchor="middle" font-size="18" fill="#2e2e2e" font-family="Georgia, serif">Datafix</text>
+</svg>

@@ -35,7 +35,7 @@ export function DatafixChat() {
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const avatarSrc = useMemo(
-    () => (isLoading ? "/datafix-thinking.png" : "/datafix-answering.png"),
+    () => (isLoading ? "/datafix-thinking.svg" : "/datafix-answering.svg"),
     [isLoading]
   );
 
