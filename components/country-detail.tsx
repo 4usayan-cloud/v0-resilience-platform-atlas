@@ -176,6 +176,22 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
     const displayValue = typeof value === "number" ? value.toFixed(1) : "N/A";
     const normalizedValue = inverted ? 100 - Math.min(100, Math.max(0, value)) : Math.min(100, Math.max(0, value));
 
+    const sparklinePoints = (() => {
+      const series = buildSyntheticSeries(label, value);
+      if (series.length === 0) return "";
+      const values = series.map((d) => d.value);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const span = max - min || 1;
+      return series
+        .map((d, i) => {
+          const x = (i / (series.length - 1 || 1)) * 100;
+          const y = 22 - ((d.value - min) / span) * 18;
+          return `${x.toFixed(2)},${y.toFixed(2)}`;
+        })
+        .join(" ");
+    })();
+
     return (
       <div 
         className="flex flex-col gap-2 py-2 border-b border-border/50 last:border-0 hover:bg-secondary/30 rounded px-1 transition-colors animate-fade-in-up"
@@ -201,11 +217,14 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
           </div>
         </div>
         <div className="h-8 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={buildSyntheticSeries(label, value)}>
-              <Line type="monotone" dataKey="value" stroke={getResilienceColor(normalizedValue)} strokeWidth={2} dot={false} />
-            </LineChart>
-          </ResponsiveContainer>
+          <svg viewBox="0 0 100 24" className="w-full h-full">
+            <polyline
+              fill="none"
+              stroke={getResilienceColor(normalizedValue)}
+              strokeWidth="2"
+              points={sparklinePoints}
+            />
+          </svg>
         </div>
       </div>
     );

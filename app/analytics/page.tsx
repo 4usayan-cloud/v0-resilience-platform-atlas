@@ -432,6 +432,20 @@ export default function AnalyticsPage() {
     const percentile = stats.stdDev > 0 ? zScoreNormalize(ind.value, stats.mean, stats.stdDev) : 50;
     
     const indicatorSeries = country ? buildSyntheticIndicatorSeries(country, ind.name) : [];
+    const sparklinePoints = useMemo(() => {
+      if (!indicatorSeries || indicatorSeries.length === 0) return "";
+      const values = indicatorSeries.map((d) => d.value);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const span = max - min || 1;
+      return indicatorSeries
+        .map((d, i) => {
+          const x = (i / (indicatorSeries.length - 1 || 1)) * 100;
+          const y = 22 - ((d.value - min) / span) * 18;
+          return `${x.toFixed(2)},${y.toFixed(2)}`;
+        })
+        .join(" ");
+    }, [indicatorSeries]);
 
     return (
       <div className="p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors">
@@ -477,13 +491,16 @@ export default function AnalyticsPage() {
             style={{ left: `${Math.max(0, Math.min(100, normalizedValue))}%` }}
           />
         </div>
-        {indicatorSeries.length > 0 && (
+        {indicatorSeries.length > 1 && (
           <div className="mt-2 h-10">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={indicatorSeries}>
-                <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
+            <svg viewBox="0 0 100 24" className="w-full h-full">
+              <polyline
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                points={sparklinePoints}
+              />
+            </svg>
           </div>
         )}
         {ind.benchmark && (
