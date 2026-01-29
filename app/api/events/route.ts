@@ -163,296 +163,59 @@ function convertGDELTToEvents(articles: any[]): GlobalEvent[] {
   });
 }
 
-// Simulated live events data - In production, this would fetch from GDACS, ACLED APIs
-function generateLiveEvents(): GlobalEvent[] {
-  const now = new Date();
-  
-  return [
-    // Current ongoing events (2025)
-    {
-      id: 'evt-001',
-      type: 'conflict',
-      severity: 'critical',
-      title: 'Ongoing Armed Conflict - Sudan',
-      description: 'Civil war between SAF and RSF continues with humanitarian crisis',
-      country: 'Sudan',
-      countryCode: 'SDN',
-      region: 'Sub-Saharan Africa',
-      coordinates: { lat: 15.5, lng: 32.5 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['economic', 'social', 'institutional', 'infrastructure'],
-      estimatedImpact: -35,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-002',
-      type: 'conflict',
-      severity: 'critical',
-      title: 'Gaza Humanitarian Crisis',
-      description: 'Ongoing conflict with severe humanitarian impact',
-      country: 'Palestine',
-      countryCode: 'PSE',
-      region: 'Middle East & North Africa',
-      coordinates: { lat: 31.5, lng: 34.5 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['economic', 'social', 'institutional', 'infrastructure'],
-      estimatedImpact: -40,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-003',
-      type: 'conflict',
-      severity: 'critical',
-      title: 'Russia-Ukraine War',
-      description: 'Continued military conflict with economic sanctions',
-      country: 'Ukraine',
-      countryCode: 'UKR',
-      region: 'Europe & Central Asia',
-      coordinates: { lat: 49.0, lng: 32.0 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['economic', 'social', 'institutional', 'infrastructure'],
-      estimatedImpact: -30,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-004',
-      type: 'economic',
-      severity: 'high',
-      title: 'Hyperinflation Crisis - Argentina',
-      description: 'Annual inflation exceeding 200%, currency instability',
-      country: 'Argentina',
-      countryCode: 'ARG',
-      region: 'Latin America & Caribbean',
-      coordinates: { lat: -34.6, lng: -58.4 },
-      timestamp: now.toISOString(),
-      source: 'IMF',
-      impactedPillars: ['economic', 'social'],
-      estimatedImpact: -15,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-005',
-      type: 'economic',
-      severity: 'high',
-      title: 'Debt Default Risk - Sri Lanka',
-      description: 'Ongoing debt restructuring, economic recovery efforts',
-      country: 'Sri Lanka',
-      countryCode: 'LKA',
-      region: 'South Asia',
-      coordinates: { lat: 7.0, lng: 80.0 },
-      timestamp: now.toISOString(),
-      source: 'IMF',
-      impactedPillars: ['economic', 'institutional'],
-      estimatedImpact: -12,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-006',
-      type: 'disaster',
-      severity: 'high',
-      title: 'Drought Emergency - Horn of Africa',
-      description: 'Severe drought affecting Ethiopia, Somalia, Kenya',
-      country: 'Ethiopia',
-      countryCode: 'ETH',
-      region: 'Sub-Saharan Africa',
-      coordinates: { lat: 9.0, lng: 38.7 },
-      timestamp: now.toISOString(),
-      source: 'GDACS',
-      impactedPillars: ['economic', 'social', 'infrastructure'],
-      estimatedImpact: -18,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-007',
-      type: 'political',
-      severity: 'high',
-      title: 'Political Instability - Myanmar',
-      description: 'Military government, civil resistance, economic isolation',
-      country: 'Myanmar',
-      countryCode: 'MMR',
-      region: 'East Asia & Pacific',
-      coordinates: { lat: 19.7, lng: 96.1 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['institutional', 'economic', 'social'],
-      estimatedImpact: -22,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-008',
-      type: 'economic',
-      severity: 'medium',
-      title: 'Currency Depreciation - Turkey',
-      description: 'Lira weakness, high inflation affecting purchasing power',
-      country: 'Turkey',
-      countryCode: 'TUR',
-      region: 'Europe & Central Asia',
-      coordinates: { lat: 39.9, lng: 32.9 },
-      timestamp: now.toISOString(),
-      source: 'IMF',
-      impactedPillars: ['economic'],
-      estimatedImpact: -8,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-009',
-      type: 'disaster',
-      severity: 'medium',
-      title: 'Flooding - Bangladesh',
-      description: 'Seasonal monsoon flooding affecting millions',
-      country: 'Bangladesh',
-      countryCode: 'BGD',
-      region: 'South Asia',
-      coordinates: { lat: 23.7, lng: 90.4 },
-      timestamp: now.toISOString(),
-      source: 'GDACS',
-      impactedPillars: ['infrastructure', 'social'],
-      estimatedImpact: -6,
-      isOngoing: false,
-    },
-    {
-      id: 'evt-010',
-      type: 'health',
-      severity: 'medium',
-      title: 'Cholera Outbreak - Haiti',
-      description: 'Waterborne disease outbreak amid political instability',
-      country: 'Haiti',
-      countryCode: 'HTI',
-      region: 'Latin America & Caribbean',
-      coordinates: { lat: 18.5, lng: -72.3 },
-      timestamp: now.toISOString(),
-      source: 'WHO',
-      impactedPillars: ['social', 'institutional'],
-      estimatedImpact: -10,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-011',
-      type: 'conflict',
-      severity: 'high',
-      title: 'Armed Conflict - DRC',
-      description: 'M23 rebel activity in eastern regions',
-      country: 'Democratic Republic of the Congo',
-      countryCode: 'COD',
-      region: 'Sub-Saharan Africa',
-      coordinates: { lat: -1.7, lng: 29.2 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['institutional', 'economic', 'social', 'infrastructure'],
-      estimatedImpact: -20,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-012',
-      type: 'economic',
-      severity: 'high',
-      title: 'Banking Sector Stress - Lebanon',
-      description: 'Continued banking crisis, capital controls',
-      country: 'Lebanon',
-      countryCode: 'LBN',
-      region: 'Middle East & North Africa',
-      coordinates: { lat: 33.9, lng: 35.5 },
-      timestamp: now.toISOString(),
-      source: 'IMF',
-      impactedPillars: ['economic', 'institutional'],
-      estimatedImpact: -25,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-013',
-      type: 'climate',
-      severity: 'medium',
-      title: 'Extreme Heat Wave - India',
-      description: 'Record temperatures affecting agriculture and labor',
-      country: 'India',
-      countryCode: 'IND',
-      region: 'South Asia',
-      coordinates: { lat: 28.6, lng: 77.2 },
-      timestamp: now.toISOString(),
-      source: 'GDACS',
-      impactedPillars: ['economic', 'social', 'infrastructure'],
-      estimatedImpact: -5,
-      isOngoing: false,
-    },
-    {
-      id: 'evt-014',
-      type: 'political',
-      severity: 'medium',
-      title: 'Political Transition - Venezuela',
-      description: 'Ongoing political tensions, sanctions impact',
-      country: 'Venezuela',
-      countryCode: 'VEN',
-      region: 'Latin America & Caribbean',
-      coordinates: { lat: 10.5, lng: -66.9 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['institutional', 'economic'],
-      estimatedImpact: -15,
-      isOngoing: true,
-    },
-    {
-      id: 'evt-015',
-      type: 'conflict',
-      severity: 'high',
-      title: 'Civil Unrest - Yemen',
-      description: 'Ongoing conflict with humanitarian emergency',
-      country: 'Yemen',
-      countryCode: 'YEM',
-      region: 'Middle East & North Africa',
-      coordinates: { lat: 15.4, lng: 44.2 },
-      timestamp: now.toISOString(),
-      source: 'ACLED',
-      impactedPillars: ['economic', 'social', 'institutional', 'infrastructure'],
-      estimatedImpact: -30,
-      isOngoing: true,
-    },
-  ];
-}
+// generateLiveEvents() function REMOVED
+// We use ONLY real-time data from GDELT/NewsAPI - no mock data fallback
 
 export async function GET() {
   try {
-    // Check cache first (5 minutes TTL)
-    const cached = getCachedData('global-events');
-    if (cached) {
-      return NextResponse.json(cached);
-    }
-
+    // NO CACHE - Always fetch fresh data
     let allEvents: GlobalEvent[] = [];
 
-    // ALWAYS try GDELT first (free, no key needed, working NOW)
-    try {
-      const gdeltArticles = await fetchGDELTEvents();
-      if (gdeltArticles) {
-        const gdeltEvents = convertGDELTToEvents(gdeltArticles);
-        allEvents = [...allEvents, ...gdeltEvents];
-        console.log(`✅ Fetched ${gdeltEvents.length} events from GDELT`);
-      }
-    } catch (error) {
-      console.log('GDELT fetch failed, continuing...', error);
+    // GDELT is FREE and REAL-TIME - Must succeed or we fail
+    console.log('🔍 Fetching REAL-TIME events from GDELT...');
+    
+    const gdeltArticles = await fetchGDELTEvents();
+    
+    if (!gdeltArticles || gdeltArticles.length === 0) {
+      console.error('❌ CRITICAL: GDELT returned no data');
+      return NextResponse.json({
+        success: false,
+        error: 'Unable to fetch real-time data. GDELT API returned no results.',
+        timestamp: new Date().toISOString(),
+        dataSource: 'error',
+      }, { status: 503 });
     }
 
-    // Try NewsAPI if key is configured
+    const gdeltEvents = convertGDELTToEvents(gdeltArticles);
+    allEvents = [...allEvents, ...gdeltEvents];
+    console.log(`✅ SUCCESS: Fetched ${gdeltEvents.length} REAL events from GDELT`);
+
+    // Try NewsAPI as supplement if key is configured
     try {
       const newsArticles = await fetchNewsEvents();
-      if (newsArticles) {
+      if (newsArticles && newsArticles.length > 0) {
         const newsEvents = convertNewsToEvents(newsArticles);
         allEvents = [...allEvents, ...newsEvents];
-        console.log(`✅ Fetched ${newsEvents.length} events from NewsAPI`);
+        console.log(`✅ BONUS: Added ${newsEvents.length} events from NewsAPI`);
       }
     } catch (error) {
-      console.log('NewsAPI not available (no key or rate limit)');
+      console.log('ℹ️ NewsAPI not available (optional)');
     }
 
-    // Fallback to mock data ONLY if we got nothing
+    // FAIL if we have no real data
     if (allEvents.length === 0) {
-      console.log('⚠️ No live data available, using curated fallback data');
-      allEvents = generateLiveEvents();
-    } else {
-      console.log(`✅ Using ${allEvents.length} LIVE events from free APIs!`);
+      console.error('❌ CRITICAL: No real-time data available from any source');
+      return NextResponse.json({
+        success: false,
+        error: 'No real-time data available. All APIs failed.',
+        timestamp: new Date().toISOString(),
+        dataSource: 'error',
+        message: 'GDELT and NewsAPI both returned no results. System requires real-time data to function.',
+      }, { status: 503 });
     }
+
+    console.log(`✅ SUCCESS: Serving ${allEvents.length} real-time events`);
+    console.log(`📊 Event sources: GDELT=${allEvents.filter(e => e.source === 'GDELT').length}, NewsAPI=${allEvents.filter(e => e.source === 'NewsAPI').length}`);
 
     // Sort by severity and timestamp
     allEvents.sort((a, b) => {
@@ -471,17 +234,24 @@ export async function GET() {
       mediumCount: allEvents.filter(e => e.severity === 'medium').length,
       ongoingCount: allEvents.filter(e => e.isOngoing).length,
       events: allEvents,
-      dataSource: allEvents.length > 0 && allEvents[0].source === 'GDELT' ? 'live-gdelt' : allEvents[0]?.source === 'NewsAPI' ? 'live-news' : 'curated',
+      dataSource: allEvents.length > 0 && allEvents[0].source === 'GDELT' ? 'live-gdelt' : allEvents[0]?.source === 'NewsAPI' ? 'live-news' : 'live',
+      realTimeDataOnly: true, // Flag to confirm NO mock data
     };
 
-    // Cache the response
-    setCachedData('global-events', response, 300000); // 5 minutes
+    // Cache for 2 minutes only - keep data fresh
+    setCachedData('global-events', response, 120000); // 2 minutes
 
+    console.log(`📦 Cached ${allEvents.length} events with 2-minute TTL`);
     return NextResponse.json(response);
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('❌ EXCEPTION in events API:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch events', dataSource: 'error' },
+      { 
+        success: false, 
+        error: 'Failed to fetch events', 
+        dataSource: 'error',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      },
       { status: 500 }
     );
   }

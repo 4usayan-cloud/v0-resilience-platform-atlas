@@ -74,11 +74,12 @@ export async function fetchWorldBankIndicator(
 export async function fetchGDELTEvents() {
   try {
     // GDELT query for recent global events - NO API KEY NEEDED
+    // NOTE: OR queries MUST be wrapped in parentheses
     const response = await axios.get(
       'https://api.gdeltproject.org/api/v2/doc/doc',
       {
         params: {
-          query: 'conflict OR disaster OR crisis OR emergency OR war OR earthquake OR flood',
+          query: '(conflict OR disaster OR crisis OR emergency OR war OR earthquake OR flood OR attack OR violence)',
           mode: 'artlist',
           maxrecords: 75,
           format: 'json',
