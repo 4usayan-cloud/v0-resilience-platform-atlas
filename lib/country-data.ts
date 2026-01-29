@@ -3,7 +3,7 @@
 // All 253 World Bank recognized economies
 
 import type { CountryData, YearlyScore, EconomicIndicators, SocialIndicators, InstitutionalIndicators, InfrastructureIndicators } from './types';
-import { buildGiniValidationMap } from './worldbank';
+import { buildForexCoverMap, buildGiniValidationMap } from './worldbank';
 
 // Generate historical and forecast data with BSTS+DFM simulation
 function generateHistoricalData(baseScores: { economic: number; social: number; institutional: number; infrastructure: number }, volatility: number = 0.1): YearlyScore[] {
@@ -593,15 +593,20 @@ const countriesRaw: CountryData[] = [
 
 // Alias for backward compatibility
 const validatedGiniMap = buildGiniValidationMap(countriesRaw.map(c => c.code));
+const forexCoverMap = buildForexCoverMap(countriesRaw.map(c => c.code));
 
 export const countries: CountryData[] = countriesRaw.map((country) => {
   const validatedGini = validatedGiniMap.get(country.code);
-  if (validatedGini === undefined) return country;
+  const forexCover = forexCoverMap.get(country.code);
   return {
     ...country,
+    economic: {
+      ...country.economic,
+      forexReserves: forexCover ?? country.economic.forexReserves,
+    },
     social: {
       ...country.social,
-      giniCoefficient: validatedGini,
+      giniCoefficient: validatedGini ?? country.social.giniCoefficient,
     },
   };
 });

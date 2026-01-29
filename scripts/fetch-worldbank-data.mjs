@@ -9,6 +9,8 @@ const INDICATORS = {
   ageYouth: "SP.POP.0014.TO.ZS",
   unemployment: "SL.UEM.TOTL.ZS",
   taxRevenue: "GC.TAX.TOTL.GD.ZS",
+  forexReserves: "FI.RES.TOTL.CD",
+  imports: "NE.IMP.GNFS.CD",
 };
 
 const META = {

@@ -401,7 +401,7 @@ export function CountryDetail({ country, onClose }: CountryDetailProps) {
                   <IndicatorRow label="Monetary Credibility" value={country.economic.monetaryCredibility} />
                   <IndicatorRow label="Debt-to-GDP" value={country.economic.debtToGDP} unit="%" inverted />
                   <IndicatorRow label="Deficit Level" value={country.economic.deficitLevel} unit="%" inverted />
-                  <IndicatorRow label="Forex Reserves" value={country.economic.forexReserves} unit="B" />
+                  <IndicatorRow label="Import Cover (months)" value={country.economic.forexReserves} unit="mo" />
                   <IndicatorRow label="Balance of Payments" value={country.economic.balanceOfPayments + 50} />
                   <IndicatorRow label="Employment Level" value={country.economic.employmentLevel} />
                   <IndicatorRow label="Labor Productivity" value={country.economic.laborProductivity} />

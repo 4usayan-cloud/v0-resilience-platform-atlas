@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { countries, regions, incomeGroups } from "@/lib/country-data";
 import { CountryData, getResilienceColor, getResilienceLevel, zScoreNormalize } from "@/lib/types";
-import { buildGinisSeriesMap } from "@/lib/worldbank";
+import { buildForexCoverSeriesMap, buildGinisSeriesMap } from "@/lib/worldbank";
 import {
   LineChart,
   Line,
@@ -103,6 +103,7 @@ export default function AnalyticsPage() {
   const pillarColor = getResilienceColor(pillarScore);
   const compareColor = compareData ? getResilienceColor(compareData.scores.overall) : "#f97316";
   const ginisSeriesMap = useMemo(() => buildGinisSeriesMap(countries.map(c => c.code)), []);
+  const forexSeriesMap = useMemo(() => buildForexCoverSeriesMap(countries.map(c => c.code)), []);
 
   // Historical and forecast data with confidence intervals
   const chartData = useMemo(() => {
@@ -173,6 +174,32 @@ export default function AnalyticsPage() {
     return [...historical, ...forecastData];
   }, [country, ginisSeriesMap]);
 
+  const forexChartData = useMemo(() => {
+    if (!country) return [];
+    const series = forexSeriesMap.get(country.code) || [];
+    const baseSeries = series.length > 0
+      ? series.map((point) => ({ year: point.year, value: point.value }))
+      : country.historicalScores.map((s) => ({
+          year: s.year,
+          value: Math.max(0, Math.min(60, country.economic.forexReserves + (s.economic - country.scores.economic) * 0.2)),
+        }));
+    if (baseSeries.length === 0) return [];
+    const historical = baseSeries.map((point) => ({
+      year: point.year,
+      value: point.value,
+      type: 'historical' as const,
+    }));
+    const historicalValues = historical.map((h) => h.value);
+    const forecastYears = [2025, 2026, 2027, 2028, 2029, 2030];
+    const forecasts = generateBSTSForecast(historicalValues, forecastYears.length);
+    const forecastData = forecastYears.map((yr, i) => ({
+      year: yr,
+      value: Math.max(0, Math.min(60, forecasts[i].value)),
+      type: 'forecast' as const,
+    }));
+    return [...historical, ...forecastData];
+  }, [country, forexSeriesMap]);
+
   const ginisColor = useMemo(() => {
     if (!country) return "#94a3b8";
     const base = getResilienceColor(100 - (country.social.giniCoefficient || 0));
@@ -227,7 +254,7 @@ export default function AnalyticsPage() {
     { name: 'Monetary Credibility', value: country.economic.monetaryCredibility, unit: '/100', description: 'Central bank policy effectiveness' },
     { name: 'Debt-to-GDP Ratio', value: country.economic.debtToGDP, unit: '%', description: 'Public debt as percentage of GDP', inverted: true, benchmark: 60 },
     { name: 'Fiscal Deficit Level', value: country.economic.deficitLevel, unit: '%', description: 'Budget deficit as percentage of GDP', inverted: true, benchmark: 3 },
-    { name: 'Forex Reserves', value: country.economic.forexReserves, unit: 'B USD', description: 'Foreign exchange reserves in billions' },
+    { name: 'Import Cover (months)', value: country.economic.forexReserves, unit: 'mo', description: 'Forex reserves coverage of monthly imports' },
     { name: 'Balance of Payments', value: country.economic.balanceOfPayments, unit: '/100', description: 'Current account balance indicator' },
     { name: 'Employment Level', value: country.economic.employmentLevel, unit: '/100', description: 'Overall employment rate index' },
     { name: 'Labor Productivity', value: country.economic.laborProductivity, unit: '/100', description: 'Output per worker efficiency' },
@@ -331,7 +358,7 @@ export default function AnalyticsPage() {
     'Monetary Credibility': { category: 'economic', key: 'monetaryCredibility' },
     'Debt-to-GDP Ratio': { category: 'economic', key: 'debtToGDP' },
     'Fiscal Deficit Level': { category: 'economic', key: 'deficitLevel' },
-    'Forex Reserves': { category: 'economic', key: 'forexReserves' },
+    'Import Cover (months)': { category: 'economic', key: 'forexReserves' },
     'Balance of Payments': { category: 'economic', key: 'balanceOfPayments' },
     'Employment Level': { category: 'economic', key: 'employmentLevel' },
     'Labor Productivity': { category: 'economic', key: 'laborProductivity' },
@@ -846,6 +873,50 @@ export default function AnalyticsPage() {
                         type="monotone"
                         dataKey="value"
                         stroke={ginisColor}
+                        strokeWidth={3}
+                        connectNulls
+                        dot={false}
+                        activeDot={{ r: 6 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {country && forexChartData.length > 0 && (
+            <Card className="col-span-12 lg:col-span-6">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-base">Forex Import Cover (2019-2030)</CardTitle>
+                    <CardDescription>Months of import coverage from FX reserves</CardDescription>
+                  </div>
+                  <Badge variant="outline">Economic</Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[280px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={forexChartData} margin={{ top: 10, right: 10, left: -10, bottom: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                      <XAxis dataKey="year" tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                      <YAxis domain={[0, 60]} tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: 'hsl(var(--card))',
+                          border: '1px solid hsl(var(--border))',
+                          borderRadius: '8px',
+                          fontSize: '11px',
+                        }}
+                        formatter={(value: number) => [`${value?.toFixed(1)} mo`, 'Import Cover']}
+                      />
+                      <ReferenceLine x={2024} stroke="hsl(var(--muted-foreground))" strokeDasharray="5 5" label={{ value: 'Forecast Start', fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke={getResilienceColor(country.scores.economic)}
                         strokeWidth={3}
                         connectNulls
                         dot={false}

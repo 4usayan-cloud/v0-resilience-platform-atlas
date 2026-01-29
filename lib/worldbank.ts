@@ -1,6 +1,6 @@
 import worldBankRaw from "@/data/worldbank-indicators.json";
 
-type IndicatorKey = "ageYouth" | "unemployment" | "taxRevenue";
+type IndicatorKey = "ageYouth" | "unemployment" | "taxRevenue" | "forexReserves" | "imports";
 type YearRecord = { year: number; value: number };
 
 type IndicatorYearRecord = Partial<Record<IndicatorKey, number>>;
@@ -149,6 +149,45 @@ export function buildGinisSeriesMap(
     }
   }
 
+  return seriesMap;
+}
+
+export function buildForexCoverMap(iso3Codes: string[]) {
+  const map = new Map<string, number>();
+  for (const iso3 of iso3Codes) {
+    const reserves = getAverageValue(iso3, "forexReserves");
+    const imports = getAverageValue(iso3, "imports");
+    if (typeof reserves !== "number" || typeof imports !== "number" || imports === 0) continue;
+    const monthlyImports = imports / 12;
+    const months = reserves / monthlyImports;
+    if (!Number.isFinite(months)) continue;
+    map.set(iso3, Number(Math.max(0, Math.min(60, months)).toFixed(1)));
+  }
+  return map;
+}
+
+export function buildForexCoverSeriesMap(
+  iso3Codes: string[],
+  startYear = 2019,
+  endYear = 2024
+) {
+  const seriesMap = new Map<string, YearRecord[]>();
+  for (const iso3 of iso3Codes) {
+    const series: YearRecord[] = [];
+    for (let year = startYear; year <= endYear; year += 1) {
+      const record = worldBankData.data[iso3]?.[String(year)];
+      const reserves = record?.forexReserves;
+      const imports = record?.imports;
+      if (typeof reserves !== "number" || typeof imports !== "number" || imports === 0) {
+        continue;
+      }
+      const monthlyImports = imports / 12;
+      const months = reserves / monthlyImports;
+      if (!Number.isFinite(months)) continue;
+      series.push({ year, value: Number(Math.max(0, Math.min(60, months)).toFixed(1)) });
+    }
+    if (series.length > 0) seriesMap.set(iso3, series);
+  }
   return seriesMap;
 }
 
