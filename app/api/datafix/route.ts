@@ -44,10 +44,12 @@ async function fetchArticleText(url: string): Promise<{ text: string; source: st
 
 export async function POST(request: Request) {
   if (!OPENAI_API_KEY) {
-    return NextResponse.json(
-      { error: "Missing OPENAI_API_KEY" },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      reply:
+        "Datafix is offline because the OpenAI API key is missing. " +
+        "Please add OPENAI_API_KEY in Vercel for this project and redeploy.",
+      warning: "missing_openai_api_key",
+    });
   }
 
   const { messages } = await request.json();
@@ -109,7 +111,7 @@ export async function POST(request: Request) {
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       return NextResponse.json(
-        { error: err?.error?.message || "OpenAI API error" },
+        { reply: "Datafix hit an API error. Please try again in a moment." },
         { status: res.status }
       );
     }
@@ -120,7 +122,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ reply });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to reach OpenAI API" },
+      { reply: "Datafix is unreachable right now. Please try again shortly." },
       { status: 500 }
     );
   }
