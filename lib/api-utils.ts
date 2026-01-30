@@ -71,7 +71,7 @@ export async function fetchWorldBankIndicator(
 }
 
 // GDELT Project - Global events (No key required, 100% FREE)
-export async function fetchGDELTEvents() {
+export async function fetchGDELTEvents(query: string = "(conflict OR disaster OR crisis OR emergency OR war OR earthquake OR flood OR attack OR violence)") {
   try {
     // GDELT query for recent global events - NO API KEY NEEDED
     // NOTE: OR queries MUST be wrapped in parentheses
@@ -79,7 +79,7 @@ export async function fetchGDELTEvents() {
       'https://api.gdeltproject.org/api/v2/doc/doc',
       {
         params: {
-          query: '(conflict OR disaster OR crisis OR emergency OR war OR earthquake OR flood OR attack OR violence)',
+          query,
           mode: 'artlist',
           maxrecords: 75,
           format: 'json',

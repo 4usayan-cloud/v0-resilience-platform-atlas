@@ -1204,6 +1204,32 @@ function erf(x) {
                     Where w_i represents indicator weights based on data quality and theoretical importance
                   </p>
                 </div>
+
+                <div className="p-4 rounded-lg bg-secondary/30">
+                  <h4 className="text-sm font-medium mb-2">Model v2: Robust Pillar Construction (2026)</h4>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    The v2 model prioritizes grievance buildup, external stability, institutional capacity, and infrastructure reliability.
+                    Indicators are normalized to a 0–100 scale with directionality (risk-lowering indicators are inverted).
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-muted-foreground">
+                    <div className="p-3 rounded-lg bg-background">
+                      <div className="text-foreground font-medium mb-1">Social (anger & cohesion)</div>
+                      <div>Poverty headcount, youth unemployment, food inflation, slum population, voice & accountability, protest/riot events per capita.</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-background">
+                      <div className="text-foreground font-medium mb-1">Economic (shock absorption)</div>
+                      <div>FX reserves (months of imports), current account balance, external debt, inflation, unemployment.</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-background">
+                      <div className="text-foreground font-medium mb-1">Institutional (state capacity)</div>
+                      <div>Rule of law, government effectiveness, regulatory quality, control of corruption, political stability.</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-background">
+                      <div className="text-foreground font-medium mb-1">Infrastructure (reliability)</div>
+                      <div>Electricity access, energy import dependence, logistics performance, internet penetration, water stress.</div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { countries, regions, incomeGroups } from "@/lib/country-data";
 import { CountryData, getResilienceColor, getResilienceLevel, zScoreNormalize } from "@/lib/types";
 import { buildForexCoverSeriesMap, buildGinisSeriesMap } from "@/lib/worldbank";
+import useSWR from "swr";
 import {
   LineChart,
   Line,
@@ -39,6 +40,12 @@ import {
   ZAxis,
 } from "recharts";
 import { TrendingUp, TrendingDown, Minus, Info, ChevronDown, ChevronUp, BarChart3, Activity, Target, Shield } from "lucide-react";
+
+const modelFetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) return null;
+  return res.json();
+};
 
 // BSTS + DFM Forecast calculation helper
 function generateBSTSForecast(historicalData: number[], years: number) {
@@ -99,6 +106,11 @@ export default function AnalyticsPage() {
 
   const country = useMemo(() => countries.find(c => c.code === selectedCountry), [selectedCountry]);
   const compareData = useMemo(() => countries.find(c => c.code === compareCountry), [compareCountry]);
+  const { data: modelScore } = useSWR(
+    `/api/model/score?country=${selectedCountry}`,
+    modelFetcher,
+    { refreshInterval: 6 * 60 * 60 * 1000 }
+  );
   const pillarScore = country ? country.scores[pillar === 'overall' ? 'overall' : pillar] : 0;
   const pillarColor = getResilienceColor(pillarScore);
   const compareColor = compareData ? getResilienceColor(compareData.scores.overall) : "#f97316";
@@ -746,6 +758,45 @@ export default function AnalyticsPage() {
                     </div>
                   </div>
                 </div>
+
+                {modelScore && (
+                  <div className="p-3 rounded-lg bg-secondary/30 mt-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-xs font-medium text-muted-foreground">Model v2 (Live Indicators)</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Overall</span>
+                        <span className="font-mono font-medium">{modelScore.overall?.toFixed?.(1) ?? "--"}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Social</span>
+                        <span className="font-mono font-medium">{modelScore.social?.score?.toFixed?.(1) ?? "--"}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Economic</span>
+                        <span className="font-mono font-medium">{modelScore.economic?.score?.toFixed?.(1) ?? "--"}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Institutional</span>
+                        <span className="font-mono font-medium">{modelScore.institutional?.score?.toFixed?.(1) ?? "--"}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Infrastructure</span>
+                        <span className="font-mono font-medium">{modelScore.infrastructure?.score?.toFixed?.(1) ?? "--"}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground">Coverage</span>
+                        <span className="font-mono font-medium">
+                          {modelScore.social?.coverage !== undefined
+                            ? `${Math.round(((modelScore.social?.coverage + modelScore.economic?.coverage + modelScore.institutional?.coverage + modelScore.infrastructure?.coverage) / 4) * 100)}%`
+                            : "--"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}
