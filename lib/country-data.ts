@@ -75,53 +75,7 @@ function generateForecastData(historicalData: YearlyScore[], baseScores: { econo
   return years;
 }
 
-// Real-world Gini coefficients - VERIFIED from World Bank & CIA World Factbook (2022-2024)
-// Sources: data.worldbank.org/indicator/SI.POV.GINI, CIA World Factbook 2024
-// Note: Lower Gini = more equal income distribution
-const giniData: Record<string, number> = {
-  // Highest inequality (Gini > 50)
-  'ZAF': 63.0, 'NAM': 59.1, 'SUR': 57.9, 'BWA': 54.9, 'SWZ': 54.6, 'COL': 53.9, 'BRA': 51.6,
-  'ZMB': 51.5, 'AGO': 51.3, 'LCA': 51.2, 'MOZ': 50.3, 'ZWE': 50.3,
-  
-  // High inequality (Gini 45-50)
-  'XKX': 49.4, 'PAN': 48.9, 'HND': 46.8, 'SGP': 45.8, 'CRI': 45.8, 'GTM': 45.2, 'LSO': 44.9,
-  'COD': 44.7, 'ECU': 44.6, 'TUR': 44.5, 'PRY': 44.4, 'SSD': 44.0, 
-  
-  // Upper-middle inequality (Gini 40-45)
-  'GRD': 43.8, 'RWA': 43.7, 'MEX': 43.5, 'GHA': 43.5, 'CHL': 43.0, 'CAF': 43.0, 'UGA': 42.7,
-  'MDG': 42.5, 'ARG': 42.4, 'CPV': 42.4, 'CMR': 42.2, 'BOL': 42.1, 'USA': 41.8, 'DJI': 41.6,
-  'HTI': 41.1, 'URY': 40.9, 'MYS': 40.7, 'PER': 40.7, 'STP': 40.7, 'TZA': 40.5, 'TTO': 40.2,
-  'FSM': 40.1, 'BLZ': 39.9, 'JAM': 39.9, 'SLV': 39.8, 'MAR': 39.5, 'PHL': 39.3, 'SUR': 39.2,
-  
-  // Middle inequality (Gini 35-40)
-  'LAO': 38.8, 'GMB': 38.8, 'KEN': 38.7, 'WSM': 38.7, 'MWI': 38.5, 'DOM': 38.4, 'GNQ': 38.4,
-  'BGR': 38.2, 'GAB': 38.0, 'TGO': 37.9, 'ISR': 37.9, 'LKA': 37.7, 'BDI': 37.5, 'TCD': 37.4,
-  'BFA': 37.4, 'SLB': 37.1, 'MUS': 36.8, 'YEM': 36.7, 'LTU': 36.6, 'PSE': 36.4, 'PRT': 36.3,
-  'SEN': 36.2, 'VNM': 36.1, 'IRN': 35.9, 'CHN': 35.7, 'MLI': 35.7, 'SLE': 35.7, 'MHL': 35.5,
-  'CIV': 35.3, 'LBR': 35.3, 'RUS': 35.1, 'NGA': 35.1, 'QAT': 35.1,
-  
-  // Lower-middle inequality (Gini 30-35)
-  'IDN': 34.9, 'GEO': 34.8, 'MLT': 34.6, 'UZB': 34.5, 'BEN': 34.4, 'AUS': 34.3, 'MNE': 34.3,
-  'SDN': 34.2, 'LUX': 34.1, 'BRB': 34.1, 'TJK': 34.0, 'TWN': 33.9, 'CHE': 33.8, 'ITA': 33.7,
-  'TUN': 33.7, 'JOR': 33.7, 'LVA': 33.7, 'ESP': 33.6, 'MKD': 33.5, 'THA': 33.5, 'BGD': 33.4,
-  'GRC': 33.4, 'GNB': 33.4, 'BIH': 33.0, 'KOR': 32.9, 'NER': 32.9, 'SRB': 32.8, 'DEU': 32.4,
-  'GBR': 32.4, 'NRU': 32.4, 'JPN': 32.3, 'ROU': 32.3, 'EST': 32.3, 'VUT': 32.3, 'SYC': 32.1,
-  'MRT': 32.0, 'LBN': 31.8, 'SWE': 31.6, 'CYP': 31.5, 'MNG': 31.4, 'FRA': 31.2, 'ETH': 31.1,
-  'AUT': 30.9, 'MMR': 30.7, 'FJI': 30.7, 'HUN': 30.2, 'NPL': 30.0, 'HRV': 30.0,
-  
-  // Low inequality (Gini < 30)
-  'CAN': 29.9, 'IRL': 29.9, 'IRQ': 29.8, 'PAK': 29.6, 'GIN': 29.6, 'ALB': 29.4, 'DNK': 29.3,
-  'MDV': 29.3, 'KAZ': 29.2, 'POL': 28.9, 'TLS': 28.7, 'EGY': 28.5, 'BTN': 28.5, 'FIN': 27.9,
-  'KIR': 27.8, 'DZA': 27.6, 'ARM': 27.2, 'TON': 27.1, 'NOR': 26.9, 'SYR': 26.6, 'AZE': 26.6,
-  'ISL': 26.6, 'BEL': 26.4, 'ARE': 26.4, 'KGZ': 26.4, 'CZE': 25.9, 'MDA': 25.9, 'NLD': 25.7,
-  'UKR': 25.6, 'IND': 25.5, 'BLR': 24.4, 'SVN': 24.3, 'SVK': 24.1,
-  
-  // Default estimates for countries without recent data
-  'SAU': 45.9, 'KWT': 35.0, 'BHR': 35.0, 'OMN': 35.0, 'LBY': 35.0, 'CUB': 35.0, 'BHS': 35.0,
-  'ATG': 35.0, 'DMA': 35.0, 'VCT': 35.0, 'KNA': 35.0, 'PRK': 35.0, 'BRN': 35.0, 'ERI': 35.0,
-  'SOM': 36.8, 'AFG': 29.4, 'HKG': 53.9, 'MAC': 35.0, 'GUY': 45.1, 'VEN': 44.7, 'NIC': 46.2,
-  'COM': 45.3, 'PNG': 41.9
-};
+// Ginis Index is now computed from live World Bank indicators and applied later.
 
 // Real-world poverty rates (World Bank $2.15/day extreme poverty line) - VERIFIED 2022-2024
 // Sources: World Bank PovcalNet, World Development Indicators
@@ -177,8 +131,8 @@ function createCountryData(
   const forecastScores = generateForecastData(historicalScores, baseScores);
   const latestScore = historicalScores[historicalScores.length - 1];
   
-  // Use real Gini data if available
-  const gini = giniData[code] ?? (60 - baseScores.social * 0.35);
+  // Placeholder; overridden by validated Ginis Index map
+  const gini = 60 - baseScores.social * 0.35;
   const poverty = povertyData[code] ?? (50 - baseScores.social * 0.45);
   
   return {
