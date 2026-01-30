@@ -32,6 +32,9 @@ export function DatafixChat() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
+  const [speechEnabled, setSpeechEnabled] = useState(true);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const lastSpokenIndexRef = useRef<number>(-1);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const cacheBuster = "v=20260129";
@@ -43,6 +46,35 @@ export function DatafixChat() {
     if (!scrollRef.current) return;
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
+
+  const speakText = (text: string) => {
+    if (typeof window === "undefined") return;
+    if (!("speechSynthesis" in window)) return;
+    const cleaned = text.trim();
+    if (!cleaned) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(cleaned);
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  useEffect(() => {
+    if (!speechEnabled) return;
+    const lastAssistantIndex = [...messages]
+      .map((m, i) => ({ m, i }))
+      .reverse()
+      .find((entry) => entry.m.role === "assistant")?.i;
+    if (lastAssistantIndex === undefined || lastAssistantIndex <= lastSpokenIndexRef.current) {
+      return;
+    }
+    const lastMessage = messages[lastAssistantIndex];
+    lastSpokenIndexRef.current = lastAssistantIndex;
+    speakText(lastMessage.content);
+  }, [messages, speechEnabled]);
 
   const sendMessage = async (text: string) => {
     const trimmed = text.trim();
@@ -84,7 +116,7 @@ export function DatafixChat() {
   };
 
   return (
-    <Card className="h-full bg-card border-border">
+    <Card className="h-full bg-white/85 border-sky-200 text-slate-900 shadow-sm">
       <CardHeader className="py-3 px-4">
         <div className="flex items-center gap-4">
           {/* Datafix avatar */}
@@ -93,7 +125,7 @@ export function DatafixChat() {
               <img
                 src={resolvedAvatarSrc || `/avatar1.png?${cacheBuster}`}
                 alt="Datafix fallback"
-                className="w-20 h-20 rounded-full border border-border shadow-lg"
+                className="datafix-avatar"
                 style={{ objectFit: "cover" }}
               />
             ) : isLoading ? (
@@ -101,7 +133,7 @@ export function DatafixChat() {
                 width="80"
                 height="80"
                 viewBox="0 0 512 512"
-                className="w-20 h-20 rounded-full border border-border shadow-lg"
+                className="datafix-avatar"
                 role="img"
                 aria-label="Datafix thinking"
                 onError={() => setAvatarError(true)}
@@ -158,7 +190,7 @@ export function DatafixChat() {
                 width="80"
                 height="80"
                 viewBox="0 0 512 512"
-                className="w-20 h-20 rounded-full border border-border shadow-lg"
+                className="datafix-avatar"
                 role="img"
                 aria-label="Datafix answering"
                 onError={() => setAvatarError(true)}
@@ -205,9 +237,42 @@ export function DatafixChat() {
           </div>
           <CardTitle className="text-sm font-medium flex flex-col items-start gap-2">
             <span>Datafix</span>
-            <Badge variant="outline" className="text-[10px]">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="text-[10px] border-sky-200 text-slate-700">
               {isLoading ? "Thinking..." : "Online"}
-            </Badge>
+              </Badge>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
+                onClick={() => {
+                  const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
+                  if (lastAssistant) speakText(lastAssistant.content);
+                }}
+              >
+                Speak
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
+                onClick={() => {
+                  setSpeechEnabled((prev) => {
+                    const next = !prev;
+                    if (!next && typeof window !== "undefined" && "speechSynthesis" in window) {
+                      window.speechSynthesis.cancel();
+                      setIsSpeaking(false);
+                    }
+                    return next;
+                  });
+                }}
+              >
+                {speechEnabled ? "Voice On" : "Voice Off"}
+              </Button>
+              {isSpeaking && (
+                <span className="text-[10px] text-sky-700">Speaking…</span>
+              )}
+            </div>
           </CardTitle>
         </div>
       </CardHeader>
@@ -219,15 +284,15 @@ export function DatafixChat() {
                 key={`${msg.role}-${idx}`}
                 className={`rounded-lg px-3 py-2 text-xs leading-relaxed ${
                   msg.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary/40 text-foreground"
+                    ? "bg-sky-600 text-white"
+                    : "bg-sky-50 text-slate-900"
                 }`}
               >
                 {msg.content}
               </div>
             ))}
             {isLoading && (
-              <div className="rounded-lg px-3 py-2 text-xs bg-secondary/40 text-foreground">
+              <div className="rounded-lg px-3 py-2 text-xs bg-sky-50 text-slate-900">
                 Datafix is thinking...
               </div>
             )}
@@ -240,14 +305,14 @@ export function DatafixChat() {
             {starterPrompts.map((prompt) => (
               <button
                 key={prompt}
-                className="text-[10px] px-2 py-1 rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                className="text-[10px] px-2 py-1 rounded-full bg-sky-100 text-slate-700 hover:text-slate-900 hover:bg-sky-200 transition-colors"
                 onClick={() => sendMessage(prompt)}
               >
                 {prompt}
               </button>
             ))}
             <button
-              className="text-[10px] px-2 py-1 rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              className="text-[10px] px-2 py-1 rounded-full bg-sky-100 text-slate-700 hover:text-slate-900 hover:bg-sky-200 transition-colors"
               onClick={() =>
                 setInput("Translate to English: ")
               }
@@ -255,7 +320,7 @@ export function DatafixChat() {
               Translate
             </button>
             <button
-              className="text-[10px] px-2 py-1 rounded-full bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              className="text-[10px] px-2 py-1 rounded-full bg-sky-100 text-slate-700 hover:text-slate-900 hover:bg-sky-200 transition-colors"
               onClick={() =>
                 setInput("Check this link for legitimacy: https://")
               }
@@ -268,7 +333,7 @@ export function DatafixChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask Datafix..."
-              className="h-9 text-xs"
+              className="h-9 text-xs bg-white text-slate-900 placeholder:text-slate-500 border-sky-200"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -278,7 +343,7 @@ export function DatafixChat() {
             />
             <Button
               size="sm"
-              className="h-9 text-xs"
+              className="h-9 text-xs bg-sky-600 text-white hover:bg-sky-500"
               onClick={() => sendMessage(input)}
               disabled={isLoading}
             >

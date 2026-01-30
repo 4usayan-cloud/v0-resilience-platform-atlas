@@ -33,7 +33,7 @@ export default function HomePage() {
 
       <div className="flex-1 flex">
         {/* Left Sidebar - Datafix */}
-        <div className="w-[320px] border-r border-border bg-card/50 p-4 flex flex-col gap-4">
+        <div className="w-[320px] border-r border-sky-200 bg-sky-100 p-4 flex flex-col gap-4 text-slate-900">
           <div className="flex-1 min-h-0">
             <DatafixChat />
           </div>
