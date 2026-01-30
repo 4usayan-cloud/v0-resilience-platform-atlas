@@ -87,6 +87,10 @@ export async function GET(request: Request) {
 
 // Fetch live market indices from Yahoo Finance
 async function fetchLiveMarketIndices(): Promise<MarketIndex[]> {
+  const normalizeNumber = (value: unknown, fallback: number = 0) => {
+    return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+  };
+
   const symbols = [
     { symbol: '^GSPC', name: 'S&P 500', country: 'USA', currency: 'USD' },
     { symbol: '^IXIC', name: 'NASDAQ', country: 'USA', currency: 'USD' },
@@ -111,9 +115,9 @@ async function fetchLiveMarketIndices(): Promise<MarketIndex[]> {
         const quote = bySymbol.get(idx.symbol);
         if (!quote) return;
         const current = quote.regularMarketPrice ?? quote.postMarketPrice ?? quote.preMarketPrice;
-        const change = quote.regularMarketChange ?? 0;
-        const changePercent = quote.regularMarketChangePercent ?? 0;
-        if (typeof current !== "number") return;
+        if (typeof current !== "number" || !Number.isFinite(current)) return;
+        const change = normalizeNumber(quote.regularMarketChange, 0);
+        const changePercent = normalizeNumber(quote.regularMarketChangePercent, 0);
         indices.push({
           name: idx.name,
           country: idx.country,
@@ -136,17 +140,19 @@ async function fetchLiveMarketIndices(): Promise<MarketIndex[]> {
       if (data?.chart?.result?.[0]) {
         const quote = data.chart.result[0];
         const meta = quote.meta;
-        const current = meta.regularMarketPrice || meta.previousClose;
+        const current = meta.regularMarketPrice ?? meta.previousClose;
         const previous = meta.previousClose;
-        const change = current - previous;
-        const changePercent = (change / previous) * 100;
+        if (typeof current !== "number" || !Number.isFinite(current)) return null;
+        const previousSafe = typeof previous === "number" && Number.isFinite(previous) && previous !== 0 ? previous : null;
+        const changeRaw = previousSafe ? current - previousSafe : 0;
+        const changePercentRaw = previousSafe ? (changeRaw / previousSafe) * 100 : 0;
 
         return {
           name: idx.name,
           country: idx.country,
-          value: Math.round(current * 100) / 100,
-          change: Math.round(change * 100) / 100,
-          changePercent: Math.round(changePercent * 100) / 100,
+          value: Math.round(normalizeNumber(current) * 100) / 100,
+          change: Math.round(normalizeNumber(changeRaw) * 100) / 100,
+          changePercent: Math.round(normalizeNumber(changePercentRaw) * 100) / 100,
           currency: idx.currency,
         };
       }

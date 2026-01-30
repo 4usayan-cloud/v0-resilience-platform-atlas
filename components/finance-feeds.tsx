@@ -76,6 +76,7 @@ export function FinanceFeeds({ selectedCountry }: FinanceFeedsProps) {
   };
 
   const formatValue = (value: number, decimals: number = 2) => {
+    if (!Number.isFinite(value)) return "--";
     return value.toLocaleString(undefined, { 
       minimumFractionDigits: decimals, 
       maximumFractionDigits: decimals 
