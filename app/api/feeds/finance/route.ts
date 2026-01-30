@@ -39,26 +39,33 @@ export async function GET(request: Request) {
     let response: any = {};
 
     if (type === "fii") {
-      return NextResponse.json(
-        { error: "FII data is not available from free live sources", dataSource: "live" },
-        { status: 503 }
-      );
+      // Return a friendly response instead of erroring the whole tab.
+      return NextResponse.json({
+        fii: [],
+        indices: [],
+        timestamp: new Date().toISOString(),
+        dataSource: "live",
+        warning: "FII data is not available from free live sources",
+      });
     }
 
     if (type === "indices" || type === "all") {
       const liveIndices = await fetchLiveMarketIndices();
       if (!liveIndices || liveIndices.length === 0) {
-        return NextResponse.json(
-          { error: "No live market indices available", dataSource: "live" },
-          { status: 503 }
-        );
+        const fallback = getFallbackMarketIndices();
+        response.indices = fallback;
+        response.dataSource = "fallback";
+        response.warning = "Live market indices unavailable. Showing fallback snapshot.";
+        console.log("⚠️ Using fallback market indices (live data unavailable).");
+      } else {
+        response.indices = liveIndices;
+        response.dataSource = "live";
+        console.log(`✅ Market indices fetched: ${liveIndices.length} indices`);
       }
-      response.indices = liveIndices;
-      console.log(`✅ Market indices fetched: ${liveIndices.length} indices`);
     }
 
     response.timestamp = new Date().toISOString();
-    response.dataSource = 'live';
+    response.dataSource = response.dataSource || 'live';
 
     // Cache the response
     setCachedData(cacheKey, response, 120000); // 2 minutes
@@ -157,4 +164,19 @@ async function fetchLiveMarketIndices(): Promise<MarketIndex[]> {
   });
 
   return indices;
+}
+
+function getFallbackMarketIndices(): MarketIndex[] {
+  // Conservative snapshot values so the UI remains functional even when live APIs fail.
+  return [
+    { name: 'S&P 500', country: 'USA', value: 4800, change: 0, changePercent: 0, currency: 'USD' },
+    { name: 'NASDAQ', country: 'USA', value: 15000, change: 0, changePercent: 0, currency: 'USD' },
+    { name: 'Dow Jones', country: 'USA', value: 38000, change: 0, changePercent: 0, currency: 'USD' },
+    { name: 'FTSE 100', country: 'GBR', value: 7600, change: 0, changePercent: 0, currency: 'GBP' },
+    { name: 'DAX', country: 'DEU', value: 16500, change: 0, changePercent: 0, currency: 'EUR' },
+    { name: 'Nikkei 225', country: 'JPN', value: 33000, change: 0, changePercent: 0, currency: 'JPY' },
+    { name: 'Shanghai Composite', country: 'CHN', value: 3000, change: 0, changePercent: 0, currency: 'CNY' },
+    { name: 'BSE Sensex', country: 'IND', value: 72000, change: 0, changePercent: 0, currency: 'INR' },
+    { name: 'Nifty 50', country: 'IND', value: 21800, change: 0, changePercent: 0, currency: 'INR' },
+  ];
 }
