@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { countries } from "@/lib/country-data";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const MAX_CHARS = 6000;
@@ -15,6 +16,60 @@ function stripHtml(html: string): string {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function extractCountryCode(text: string): string | null {
+  const upper = text.toUpperCase();
+  const codes = new Set(countries.map((c) => c.code));
+  for (const code of codes) {
+    if (upper.includes(code)) return code;
+  }
+  return null;
+}
+
+async function fetchLiveCountryContext(origin: string, countryCode: string) {
+  const indicators = [
+    { key: "gdp", code: "NY.GDP.MKTP.CD", label: "GDP (current US$)" },
+    { key: "inflation", code: "FP.CPI.TOTL.ZG", label: "Inflation (CPI, %)" },
+    { key: "unemployment", code: "SL.UEM.TOTL.ZS", label: "Unemployment (%)" },
+    { key: "gini", code: "SI.POV.GINI", label: "Gini Index" },
+    { key: "poverty", code: "SI.POV.DDAY", label: "Poverty headcount ($2.15/day)" },
+  ];
+
+  const [modelRes, ...wbResults] = await Promise.all([
+    fetch(`${origin}/api/model/score?country=${countryCode}`),
+    ...indicators.map((ind) =>
+      fetch(`${origin}/api/worldbank?country=${countryCode}&indicator=${ind.code}`)
+    ),
+  ]);
+
+  const model = modelRes.ok ? await modelRes.json() : null;
+  const wb = await Promise.all(
+    wbResults.map(async (res, idx) => {
+      if (!res.ok) return null;
+      const data = await res.json();
+      return { ...indicators[idx], data };
+    })
+  );
+
+  const wbSummary = wb
+    .filter(Boolean)
+    .map((entry: any) => {
+      const series = entry?.data?.data?.[1] || entry?.data?.data;
+      const latest = Array.isArray(series)
+        ? series.find((row: any) => typeof row?.value === "number")
+        : null;
+      if (!latest) return null;
+      return {
+        label: entry.label,
+        value: latest.value,
+        year: latest.date,
+        source: "World Bank",
+      };
+    })
+    .filter(Boolean);
+
+  return { model, wbSummary };
 }
 
 async function fetchArticleText(url: string): Promise<{ text: string; source: string } | null> {
@@ -55,6 +110,9 @@ export async function POST(request: Request) {
   const { messages } = await request.json();
   const lastUserMessage =
     [...(messages || [])].reverse().find((m: any) => m.role === "user")?.content || "";
+  const origin = new URL(request.url).origin;
+  const countryCode = extractCountryCode(lastUserMessage);
+  const liveContext = countryCode ? await fetchLiveCountryContext(origin, countryCode) : null;
   const urls = extractUrls(lastUserMessage);
   let fetchedContext = "";
   let fetchedSource = "";
@@ -79,7 +137,12 @@ export async function POST(request: Request) {
       "Pages: / (Interactive Maps), /analytics, /methodology. " +
       "Ginis Index is a proxy: 20 + 0.3*AgeYouth_norm + 0.4*Unemployment_norm + 0.3*(100 - TaxEffort_norm), based on World Bank indicators SP.POP.0014.TO.ZS, SL.UEM.TOTL.ZS, GC.TAX.TOTL.GD.ZS (2019-2024 averages) with BSTS+DFM forecasts for 2025-2030. " +
       "If asked to translate, translate the text. If asked for where to find data, direct to the right page " +
-      "and explain what to look for. If a URL is provided and context is available, assess whether it appears legitimate and cite the source URL."
+      "and explain what to look for. If a URL is provided and context is available, assess whether it appears legitimate and cite the source URL." +
+      (liveContext && countryCode
+        ? `\nLive context for ${countryCode}:\n` +
+          `Model v2: ${JSON.stringify(liveContext.model)}\n` +
+          `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
+        : ""),
   };
 
   try {
