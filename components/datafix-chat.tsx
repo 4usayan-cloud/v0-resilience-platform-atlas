@@ -37,6 +37,8 @@ export function DatafixChat() {
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [speechReady, setSpeechReady] = useState(false);
+  const [audioReady, setAudioReady] = useState(false);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const lastSpokenIndexRef = useRef<number>(-1);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -83,6 +85,7 @@ export function DatafixChat() {
     }
     utterance.rate = 1;
     utterance.pitch = 1;
+    utterance.volume = 1;
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
     setIsSpeaking(true);
@@ -110,6 +113,31 @@ export function DatafixChat() {
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
     setSpeechReady(true);
+    if (audioContextRef.current) {
+      audioContextRef.current.resume().then(() => setAudioReady(true)).catch(() => {});
+    }
+  };
+
+  const testAudio = () => {
+    if (typeof window === "undefined") return;
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContext();
+    }
+    const ctx = audioContextRef.current;
+    ctx.resume().then(() => {
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.value = 440;
+      gainNode.gain.value = 0.05;
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      oscillator.start();
+      setTimeout(() => {
+        oscillator.stop();
+        setAudioReady(true);
+      }, 200);
+    }).catch(() => {});
   };
 
   const sendMessage = async (text: string) => {
@@ -183,6 +211,14 @@ export function DatafixChat() {
                 variant="outline"
                 size="sm"
                 className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
+                onClick={() => testAudio()}
+              >
+                Test Sound
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
                 onClick={() => {
                   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
                   if (lastAssistant) speakText(lastAssistant.content);
@@ -209,6 +245,9 @@ export function DatafixChat() {
               </Button>
               {isSpeaking && (
                 <span className="text-[10px] text-sky-700">Speaking…</span>
+              )}
+              {audioReady && (
+                <span className="text-[10px] text-emerald-600">Audio OK</span>
               )}
             </div>
             {availableVoices.length > 0 && (
