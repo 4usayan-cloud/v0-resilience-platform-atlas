@@ -193,12 +193,20 @@ export function DatafixChat() {
               onError={() => setAvatarError(true)}
             />
           </div>
-          <CardTitle className="text-sm font-medium flex flex-col items-start gap-2">
+          <CardTitle className="text-sm font-medium flex flex-col items-start gap-2 w-full">
             <span>Datafix</span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Badge variant="outline" className="text-[10px] border-sky-200 text-slate-700">
-              {isLoading ? "Thinking..." : "Online"}
+                {isLoading ? "Thinking..." : "Online"}
               </Badge>
+              {isSpeaking && (
+                <span className="text-[10px] text-sky-700">Speaking…</span>
+              )}
+              {audioReady && (
+                <span className="text-[10px] text-emerald-600">Audio OK</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
               <Button
                 variant="outline"
                 size="sm"
@@ -243,12 +251,6 @@ export function DatafixChat() {
               >
                 {speechEnabled ? "Voice On" : "Voice Off"}
               </Button>
-              {isSpeaking && (
-                <span className="text-[10px] text-sky-700">Speaking…</span>
-              )}
-              {audioReady && (
-                <span className="text-[10px] text-emerald-600">Audio OK</span>
-              )}
             </div>
             {availableVoices.length > 0 && (
               <div className="w-full">
