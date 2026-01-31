@@ -34,6 +34,9 @@ export function DatafixChat() {
   const [avatarError, setAvatarError] = useState(false);
   const [speechEnabled, setSpeechEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState<string>("");
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [speechReady, setSpeechReady] = useState(false);
   const lastSpokenIndexRef = useRef<number>(-1);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,6 +50,26 @@ export function DatafixChat() {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
+  useEffect(() => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const synth = window.speechSynthesis;
+    const refresh = () => {
+      const voices = synth.getVoices();
+      if (voices.length > 0) {
+        setAvailableVoices(voices);
+        if (!selectedVoice) {
+          const preferred = voices.find((v) => v.default) || voices[0];
+          setSelectedVoice(preferred?.name ?? "");
+        }
+      }
+    };
+    refresh();
+    synth.addEventListener("voiceschanged", refresh);
+    return () => {
+      synth.removeEventListener("voiceschanged", refresh);
+    };
+  }, [selectedVoice]);
+
   const speakText = (text: string) => {
     if (typeof window === "undefined") return;
     if (!("speechSynthesis" in window)) return;
@@ -54,6 +77,10 @@ export function DatafixChat() {
     if (!cleaned) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(cleaned);
+    if (selectedVoice) {
+      const voice = availableVoices.find((v) => v.name === selectedVoice);
+      if (voice) utterance.voice = voice;
+    }
     utterance.rate = 1;
     utterance.pitch = 1;
     utterance.onend = () => setIsSpeaking(false);
@@ -75,6 +102,15 @@ export function DatafixChat() {
     lastSpokenIndexRef.current = lastAssistantIndex;
     speakText(lastMessage.content);
   }, [messages, speechEnabled]);
+
+  const unlockSpeech = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const utterance = new SpeechSynthesisUtterance(" ");
+    utterance.volume = 0;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+    setSpeechReady(true);
+  };
 
   const sendMessage = async (text: string) => {
     const trimmed = text.trim();
@@ -139,6 +175,14 @@ export function DatafixChat() {
                 variant="outline"
                 size="sm"
                 className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
+                onClick={() => unlockSpeech()}
+              >
+                {speechReady ? "Audio On" : "Enable Audio"}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
                 onClick={() => {
                   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
                   if (lastAssistant) speakText(lastAssistant.content);
@@ -167,6 +211,22 @@ export function DatafixChat() {
                 <span className="text-[10px] text-sky-700">Speaking…</span>
               )}
             </div>
+            {availableVoices.length > 0 && (
+              <div className="w-full">
+                <label className="text-[10px] text-slate-600">Voice</label>
+                <select
+                  className="mt-1 h-7 w-full rounded-md border border-sky-200 bg-white text-[10px] text-slate-700"
+                  value={selectedVoice}
+                  onChange={(e) => setSelectedVoice(e.target.value)}
+                >
+                  {availableVoices.map((voice) => (
+                    <option key={voice.name} value={voice.name}>
+                      {voice.name} {voice.lang ? `(${voice.lang})` : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </CardTitle>
         </div>
       </CardHeader>
