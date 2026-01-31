@@ -17,13 +17,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Default credentials - In production, these should be stored securely in environment variables
-// and validated against a database
-const VALID_CREDENTIALS = [
-  { username: 'admin', password: 'atlas2025', role: 'admin' as const },
-  { username: 'sayan', password: 'resilience@123', role: 'admin' as const },
-  { username: 'user', password: 'viewer2025', role: 'user' as const },
-];
+// Single-login credentials (client-side). Set NEXT_PUBLIC_ADMIN_USER / NEXT_PUBLIC_ADMIN_PASS on Vercel.
+const VALID_CREDENTIAL = {
+  username: (process.env.NEXT_PUBLIC_ADMIN_USER || "admin").trim(),
+  password: (process.env.NEXT_PUBLIC_ADMIN_PASS || "atlas2025").trim(),
+  role: "admin" as const,
+};
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -46,12 +45,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const validUser = VALID_CREDENTIALS.find(
-      cred => cred.username.toLowerCase() === username.toLowerCase() && cred.password === password
-    );
+    const validUser =
+      VALID_CREDENTIAL.username.toLowerCase() === username.toLowerCase() &&
+      VALID_CREDENTIAL.password === password;
 
     if (validUser) {
-      const userData: User = { username: validUser.username, role: validUser.role };
+      const userData: User = { username: VALID_CREDENTIAL.username, role: VALID_CREDENTIAL.role };
       setUser(userData);
       sessionStorage.setItem('atlas_user', JSON.stringify(userData));
       return { success: true };
