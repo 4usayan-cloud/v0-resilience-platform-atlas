@@ -32,7 +32,7 @@ export function DatafixChat() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
-  const [speechEnabled, setSpeechEnabled] = useState(true);
+  const [speechEnabled, setSpeechEnabled] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [selectedVoice, setSelectedVoice] = useState<string>("");
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
@@ -91,7 +91,7 @@ export function DatafixChat() {
       }, 2000);
     });
 
-  const speakText = (text: string) => {
+  const speakText = (text: string, retry = true) => {
     if (typeof window === "undefined") return;
     if (!("speechSynthesis" in window)) return;
     const cleaned = text.trim().slice(0, 500);
@@ -117,7 +117,12 @@ export function DatafixChat() {
       utterance.onend = () => setIsSpeaking(false);
       utterance.onerror = (evt) => {
         setIsSpeaking(false);
-        setSpeechError(evt?.error ? String(evt.error) : "Speech failed");
+        const err = evt?.error ? String(evt.error) : "Speech failed";
+        if (err === "interrupted" && retry) {
+          setTimeout(() => speakText(cleaned, false), 250);
+          return;
+        }
+        setSpeechError(err);
       };
       setIsSpeaking(true);
       try {
@@ -130,7 +135,7 @@ export function DatafixChat() {
   };
 
   useEffect(() => {
-    if (!speechEnabled) return;
+    if (!speechEnabled || !speechReady) return;
     const lastAssistantIndex = [...messages]
       .map((m, i) => ({ m, i }))
       .reverse()
@@ -141,7 +146,7 @@ export function DatafixChat() {
     const lastMessage = messages[lastAssistantIndex];
     lastSpokenIndexRef.current = lastAssistantIndex;
     speakText(lastMessage.content);
-  }, [messages, speechEnabled]);
+  }, [messages, speechEnabled, speechReady]);
 
   const unlockSpeech = () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
