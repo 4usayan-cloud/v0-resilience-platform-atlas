@@ -38,6 +38,7 @@ export function DatafixChat() {
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [speechReady, setSpeechReady] = useState(false);
   const [audioReady, setAudioReady] = useState(false);
+  const [speechError, setSpeechError] = useState<string | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const lastSpokenIndexRef = useRef<number>(-1);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -72,24 +73,60 @@ export function DatafixChat() {
     };
   }, [selectedVoice]);
 
+  const waitForVoices = () =>
+    new Promise<SpeechSynthesisVoice[]>((resolve) => {
+      if (typeof window === "undefined" || !("speechSynthesis" in window)) return resolve([]);
+      const synth = window.speechSynthesis;
+      const existing = synth.getVoices();
+      if (existing.length > 0) return resolve(existing);
+      const handler = () => {
+        const voices = synth.getVoices();
+        synth.removeEventListener("voiceschanged", handler);
+        resolve(voices);
+      };
+      synth.addEventListener("voiceschanged", handler);
+      setTimeout(() => {
+        synth.removeEventListener("voiceschanged", handler);
+        resolve(synth.getVoices());
+      }, 2000);
+    });
+
   const speakText = (text: string) => {
     if (typeof window === "undefined") return;
     if (!("speechSynthesis" in window)) return;
-    const cleaned = text.trim();
+    const cleaned = text.trim().slice(0, 500);
     if (!cleaned) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(cleaned);
-    if (selectedVoice) {
-      const voice = availableVoices.find((v) => v.name === selectedVoice);
-      if (voice) utterance.voice = voice;
-    }
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    utterance.volume = 1;
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-    setIsSpeaking(true);
-    window.speechSynthesis.speak(utterance);
+    setSpeechError(null);
+    (async () => {
+      const voices = await waitForVoices();
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
+      const utterance = new SpeechSynthesisUtterance(cleaned);
+      const voiceName = selectedVoice || voices.find((v) => v.default)?.name;
+      if (voiceName) {
+        const voice = voices.find((v) => v.name === voiceName);
+        if (voice) {
+          utterance.voice = voice;
+          if (voice.lang) utterance.lang = voice.lang;
+        }
+      }
+      if (!utterance.lang) utterance.lang = "en-US";
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = (evt) => {
+        setIsSpeaking(false);
+        setSpeechError(evt?.error ? String(evt.error) : "Speech failed");
+      };
+      setIsSpeaking(true);
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch {
+        setIsSpeaking(false);
+        setSpeechError("Speech threw an error");
+      }
+    })();
   };
 
   useEffect(() => {
@@ -116,6 +153,11 @@ export function DatafixChat() {
     if (audioContextRef.current) {
       audioContextRef.current.resume().then(() => setAudioReady(true)).catch(() => {});
     }
+    waitForVoices().then((voices) => {
+      if (voices.length > 0) {
+        setAvailableVoices(voices);
+      }
+    });
   };
 
   const testAudio = () => {
@@ -205,6 +247,9 @@ export function DatafixChat() {
               {audioReady && (
                 <span className="text-[10px] text-emerald-600">Audio OK</span>
               )}
+              {speechError && (
+                <span className="text-[10px] text-red-500">Speech: {speechError}</span>
+              )}
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               <Button
@@ -222,6 +267,14 @@ export function DatafixChat() {
                 onClick={() => testAudio()}
               >
                 Test Sound
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 px-2 text-[10px] border-sky-200 text-slate-700 hover:text-slate-900"
+                onClick={() => speakText("Datafix voice test. One two three.")}
+              >
+                Test Voice
               </Button>
               <Button
                 variant="outline"
