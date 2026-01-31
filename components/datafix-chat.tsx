@@ -335,11 +335,12 @@ export function DatafixChat() {
             {messages.map((msg, idx) => (
               <div
                 key={`${msg.role}-${idx}`}
-                className={`rounded-lg px-3 py-2 text-xs leading-relaxed ${
+                className={`rounded-lg px-3 py-3 text-base leading-relaxed font-medium shadow-sm border ${
                   msg.role === "user"
-                    ? "bg-sky-600 text-white"
-                    : "bg-sky-50 text-slate-900"
+                    ? "bg-sky-600 text-white border-sky-600"
+                    : "bg-yellow-50 text-slate-900 border-yellow-200"
                 }`}
+                style={msg.role === "assistant" ? { fontSize: '1.15rem', lineHeight: 1.7, background: '#fffbe6', color: '#1a202c', border: '1px solid #ffe066' } : {}}
               >
                 {msg.content}
               </div>
