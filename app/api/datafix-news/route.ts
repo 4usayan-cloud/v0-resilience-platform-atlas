@@ -42,10 +42,10 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-async function fetchGuardianNews(): Promise<typeof STATIC_ITEMS | null> {
+async function fetchGuardianNews(query: string): Promise<typeof STATIC_ITEMS | null> {
   if (!GUARDIAN_API_KEY) return null;
   const url = new URL("https://content.guardianapis.com/search");
-  url.searchParams.set("q", DEFAULT_QUERY);
+  url.searchParams.set("q", query);
   url.searchParams.set("api-key", GUARDIAN_API_KEY);
   url.searchParams.set("order-by", "newest");
   url.searchParams.set("page-size", String(DEFAULT_PAGE_SIZE));
@@ -70,9 +70,9 @@ async function fetchGuardianNews(): Promise<typeof STATIC_ITEMS | null> {
   });
 }
 
-async function fetchGdeltNews(): Promise<typeof STATIC_ITEMS | null> {
+async function fetchGdeltNews(query: string): Promise<typeof STATIC_ITEMS | null> {
   const gdeltUrl = new URL("https://api.gdeltproject.org/api/v2/doc/doc");
-  gdeltUrl.searchParams.set("query", "india");
+  gdeltUrl.searchParams.set("query", query);
   gdeltUrl.searchParams.set("mode", "artlist");
   gdeltUrl.searchParams.set("maxrecords", String(DEFAULT_PAGE_SIZE));
   gdeltUrl.searchParams.set("format", "json");
@@ -128,19 +128,45 @@ async function fetchSocialNews(origin: string): Promise<typeof STATIC_ITEMS | nu
 
 export async function GET(request: Request) {
   let items = STATIC_ITEMS;
+  let dataSource: "social" | "gdelt" | "guardian" | "static" = "static";
+  const diagnostics: {
+    updatedAt: string;
+    query: string;
+    sourceTried: string[];
+    sourceUsed: string;
+    guardianKeyPresent: boolean;
+  } = {
+    updatedAt: new Date().toISOString(),
+    query: DEFAULT_QUERY,
+    sourceTried: [],
+    sourceUsed: "static",
+    guardianKeyPresent: Boolean(GUARDIAN_API_KEY),
+  };
+  const url = new URL(request.url);
+  const query = url.searchParams.get("q")?.trim() || DEFAULT_QUERY;
+  diagnostics.query = query;
   try {
-    const origin = new URL(request.url).origin;
+    const origin = url.origin;
+    diagnostics.sourceTried.push("social");
     const socialItems = await fetchSocialNews(origin);
     if (socialItems && socialItems.length > 0) {
       items = socialItems;
+      dataSource = "social";
+      diagnostics.sourceUsed = "social";
     } else {
-      const gdeltItems = await fetchGdeltNews();
+      diagnostics.sourceTried.push("gdelt");
+      const gdeltItems = await fetchGdeltNews(query);
       if (gdeltItems && gdeltItems.length > 0) {
         items = gdeltItems;
+        dataSource = "gdelt";
+        diagnostics.sourceUsed = "gdelt";
       } else {
-        const guardianItems = await fetchGuardianNews();
+        diagnostics.sourceTried.push("guardian");
+        const guardianItems = await fetchGuardianNews(query);
         if (guardianItems && guardianItems.length > 0) {
           items = guardianItems;
+          dataSource = "guardian";
+          diagnostics.sourceUsed = "guardian";
         }
       }
     }
@@ -150,9 +176,15 @@ export async function GET(request: Request) {
 
   return NextResponse.json(
     {
-      updatedAt: new Date().toISOString(),
+      updatedAt: diagnostics.updatedAt,
+      dataSource,
+      query,
+      warnings: {
+        guardianKeyMissing: !GUARDIAN_API_KEY,
+      },
       count: items.length,
       items,
+      diagnostics,
     },
     {
       headers: {
