@@ -128,7 +128,7 @@ async function fetchSocialNews(origin: string): Promise<typeof STATIC_ITEMS | nu
 
 export async function GET(request: Request) {
   let items = STATIC_ITEMS;
-  let dataSource: "social" | "gdelt" | "guardian" | "static" = "static";
+  let dataSource: "social" | "gdelt" | "guardian" | "static" | "none" = "static";
   const diagnostics: {
     updatedAt: string;
     query: string;
@@ -144,15 +144,16 @@ export async function GET(request: Request) {
   };
   const url = new URL(request.url);
   const query = url.searchParams.get("q")?.trim() || DEFAULT_QUERY;
+  const forceLive = url.searchParams.get("forceLive") === "1" || url.searchParams.get("forceLive") === "true";
   diagnostics.query = query;
   try {
     const origin = url.origin;
-    diagnostics.sourceTried.push("social");
-    const socialItems = await fetchSocialNews(origin);
-    if (socialItems && socialItems.length > 0) {
-      items = socialItems;
-      dataSource = "social";
-      diagnostics.sourceUsed = "social";
+    diagnostics.sourceTried.push("guardian");
+    const guardianItems = await fetchGuardianNews(query);
+    if (guardianItems && guardianItems.length > 0) {
+      items = guardianItems;
+      dataSource = "guardian";
+      diagnostics.sourceUsed = "guardian";
     } else {
       diagnostics.sourceTried.push("gdelt");
       const gdeltItems = await fetchGdeltNews(query);
@@ -161,17 +162,44 @@ export async function GET(request: Request) {
         dataSource = "gdelt";
         diagnostics.sourceUsed = "gdelt";
       } else {
-        diagnostics.sourceTried.push("guardian");
-        const guardianItems = await fetchGuardianNews(query);
-        if (guardianItems && guardianItems.length > 0) {
-          items = guardianItems;
-          dataSource = "guardian";
-          diagnostics.sourceUsed = "guardian";
+        diagnostics.sourceTried.push("social");
+        const socialItems = await fetchSocialNews(origin);
+        if (socialItems && socialItems.length > 0) {
+          items = socialItems;
+          dataSource = "social";
+          diagnostics.sourceUsed = "social";
         }
       }
     }
   } catch {
     // Fall back to static items if Guardian is unreachable or unauthorized.
+  }
+
+  if (forceLive && dataSource === "static") {
+    dataSource = "none";
+  }
+
+  if (forceLive && dataSource === "none") {
+    return NextResponse.json(
+      {
+        updatedAt: diagnostics.updatedAt,
+        dataSource,
+        query,
+        warnings: {
+          guardianKeyMissing: !GUARDIAN_API_KEY,
+        },
+        count: 0,
+        items: [],
+        diagnostics,
+        error: "No live sources available",
+      },
+      {
+        status: 503,
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
+    );
   }
 
   return NextResponse.json(

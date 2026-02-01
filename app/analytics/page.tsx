@@ -678,6 +678,16 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
+        <Card className="col-span-12">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Model & Data Pipeline</CardTitle>
+            <CardDescription>
+              Historical resilience uses INFORM Risk (mid-2025) for the historic path. Forecasts use a BSTS+DFM model,
+              and the forecast inputs are refreshed with live APIs for robustness.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+
         <div className="grid grid-cols-12 gap-4">
           {/* Country Summary Card */}
           {country && countryZStats && (

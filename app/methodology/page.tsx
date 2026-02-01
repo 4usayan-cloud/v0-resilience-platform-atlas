@@ -202,6 +202,26 @@ export default function MethodologyPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Badge variant="secondary">Download</Badge>
+                    Data Download & API
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Download the full resilience dataset as JSON, or use the API endpoint directly.
+                  </p>
+                  <div className="text-xs text-muted-foreground">
+                    <span className="font-medium">URL:</span>{" "}
+                    <a href="/api/data-download" className="text-primary hover:underline">
+                      /api/data-download
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
