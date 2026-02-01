@@ -104,16 +104,44 @@ async function fetchGdeltNews(): Promise<typeof STATIC_ITEMS | null> {
   }
 }
 
-export async function GET() {
+async function fetchSocialNews(origin: string): Promise<typeof STATIC_ITEMS | null> {
+  try {
+    const res = await fetch(`${origin}/api/feeds/social?platform=news`, {
+      cache: "no-store",
+      next: { revalidate: 0 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const feeds = Array.isArray(data?.feeds) ? data.feeds : [];
+    if (feeds.length === 0) return null;
+    return feeds.slice(0, DEFAULT_PAGE_SIZE).map((post: any) => ({
+      title: post?.content ?? "",
+      source: post?.author ?? "News",
+      url: post?.url ?? "",
+      publishedAt: post?.timestamp ?? null,
+      summary: "",
+    }));
+  } catch {
+    return null;
+  }
+}
+
+export async function GET(request: Request) {
   let items = STATIC_ITEMS;
   try {
-    const gdeltItems = await fetchGdeltNews();
-    if (gdeltItems && gdeltItems.length > 0) {
-      items = gdeltItems;
+    const origin = new URL(request.url).origin;
+    const socialItems = await fetchSocialNews(origin);
+    if (socialItems && socialItems.length > 0) {
+      items = socialItems;
     } else {
-      const guardianItems = await fetchGuardianNews();
-      if (guardianItems && guardianItems.length > 0) {
-        items = guardianItems;
+      const gdeltItems = await fetchGdeltNews();
+      if (gdeltItems && gdeltItems.length > 0) {
+        items = gdeltItems;
+      } else {
+        const guardianItems = await fetchGuardianNews();
+        if (guardianItems && guardianItems.length > 0) {
+          items = guardianItems;
+        }
       }
     }
   } catch {
