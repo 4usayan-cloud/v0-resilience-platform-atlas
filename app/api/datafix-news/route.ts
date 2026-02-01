@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { fetchGDELTEvents } from "@/lib/api-utils";
+
+export const runtime = "nodejs";
 
 const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
 const DEFAULT_PAGE_SIZE = 10;
@@ -70,10 +71,26 @@ async function fetchGuardianNews(): Promise<typeof STATIC_ITEMS | null> {
 }
 
 async function fetchGdeltNews(): Promise<typeof STATIC_ITEMS | null> {
+  const gdeltUrl = new URL("https://api.gdeltproject.org/api/v2/doc/doc");
+  gdeltUrl.searchParams.set("query", "india");
+  gdeltUrl.searchParams.set("mode", "artlist");
+  gdeltUrl.searchParams.set("maxrecords", String(DEFAULT_PAGE_SIZE));
+  gdeltUrl.searchParams.set("format", "json");
+  gdeltUrl.searchParams.set("sort", "datedesc");
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
   try {
-    const articles = await fetchGDELTEvents("india");
-    if (!articles || articles.length === 0) return null;
-    return articles.slice(0, DEFAULT_PAGE_SIZE).map((article: any) => ({
+    const res = await fetch(gdeltUrl.toString(), {
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const articles = Array.isArray(data?.articles) ? data.articles : [];
+    if (articles.length === 0) return null;
+    return articles.map((article: any) => ({
       title: article?.title ?? "",
       source: article?.domain || article?.sourcecountry || "GDELT",
       url: article?.url ?? "",
@@ -82,6 +99,8 @@ async function fetchGdeltNews(): Promise<typeof STATIC_ITEMS | null> {
     }));
   } catch {
     return null;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
