@@ -74,7 +74,7 @@ async function fetchLiveCountryContext(origin: string, countryCode: string) {
 
 async function fetchDatafixNews(origin: string) {
   try {
-    const res = await fetch(`${origin}/api/datafix-news`, {
+    const res = await fetch(`${origin}/api/datafix-news?forceLive=1`, {
       cache: "no-store",
       next: { revalidate: 0 },
     });
@@ -128,6 +128,8 @@ export async function POST(request: Request) {
   const countryCode = extractCountryCode(lastUserMessage);
   const liveContext = countryCode ? await fetchLiveCountryContext(origin, countryCode) : null;
   const latestNews = await fetchDatafixNews(origin);
+  const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
+  const newsSource = latestNews?.dataSource || "unknown";
   const urls = extractUrls(lastUserMessage);
   let fetchedContext = "";
   let fetchedSource = "";
@@ -146,6 +148,8 @@ export async function POST(request: Request) {
       "but never sloppy with data. Use fun metaphors and punchy jokes while staying accurate. " +
       "When answering, always include precise figures if available, and name the data source " +
       "(World Bank, IMF, WGI, WHO, GDELT, NewsAPI, Yahoo Finance, Reddit). " +
+      "If the user asks about the latest, recent, or today’s news, you MUST use the Live news feed below " +
+      "and include the article titles and timestamps. If the feed is empty, say you cannot access live news. " +
       "If exact figures are unavailable, say so explicitly and provide the best proxy. " +
       "Be clear, helpful, and explain your reasoning briefly when comparing countries. " +
       "You help users compare countries, explain methodology, and point them to pages. " +
@@ -158,8 +162,15 @@ export async function POST(request: Request) {
           `Model v2: ${JSON.stringify(liveContext.model)}\n` +
           `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
         : "") +
-      (latestNews
-        ? `\nLatest news (Datafix News):\n${JSON.stringify(latestNews)}`
+      (newsItems.length > 0
+        ? `\nLive news feed (source: ${newsSource}):\n` +
+          newsItems
+            .map(
+              (item: any, idx: number) =>
+                `${idx + 1}. ${item?.title || "Untitled"} | ${item?.source || "Unknown"} | ` +
+                `${item?.publishedAt || "Unknown time"} | ${item?.url || ""}`
+            )
+            .join("\n")
         : ""),
   };
 
