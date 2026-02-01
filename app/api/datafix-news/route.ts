@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { fetchGDELTEvents } from "@/lib/api-utils";
 
 const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
 const DEFAULT_PAGE_SIZE = 10;
@@ -68,12 +69,33 @@ async function fetchGuardianNews(): Promise<typeof STATIC_ITEMS | null> {
   });
 }
 
+async function fetchGdeltNews(): Promise<typeof STATIC_ITEMS | null> {
+  try {
+    const articles = await fetchGDELTEvents("india");
+    if (!articles || articles.length === 0) return null;
+    return articles.slice(0, DEFAULT_PAGE_SIZE).map((article: any) => ({
+      title: article?.title ?? "",
+      source: article?.domain || article?.sourcecountry || "GDELT",
+      url: article?.url ?? "",
+      publishedAt: article?.seendate ? new Date(article.seendate).toISOString() : null,
+      summary: article?.snippet || article?.excerpt || "",
+    }));
+  } catch {
+    return null;
+  }
+}
+
 export async function GET() {
   let items = STATIC_ITEMS;
   try {
-    const liveItems = await fetchGuardianNews();
-    if (liveItems && liveItems.length > 0) {
-      items = liveItems;
+    const gdeltItems = await fetchGdeltNews();
+    if (gdeltItems && gdeltItems.length > 0) {
+      items = gdeltItems;
+    } else {
+      const guardianItems = await fetchGuardianNews();
+      if (guardianItems && guardianItems.length > 0) {
+        items = guardianItems;
+      }
     }
   } catch {
     // Fall back to static items if Guardian is unreachable or unauthorized.
