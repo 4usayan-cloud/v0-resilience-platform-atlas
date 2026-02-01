@@ -72,6 +72,20 @@ async function fetchLiveCountryContext(origin: string, countryCode: string) {
   return { model, wbSummary };
 }
 
+async function fetchDatafixNews(origin: string) {
+  try {
+    const res = await fetch(`${origin}/api/datafix-news`, {
+      cache: "no-store",
+      next: { revalidate: 0 },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchArticleText(url: string): Promise<{ text: string; source: string } | null> {
   try {
     const parsed = new URL(url);
@@ -113,6 +127,7 @@ export async function POST(request: Request) {
   const origin = new URL(request.url).origin;
   const countryCode = extractCountryCode(lastUserMessage);
   const liveContext = countryCode ? await fetchLiveCountryContext(origin, countryCode) : null;
+  const latestNews = await fetchDatafixNews(origin);
   const urls = extractUrls(lastUserMessage);
   let fetchedContext = "";
   let fetchedSource = "";
@@ -142,6 +157,9 @@ export async function POST(request: Request) {
         ? `\nLive context for ${countryCode}:\n` +
           `Model v2: ${JSON.stringify(liveContext.model)}\n` +
           `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
+        : "") +
+      (latestNews
+        ? `\nLatest news (Datafix News):\n${JSON.stringify(latestNews)}`
         : ""),
   };
 

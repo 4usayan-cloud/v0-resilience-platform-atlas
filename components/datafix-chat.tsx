@@ -190,6 +190,12 @@ export function DatafixChat() {
   const sendMessage = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || isLoading) return;
+    if (!speechReady) {
+      unlockSpeech();
+    }
+    if (!speechEnabled) {
+      setSpeechEnabled(true);
+    }
     setInput("");
     const nextMessages = [...messages, { role: "user", content: trimmed }];
     setMessages(nextMessages);
