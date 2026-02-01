@@ -26,10 +26,16 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-async function fetchGuardianNews(query: string, limit: number): Promise<NewsItem[]> {
+type FetchResult = {
+  items: NewsItem[];
+  status: number | null;
+  error: string | null;
+};
+
+async function fetchGuardianNews(query: string, limit: number): Promise<FetchResult> {
   if (!GUARDIAN_API_KEY) {
     console.warn("[Guardian] API key not found");
-    return [];
+    return { items: [], status: null, error: "missing_key" };
   }
   try {
     const url = new URL("https://content.guardianapis.com/search");
@@ -45,29 +51,33 @@ async function fetchGuardianNews(query: string, limit: number): Promise<NewsItem
     });
     if (!res.ok) {
       console.warn(`[Guardian] API returned ${res.status}: ${res.statusText}`);
-      return [];
+      return { items: [], status: res.status, error: res.statusText };
     }
     const data = await res.json();
     const results = Array.isArray(data?.response?.results) ? data.response.results : [];
     console.log(`[Guardian] Fetched ${results.length} articles for "${query}"`);
-    return results.slice(0, limit).map((item: any) => ({
-      title: item?.webTitle ?? "",
-      source: "The Guardian",
-      url: item?.webUrl ?? "",
-      publishedAt: item?.webPublicationDate ?? null,
-      summary: item?.fields?.trailText ? stripHtml(item.fields.trailText) : "",
-      provider: "guardian" as const,
-    }));
+    return {
+      items: results.slice(0, limit).map((item: any) => ({
+        title: item?.webTitle ?? "",
+        source: "The Guardian",
+        url: item?.webUrl ?? "",
+        publishedAt: item?.webPublicationDate ?? null,
+        summary: item?.fields?.trailText ? stripHtml(item.fields.trailText) : "",
+        provider: "guardian" as const,
+      })),
+      status: res.status,
+      error: null,
+    };
   } catch (err) {
     console.error("[Guardian] Fetch error:", err instanceof Error ? err.message : String(err));
-    return [];
+    return { items: [], status: null, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
-async function fetchNewsAPI(query: string, limit: number): Promise<NewsItem[]> {
+async function fetchNewsAPI(query: string, limit: number): Promise<FetchResult> {
   if (!NEWSAPI_API_KEY) {
     console.warn("[NewsAPI] API key not found");
-    return [];
+    return { items: [], status: null, error: "missing_key" };
   }
   try {
     const url = new URL("https://newsapi.org/v2/everything");
@@ -83,22 +93,26 @@ async function fetchNewsAPI(query: string, limit: number): Promise<NewsItem[]> {
     });
     if (!res.ok) {
       console.warn(`[NewsAPI] API returned ${res.status}: ${res.statusText}`);
-      return [];
+      return { items: [], status: res.status, error: res.statusText };
     }
     const data = await res.json();
     const articles = Array.isArray(data?.articles) ? data.articles : [];
     console.log(`[NewsAPI] Fetched ${articles.length} articles for "${query}"`);
-    return articles.slice(0, limit).map((article: any) => ({
-      title: article?.title ?? "",
-      source: article?.source?.name ?? "NewsAPI",
-      url: article?.url ?? "",
-      publishedAt: article?.publishedAt ?? null,
-      summary: article?.description ?? "",
-      provider: "newsapi" as const,
-    }));
+    return {
+      items: articles.slice(0, limit).map((article: any) => ({
+        title: article?.title ?? "",
+        source: article?.source?.name ?? "NewsAPI",
+        url: article?.url ?? "",
+        publishedAt: article?.publishedAt ?? null,
+        summary: article?.description ?? "",
+        provider: "newsapi" as const,
+      })),
+      status: res.status,
+      error: null,
+    };
   } catch (err) {
     console.error("[NewsAPI] Fetch error:", err instanceof Error ? err.message : String(err));
-    return [];
+    return { items: [], status: null, error: err instanceof Error ? err.message : String(err) };
   }
 }
 
@@ -134,10 +148,12 @@ export async function GET(request: Request) {
   const updatedAt = new Date().toISOString();
 
   try {
-    const [guardianNews, newsapiNews] = await Promise.all([
+    const [guardianResult, newsapiResult] = await Promise.all([
       fetchGuardianNews(query, guardianFetchLimit),
       fetchNewsAPI(query, newsApiFetchLimit),
     ]);
+    const guardianNews = guardianResult.items;
+    const newsapiNews = newsapiResult.items;
 
     let allNews = [...guardianNews, ...newsapiNews];
     allNews = deduplicateNews(allNews);
@@ -161,6 +177,10 @@ export async function GET(request: Request) {
         _debug: {
           guardianKeyPresent: !!GUARDIAN_API_KEY,
           newsapiKeyPresent: !!NEWSAPI_API_KEY,
+          guardianStatus: guardianResult.status,
+          newsapiStatus: newsapiResult.status,
+          guardianError: guardianResult.error,
+          newsapiError: newsapiResult.error,
         },
       },
       {
