@@ -27,7 +27,10 @@ function stripHtml(html: string): string {
 }
 
 async function fetchGuardianNews(query: string, limit: number): Promise<NewsItem[]> {
-  if (!GUARDIAN_API_KEY) return [];
+  if (!GUARDIAN_API_KEY) {
+    console.warn("[Guardian] API key not found");
+    return [];
+  }
   try {
     const url = new URL("https://content.guardianapis.com/search");
     url.searchParams.set("q", query);
@@ -40,9 +43,13 @@ async function fetchGuardianNews(query: string, limit: number): Promise<NewsItem
       signal: AbortSignal.timeout(8000),
       next: { revalidate: CACHE_SECONDS },
     });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.warn(`[Guardian] API returned ${res.status}: ${res.statusText}`);
+      return [];
+    }
     const data = await res.json();
     const results = Array.isArray(data?.response?.results) ? data.response.results : [];
+    console.log(`[Guardian] Fetched ${results.length} articles for "${query}"`);
     return results.slice(0, limit).map((item: any) => ({
       title: item?.webTitle ?? "",
       source: "The Guardian",
@@ -51,13 +58,17 @@ async function fetchGuardianNews(query: string, limit: number): Promise<NewsItem
       summary: item?.fields?.trailText ? stripHtml(item.fields.trailText) : "",
       provider: "guardian" as const,
     }));
-  } catch {
+  } catch (err) {
+    console.error("[Guardian] Fetch error:", err instanceof Error ? err.message : String(err));
     return [];
   }
 }
 
 async function fetchNewsAPI(query: string, limit: number): Promise<NewsItem[]> {
-  if (!NEWSAPI_API_KEY) return [];
+  if (!NEWSAPI_API_KEY) {
+    console.warn("[NewsAPI] API key not found");
+    return [];
+  }
   try {
     const url = new URL("https://newsapi.org/v2/everything");
     url.searchParams.set("q", query);
@@ -70,9 +81,13 @@ async function fetchNewsAPI(query: string, limit: number): Promise<NewsItem[]> {
       signal: AbortSignal.timeout(8000),
       next: { revalidate: CACHE_SECONDS },
     });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.warn(`[NewsAPI] API returned ${res.status}: ${res.statusText}`);
+      return [];
+    }
     const data = await res.json();
     const articles = Array.isArray(data?.articles) ? data.articles : [];
+    console.log(`[NewsAPI] Fetched ${articles.length} articles for "${query}"`);
     return articles.slice(0, limit).map((article: any) => ({
       title: article?.title ?? "",
       source: article?.source?.name ?? "NewsAPI",
@@ -81,7 +96,8 @@ async function fetchNewsAPI(query: string, limit: number): Promise<NewsItem[]> {
       summary: article?.description ?? "",
       provider: "newsapi" as const,
     }));
-  } catch {
+  } catch (err) {
+    console.error("[NewsAPI] Fetch error:", err instanceof Error ? err.message : String(err));
     return [];
   }
 }
@@ -128,12 +144,24 @@ export async function GET(request: Request) {
     allNews = sortByPublishedDate(allNews);
     allNews = allNews.slice(0, limit);
 
+    // Log diagnostics for debugging
+    console.log(`[datafix-news] Query: ${query}, Guardian: ${guardianNews.length}, NewsAPI: ${newsapiNews.length}, Total: ${allNews.length}`);
+    console.log(`[datafix-news] API Keys - Guardian: ${GUARDIAN_API_KEY ? "present" : "MISSING"}, NewsAPI: ${NEWSAPI_API_KEY ? "present" : "MISSING"}`);
+
     return NextResponse.json(
       {
         updatedAt,
         query,
         count: allNews.length,
         items: allNews,
+        sources: {
+          guardian: guardianNews.length,
+          newsapi: newsapiNews.length,
+        },
+        _debug: {
+          guardianKeyPresent: !!GUARDIAN_API_KEY,
+          newsapiKeyPresent: !!NEWSAPI_API_KEY,
+        },
       },
       {
         headers: {
