@@ -32,7 +32,10 @@ export async function GET() {
   url.searchParams.set("show-fields", "trailText");
 
   try {
-    const res = await fetch(url.toString());
+    const res = await fetch(url.toString(), {
+      cache: "no-store",
+      next: { revalidate: 0 },
+    });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
       return NextResponse.json(
@@ -58,11 +61,18 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json({
-      updatedAt: new Date().toISOString(),
-      count: items.length,
-      items,
-    });
+    return NextResponse.json(
+      {
+        updatedAt: new Date().toISOString(),
+        count: items.length,
+        items,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, max-age=0",
+        },
+      }
+    );
   } catch (error) {
     return NextResponse.json(
       {
