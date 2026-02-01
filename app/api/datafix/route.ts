@@ -1,8 +1,25 @@
 import { NextResponse } from "next/server";
 import { countries } from "@/lib/country-data";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const MAX_CHARS = 6000;
+
+interface GDELTEvent {
+  title: string;
+  url: string;
+  publishDate: string;
+}
+
+interface InformCountry {
+  country: string;
+  riskScore: number;
+  category: string;
+  affectedPopulation: number;
+  lastUpdate: string;
+  indicators: Record<string, number>;
+}
 
 function extractUrls(text: string): string[] {
   const urlRegex = /https?:\/\/[^\s)]+/g;
@@ -16,6 +33,45 @@ function stripHtml(html: string): string {
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+async function fetchGDELT(query: string, limit: number = 3): Promise<GDELTEvent[]> {
+  try {
+    const url = new URL("https://api.gdeltproject.org/api/v2/doc/doc");
+    url.searchParams.set("query", query);
+    url.searchParams.set("mode", "ArtList");
+    url.searchParams.set("limit", String(limit));
+    url.searchParams.set("format", "json");
+    url.searchParams.set("sort", "DateDesc");
+
+    const res = await fetch(url.toString(), {
+      signal: AbortSignal.timeout(5000),
+    });
+
+    if (!res.ok) return [];
+    const data = await res.json();
+    const articles = Array.isArray(data?.articles) ? data.articles : [];
+
+    return articles.slice(0, limit).map((article: any) => ({
+      title: article?.title ?? "No title",
+      url: article?.url ?? "",
+      publishDate: article?.publishdate ?? new Date().toISOString(),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function readInform(): InformCountry[] {
+  try {
+    const filePath = join(process.cwd(), "data", "inform.json");
+    const fileContent = readFileSync(filePath, "utf-8");
+    const data = JSON.parse(fileContent);
+    const countries = Object.values(data?.countries || {}) as InformCountry[];
+    return countries;
+  } catch {
+    return [];
+  }
 }
 
 function extractCountryCode(text: string): string | null {
@@ -132,6 +188,13 @@ export async function POST(request: Request) {
   const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
   const newsSource = latestNews?.dataSource || "unknown";
   const wantsNews = /latest|recent|today|news|headline/i.test(lastUserMessage);
+  
+  // Fetch GDELT events for context
+  const gdeltEvents = await fetchGDELT(lastUserMessage || "global", 3);
+  
+  // Fetch INFORM data
+  const informCountries = readInform();
+  
   const urls = extractUrls(lastUserMessage);
   let fetchedContext = "";
   let fetchedSource = "";
@@ -163,6 +226,22 @@ export async function POST(request: Request) {
         ? `\nLive context for ${countryCode}:\n` +
           `Model v2: ${JSON.stringify(liveContext.model)}\n` +
           `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
+        : "") +
+      (gdeltEvents.length > 0
+        ? `\nGDELT Global Events (top ${gdeltEvents.length}):\n` +
+          gdeltEvents
+            .map(
+              (ev, idx) =>
+                `${idx + 1}. ${ev.title} | ${ev.publishDate.split("T")[0]} | ${ev.url}`
+            )
+            .join("\n")
+        : "") +
+      (informCountries.length > 0
+        ? `\nINFORM Risk Data:\n` +
+          informCountries
+            .slice(0, 5)
+            .map((c) => `${c.country}: Risk Score ${c.riskScore}/10 (${c.category})`)
+            .join("\n")
         : "") +
       (newsItems.length > 0
         ? `\nLive news feed (source: ${newsSource}):\n` +

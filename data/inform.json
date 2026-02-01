@@ -1,0 +1,43 @@
+{
+  "countries": {
+    "India": {
+      "country": "India",
+      "riskScore": 5.2,
+      "category": "High Risk",
+      "affectedPopulation": 1400000000,
+      "lastUpdate": "2026-02-01",
+      "indicators": {
+        "conflict": 3.1,
+        "natural_hazards": 4.5,
+        "poverty": 6.2,
+        "vulnerable_groups": 5.8
+      }
+    },
+    "Indonesia": {
+      "country": "Indonesia",
+      "riskScore": 4.8,
+      "category": "High Risk",
+      "affectedPopulation": 275000000,
+      "lastUpdate": "2026-02-01",
+      "indicators": {
+        "conflict": 2.1,
+        "natural_hazards": 6.0,
+        "poverty": 4.5,
+        "vulnerable_groups": 4.2
+      }
+    },
+    "Bangladesh": {
+      "country": "Bangladesh",
+      "riskScore": 6.1,
+      "category": "Very High Risk",
+      "affectedPopulation": 170000000,
+      "lastUpdate": "2026-02-01",
+      "indicators": {
+        "conflict": 2.8,
+        "natural_hazards": 7.2,
+        "poverty": 6.5,
+        "vulnerable_groups": 6.3
+      }
+    }
+  }
+}
