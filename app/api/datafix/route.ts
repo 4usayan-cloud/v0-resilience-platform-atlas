@@ -121,6 +121,7 @@ export async function POST(request: Request) {
     });
   }
 
+  const debugEnabled = new URL(request.url).searchParams.get("debug") === "1";
   const { messages } = await request.json();
   const lastUserMessage =
     [...(messages || [])].reverse().find((m: any) => m.role === "user")?.content || "";
@@ -212,7 +213,18 @@ export async function POST(request: Request) {
     const data = await res.json();
     const reply = data?.choices?.[0]?.message?.content?.trim() || "No response.";
 
-    return NextResponse.json({ reply });
+    return NextResponse.json({
+      reply,
+      ...(debugEnabled
+        ? {
+            debug: {
+              newsCount: newsItems.length,
+              newsSource,
+              hasNews: newsItems.length > 0,
+            },
+          }
+        : {}),
+    });
   } catch (error) {
     return NextResponse.json(
       { reply: "Datafix is unreachable right now. Please try again shortly." },
