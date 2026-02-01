@@ -131,6 +131,7 @@ export async function POST(request: Request) {
   const latestNews = await fetchDatafixNews(origin);
   const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
   const newsSource = latestNews?.dataSource || "unknown";
+  const wantsNews = /latest|recent|today|news|headline/i.test(lastUserMessage);
   const urls = extractUrls(lastUserMessage);
   let fetchedContext = "";
   let fetchedSource = "";
@@ -176,6 +177,47 @@ export async function POST(request: Request) {
   };
 
   try {
+    if (wantsNews) {
+      if (newsItems.length === 0) {
+        return NextResponse.json({
+          reply:
+            "I can't access live news right now. Try again in a moment or ask about a specific topic.",
+          ...(debugEnabled
+            ? {
+                debug: {
+                  newsCount: newsItems.length,
+                  newsSource,
+                  hasNews: newsItems.length > 0,
+                },
+              }
+            : {}),
+        });
+      }
+
+      const reply =
+        `Here are the latest headlines I can see (source: ${newsSource}):\n` +
+        newsItems
+          .map(
+            (item: any, idx: number) =>
+              `${idx + 1}. ${item?.title || "Untitled"} — ${item?.publishedAt || "Unknown time"}`
+          )
+          .join("\n") +
+        "\n\nWant a quick summary of any of these?";
+
+      return NextResponse.json({
+        reply,
+        ...(debugEnabled
+          ? {
+              debug: {
+                newsCount: newsItems.length,
+                newsSource,
+                hasNews: newsItems.length > 0,
+              },
+            }
+          : {}),
+      });
+    }
+
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
