@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 
+const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
+const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_QUERY = "india";
+
 const STATIC_ITEMS = [
   {
     title: "India launches new climate resilience initiative",
@@ -27,12 +31,59 @@ const STATIC_ITEMS = [
   },
 ];
 
+function stripHtml(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+async function fetchGuardianNews(): Promise<typeof STATIC_ITEMS | null> {
+  if (!GUARDIAN_API_KEY) return null;
+  const url = new URL("https://content.guardianapis.com/search");
+  url.searchParams.set("q", DEFAULT_QUERY);
+  url.searchParams.set("api-key", GUARDIAN_API_KEY);
+  url.searchParams.set("order-by", "newest");
+  url.searchParams.set("page-size", String(DEFAULT_PAGE_SIZE));
+  url.searchParams.set("show-fields", "trailText");
+
+  const res = await fetch(url.toString(), {
+    cache: "no-store",
+    next: { revalidate: 0 },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  const results = Array.isArray(data?.response?.results) ? data.response.results : [];
+  return results.map((item: any) => {
+    const summary = item?.fields?.trailText ? stripHtml(item.fields.trailText) : "";
+    return {
+      title: item?.webTitle ?? "",
+      source: "The Guardian",
+      url: item?.webUrl ?? "",
+      publishedAt: item?.webPublicationDate ?? null,
+      summary,
+    };
+  });
+}
+
 export async function GET() {
+  let items = STATIC_ITEMS;
+  try {
+    const liveItems = await fetchGuardianNews();
+    if (liveItems && liveItems.length > 0) {
+      items = liveItems;
+    }
+  } catch {
+    // Fall back to static items if Guardian is unreachable or unauthorized.
+  }
+
   return NextResponse.json(
     {
       updatedAt: new Date().toISOString(),
-      count: STATIC_ITEMS.length,
-      items: STATIC_ITEMS,
+      count: items.length,
+      items,
     },
     {
       headers: {
