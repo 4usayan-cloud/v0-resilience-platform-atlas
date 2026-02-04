@@ -248,6 +248,36 @@ export async function POST(request: Request) {
     }
   }
 
+  // Now build system prompt with all variables defined
+  const gdeltContext = gdeltEvents.length > 0
+    ? `\nGDELT Global Events (top ${gdeltEvents.length}):\n` +
+      gdeltEvents
+        .map(
+          (ev, idx) =>
+            `${idx + 1}. ${ev.title} | ${ev.publishDate.split("T")[0]} | ${ev.url}`
+        )
+        .join("\n")
+    : "";
+
+  const informContext = informCountries.length > 0
+    ? `\nINFORM Risk Data:\n` +
+      informCountries
+        .slice(0, 5)
+        .map((c) => `${c.country}: Risk Score ${c.riskScore}/10 (${c.category})`)
+        .join("\n")
+    : "";
+
+  const newsContext = newsItems.length > 0
+    ? `\nLive news feed (source: ${newsSource}):\n` +
+      newsItems
+        .map(
+          (item: any, idx: number) =>
+            `${idx + 1}. ${item?.title || "Untitled"} | ${item?.source || "Unknown"} | ` +
+            `${item?.publishedAt || "Unknown time"} | ${item?.url || ""}`
+        )
+        .join("\n")
+    : "";
+
   const system = {
     role: "system",
     content:
@@ -255,7 +285,7 @@ export async function POST(request: Request) {
       "but never sloppy with data. Use fun metaphors and punchy jokes while staying accurate. " +
       "When answering, always include precise figures if available, and name the data source " +
       "(World Bank, IMF, WGI, WHO, GDELT, NewsAPI, Yahoo Finance, Reddit). " +
-      "If the user asks about the latest, recent, or today’s news, you MUST use the Live news feed below " +
+      "If the user asks about the latest, recent, or today's news, you MUST use the Live news feed below " +
       "and include the article titles and timestamps. If the feed is empty, say you cannot access live news. " +
       "If exact figures are unavailable, say so explicitly and provide the best proxy. " +
       "Be clear, helpful, and explain your reasoning briefly when comparing countries. " +
@@ -269,32 +299,9 @@ export async function POST(request: Request) {
           `Model v2: ${JSON.stringify(liveContext.model)}\n` +
           `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
         : "") +
-      (gdeltEvents.length > 0
-        ? `\nGDELT Global Events (top ${gdeltEvents.length}):\n` +
-          gdeltEvents
-            .map(
-              (ev, idx) =>
-                `${idx + 1}. ${ev.title} | ${ev.publishDate.split("T")[0]} | ${ev.url}`
-            )
-            .join("\n")
-        : "") +
-      (informCountries.length > 0
-        ? `\nINFORM Risk Data:\n` +
-          informCountries
-            .slice(0, 5)
-            .map((c) => `${c.country}: Risk Score ${c.riskScore}/10 (${c.category})`)
-            .join("\n")
-        : "") +
-      (newsItems.length > 0
-        ? `\nLive news feed (source: ${newsSource}):\n` +
-          newsItems
-            .map(
-              (item: any, idx: number) =>
-                `${idx + 1}. ${item?.title || "Untitled"} | ${item?.source || "Unknown"} | ` +
-                `${item?.publishedAt || "Unknown time"} | ${item?.url || ""}`
-            )
-            .join("\n")
-        : ""),
+      gdeltContext +
+      informContext +
+      newsContext,
   };
 
   try {
