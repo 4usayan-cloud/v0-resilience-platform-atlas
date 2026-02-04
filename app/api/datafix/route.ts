@@ -44,20 +44,28 @@ async function fetchGDELT(query: string, limit: number = 3): Promise<GDELTEvent[
     url.searchParams.set("format", "json");
     url.searchParams.set("sort", "DateDesc");
 
+    console.log("[v0] GDELT fetch started for query:", query);
+    
     const res = await fetch(url.toString(), {
       signal: AbortSignal.timeout(5000),
     });
 
-    if (!res.ok) return [];
+    if (!res.ok) {
+      console.warn("[v0] GDELT returned status:", res.status);
+      return [];
+    }
+    
     const data = await res.json();
     const articles = Array.isArray(data?.articles) ? data.articles : [];
+    console.log("[v0] GDELT returned", articles.length, "articles");
 
     return articles.slice(0, limit).map((article: any) => ({
       title: article?.title ?? "No title",
       url: article?.url ?? "",
       publishDate: article?.publishdate ?? new Date().toISOString(),
     }));
-  } catch {
+  } catch (err) {
+    console.error("[v0] GDELT fetch error:", err instanceof Error ? err.message : String(err));
     return [];
   }
 }
@@ -65,11 +73,16 @@ async function fetchGDELT(query: string, limit: number = 3): Promise<GDELTEvent[
 function readInform(): InformCountry[] {
   try {
     const filePath = join(process.cwd(), "data", "inform.json");
+    console.log("[v0] Reading INFORM data from:", filePath);
+    
     const fileContent = readFileSync(filePath, "utf-8");
     const data = JSON.parse(fileContent);
     const countries = Object.values(data?.countries || {}) as InformCountry[];
+    
+    console.log("[v0] INFORM loaded:", countries.length, "countries");
     return countries;
-  } catch {
+  } catch (err) {
+    console.error("[v0] INFORM read error:", err instanceof Error ? err.message : String(err));
     return [];
   }
 }
@@ -84,6 +97,8 @@ function extractCountryCode(text: string): string | null {
 }
 
 async function fetchLiveCountryContext(origin: string, countryCode: string) {
+  console.log("[v0] Fetching live context for country:", countryCode, "origin:", origin);
+  
   const indicators = [
     { key: "gdp", code: "NY.GDP.MKTP.CD", label: "GDP (current US$)" },
     { key: "inflation", code: "FP.CPI.TOTL.ZG", label: "Inflation (CPI, %)" },
@@ -92,40 +107,73 @@ async function fetchLiveCountryContext(origin: string, countryCode: string) {
     { key: "poverty", code: "SI.POV.DDAY", label: "Poverty headcount ($2.15/day)" },
   ];
 
-  const [modelRes, ...wbResults] = await Promise.all([
-    fetch(`${origin}/api/model/score?country=${countryCode}`),
-    ...indicators.map((ind) =>
-      fetch(`${origin}/api/worldbank?country=${countryCode}&indicator=${ind.code}`)
-    ),
-  ]);
+  try {
+    const modelUrl = `${origin}/api/model/score?country=${countryCode}`;
+    const wbUrls = indicators.map(
+      (ind) =>
+        `${origin}/api/worldbank?country=${countryCode}&indicator=${ind.code}`
+    );
 
-  const model = modelRes.ok ? await modelRes.json() : null;
-  const wb = await Promise.all(
-    wbResults.map(async (res, idx) => {
-      if (!res.ok) return null;
-      const data = await res.json();
-      return { ...indicators[idx], data };
-    })
-  );
+    console.log("[v0] Fetching model from:", modelUrl);
+    
+    const [modelRes, ...wbResults] = await Promise.all([
+      fetch(modelUrl, { signal: AbortSignal.timeout(8000) }),
+      ...wbUrls.map((url) =>
+        fetch(url, { signal: AbortSignal.timeout(8000) }).catch((err) => {
+          console.error("[v0] WorldBank fetch failed:", err.message);
+          return null;
+        })
+      ),
+    ]);
 
-  const wbSummary = wb
-    .filter(Boolean)
-    .map((entry: any) => {
-      const series = entry?.data?.data?.[1] || entry?.data?.data;
-      const latest = Array.isArray(series)
-        ? series.find((row: any) => typeof row?.value === "number")
-        : null;
-      if (!latest) return null;
-      return {
-        label: entry.label,
-        value: latest.value,
-        year: latest.date,
-        source: "World Bank",
-      };
-    })
-    .filter(Boolean);
+    if (!modelRes || !modelRes.ok) {
+      console.error("[v0] Model API failed:", modelRes?.status);
+      return null;
+    }
 
-  return { model, wbSummary };
+    const model = await modelRes.json().catch(() => null);
+    console.log("[v0] Model received:", model ? "✓" : "✗");
+    
+    const wb = await Promise.all(
+      wbResults.map(async (res, idx) => {
+        if (!res || !res.ok) {
+          console.warn("[v0] WorldBank indicator", idx, "failed:", res?.status);
+          return null;
+        }
+        try {
+          const data = await res.json();
+          console.log("[v0] WorldBank indicator", idx, "success:", data?.country);
+          return { ...indicators[idx], data };
+        } catch (err) {
+          console.error("[v0] WorldBank parse error:", err);
+          return null;
+        }
+      })
+    );
+
+    const wbSummary = wb
+      .filter(Boolean)
+      .map((entry: any) => {
+        const series = entry?.data?.data?.[1] || entry?.data?.data;
+        const latest = Array.isArray(series)
+          ? series.find((row: any) => typeof row?.value === "number")
+          : null;
+        if (!latest) return null;
+        return {
+          label: entry.label,
+          value: latest.value,
+          year: latest.date,
+          source: "World Bank",
+        };
+      })
+      .filter(Boolean);
+
+    console.log("[v0] Live context ready:", wbSummary.length, "indicators");
+    return { model, wbSummary };
+  } catch (err) {
+    console.error("[v0] fetchLiveCountryContext error:", err instanceof Error ? err.message : String(err));
+    return null;
+  }
 }
 
 async function fetchDatafixNews(origin: string, query: string = "world news") {
@@ -139,11 +187,14 @@ async function fetchDatafixNews(origin: string, query: string = "world news") {
     const res = await fetch(url.toString(), {
       cache: "no-store",
       next: { revalidate: 0 },
+      signal: AbortSignal.timeout(10000),
     });
+    
     if (!res.ok) {
-      console.error("[v0] News API returned:", res.status);
+      console.error("[v0] News API returned status:", res.status);
       return null;
     }
+    
     const data = await res.json();
     console.log("[v0] News API response items:", data?.items?.length, "from sources:", data?.sources);
     return data;
