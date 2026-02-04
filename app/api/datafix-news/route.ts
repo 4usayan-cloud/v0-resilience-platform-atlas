@@ -147,6 +147,9 @@ export async function GET(request: Request) {
 
   const updatedAt = new Date().toISOString();
 
+  console.log("[datafix-news] Starting fetch - Query:", query, "Limit:", limit);
+  console.log("[datafix-news] API Keys - Guardian:", GUARDIAN_API_KEY ? "✓ present" : "✗ MISSING", "NewsAPI:", NEWSAPI_API_KEY ? "✓ present" : "✗ MISSING");
+
   try {
     const [guardianResult, newsapiResult] = await Promise.all([
       fetchGuardianNews(query, guardianFetchLimit),
@@ -156,13 +159,20 @@ export async function GET(request: Request) {
     const newsapiNews = newsapiResult.items;
 
     let allNews = [...guardianNews, ...newsapiNews];
+    
+    console.log("[datafix-news] Before dedup - Guardian:", guardianNews.length, "NewsAPI:", newsapiNews.length, "Total:", allNews.length);
+    
     allNews = deduplicateNews(allNews);
+    
+    console.log("[datafix-news] After dedup:", allNews.length, "items");
+    
     allNews = sortByPublishedDate(allNews);
     allNews = allNews.slice(0, limit);
 
     // Log diagnostics for debugging
-    console.log(`[datafix-news] Query: ${query}, Guardian: ${guardianNews.length}, NewsAPI: ${newsapiNews.length}, Total: ${allNews.length}`);
-    console.log(`[datafix-news] API Keys - Guardian: ${GUARDIAN_API_KEY ? "present" : "MISSING"}, NewsAPI: ${NEWSAPI_API_KEY ? "present" : "MISSING"}`);
+    console.log(`[datafix-news] Final result: ${allNews.length} items from ${guardianNews.length} Guardian + ${newsapiNews.length} NewsAPI`);
+    if (guardianResult.error) console.warn(`[datafix-news] Guardian error: ${guardianResult.error} (status: ${guardianResult.status})`);
+    if (newsapiResult.error) console.warn(`[datafix-news] NewsAPI error: ${newsapiResult.error} (status: ${newsapiResult.status})`);
 
     return NextResponse.json(
       {
@@ -190,6 +200,7 @@ export async function GET(request: Request) {
       }
     );
   } catch (error) {
+    console.error("[datafix-news] Fatal error:", error instanceof Error ? error.message : String(error));
     return NextResponse.json(
       {
         error: "Failed to fetch news",

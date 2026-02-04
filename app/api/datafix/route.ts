@@ -128,16 +128,27 @@ async function fetchLiveCountryContext(origin: string, countryCode: string) {
   return { model, wbSummary };
 }
 
-async function fetchDatafixNews(origin: string) {
+async function fetchDatafixNews(origin: string, query: string = "world news") {
   try {
-    const res = await fetch(`${origin}/api/datafix-news?forceLive=1`, {
+    console.log("[v0] Fetching news with query:", query);
+    const url = new URL(`${origin}/api/datafix-news`);
+    url.searchParams.set("q", query);
+    url.searchParams.set("limit", "8");
+    url.searchParams.set("forceLive", "1");
+    
+    const res = await fetch(url.toString(), {
       cache: "no-store",
       next: { revalidate: 0 },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error("[v0] News API returned:", res.status);
+      return null;
+    }
     const data = await res.json();
+    console.log("[v0] News API response items:", data?.items?.length, "from sources:", data?.sources);
     return data;
-  } catch {
+  } catch (err) {
+    console.error("[v0] News fetch error:", err instanceof Error ? err.message : String(err));
     return null;
   }
 }
@@ -193,11 +204,27 @@ export async function POST(request: Request) {
   console.log("[v0] Country code detected:", countryCode);
   
   const liveContext = countryCode ? await fetchLiveCountryContext(origin, countryCode) : null;
-  const latestNews = await fetchDatafixNews(origin);
-  const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
-  const newsSource = latestNews?.dataSource || "unknown";
-  const wantsNews = /latest|recent|today|news|headline/i.test(lastUserMessage);
   
+  // Determine what news to fetch based on user's message
+  let newsQuery = "world news";
+  if (countryCode) {
+    newsQuery = countryCode;
+  } else if (/crisis|humanitarian|emergency|disaster|conflict|war/i.test(lastUserMessage)) {
+    newsQuery = "humanitarian crisis emergency";
+  } else if (/climate|environment|weather/i.test(lastUserMessage)) {
+    newsQuery = "climate environment";
+  } else if (/economic|inflation|gdp|market/i.test(lastUserMessage)) {
+    newsQuery = "economic crisis inflation";
+  } else if (/resilience|stability|index/i.test(lastUserMessage)) {
+    newsQuery = "resilience stability index";
+  }
+  
+  const latestNews = await fetchDatafixNews(origin, newsQuery);
+  const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
+  const newsSource = latestNews?.sources ? `Guardian & NewsAPI` : "unknown";
+  const wantsNews = /latest|recent|today|news|headline|current|breaking/i.test(lastUserMessage);
+  
+  console.log("[v0] News query used:", newsQuery);
   console.log("[v0] News items available:", newsItems.length, "Source:", newsSource);
   
   // Fetch GDELT events for context
