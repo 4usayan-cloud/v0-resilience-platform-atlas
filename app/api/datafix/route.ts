@@ -243,7 +243,19 @@ export async function POST(request: Request) {
   }
 
   const debugEnabled = new URL(request.url).searchParams.get("debug") === "1";
-  const { messages } = await request.json();
+  let messages: any[] = [];
+  
+  try {
+    const body = await request.json();
+    messages = body.messages || [];
+  } catch (err) {
+    console.error("[v0] Failed to parse request JSON:", err);
+    return NextResponse.json(
+      { reply: "Failed to parse your message. Please try again." },
+      { status: 400 }
+    );
+  }
+  
   console.log("[v0] Received messages:", messages?.length);
   
   const lastUserMessage =
@@ -254,7 +266,8 @@ export async function POST(request: Request) {
   const countryCode = extractCountryCode(lastUserMessage);
   console.log("[v0] Country code detected:", countryCode);
   
-  const liveContext = countryCode ? await fetchLiveCountryContext(origin, countryCode) : null;
+  // Fetch live data in parallel but don't wait for all - some can fail
+  const liveContextPromise = countryCode ? fetchLiveCountryContext(origin, countryCode) : Promise.resolve(null);
   
   // Determine what news to fetch based on user's message
   let newsQuery = "world news";
@@ -270,93 +283,19 @@ export async function POST(request: Request) {
     newsQuery = "resilience stability index";
   }
   
-  const latestNews = await fetchDatafixNews(origin, newsQuery);
-  const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
-  const newsSource = latestNews?.sources ? `Guardian & NewsAPI` : "unknown";
   const wantsNews = /latest|recent|today|news|headline|current|breaking/i.test(lastUserMessage);
   
   console.log("[v0] News query used:", newsQuery);
-  console.log("[v0] News items available:", newsItems.length, "Source:", newsSource);
   
-  // Fetch GDELT events for context
-  const gdeltEvents = await fetchGDELT(lastUserMessage || "global", 3);
-  console.log("[v0] GDELT events:", gdeltEvents.length);
-  
-  // Fetch INFORM data
-  const informCountries = readInform();
-  console.log("[v0] INFORM countries:", informCountries.length);
-  
-  const urls = extractUrls(lastUserMessage);
-  let fetchedContext = "";
-  let fetchedSource = "";
-  if (urls.length > 0) {
-    console.log("[v0] Fetching article from URL:", urls[0]);
-    const article = await fetchArticleText(urls[0]);
-    if (article) {
-      fetchedContext = article.text;
-      fetchedSource = article.source;
-      console.log("[v0] Article fetched, length:", fetchedContext.length);
-    }
-  }
-
-  // Now build system prompt with all variables defined
-  const gdeltContext = gdeltEvents.length > 0
-    ? `\nGDELT Global Events (top ${gdeltEvents.length}):\n` +
-      gdeltEvents
-        .map(
-          (ev, idx) =>
-            `${idx + 1}. ${ev.title} | ${ev.publishDate.split("T")[0]} | ${ev.url}`
-        )
-        .join("\n")
-    : "";
-
-  const informContext = informCountries.length > 0
-    ? `\nINFORM Risk Data:\n` +
-      informCountries
-        .slice(0, 5)
-        .map((c) => `${c.country}: Risk Score ${c.riskScore}/10 (${c.category})`)
-        .join("\n")
-    : "";
-
-  const newsContext = newsItems.length > 0
-    ? `\nLive news feed (source: ${newsSource}):\n` +
-      newsItems
-        .map(
-          (item: any, idx: number) =>
-            `${idx + 1}. ${item?.title || "Untitled"} | ${item?.source || "Unknown"} | ` +
-            `${item?.publishedAt || "Unknown time"} | ${item?.url || ""}`
-        )
-        .join("\n")
-    : "";
-
-  const system = {
-    role: "system",
-    content:
-      "You are Datafix: maximum humor, maximum precision. Be witty, playful, and clever, " +
-      "but never sloppy with data. Use fun metaphors and punchy jokes while staying accurate. " +
-      "When answering, always include precise figures if available, and name the data source " +
-      "(World Bank, IMF, WGI, WHO, GDELT, NewsAPI, Yahoo Finance, Reddit). " +
-      "If the user asks about the latest, recent, or today's news, you MUST use the Live news feed below " +
-      "and include the article titles and timestamps. If the feed is empty, say you cannot access live news. " +
-      "If exact figures are unavailable, say so explicitly and provide the best proxy. " +
-      "Be clear, helpful, and explain your reasoning briefly when comparing countries. " +
-      "You help users compare countries, explain methodology, and point them to pages. " +
-      "Pages: / (Interactive Maps), /analytics, /methodology. " +
-      "Ginis Index is a proxy: 20 + 0.3*AgeYouth_norm + 0.4*Unemployment_norm + 0.3*(100 - TaxEffort_norm), based on World Bank indicators SP.POP.0014.TO.ZS, SL.UEM.TOTL.ZS, GC.TAX.TOTL.GD.ZS (2019-2024 averages) with BSTS+DFM forecasts for 2025-2030. " +
-      "If asked to translate, translate the text. If asked for where to find data, direct to the right page " +
-      "and explain what to look for. If a URL is provided and context is available, assess whether it appears legitimate and cite the source URL." +
-      (liveContext && countryCode
-        ? `\nLive context for ${countryCode}:\n` +
-          `Model v2: ${JSON.stringify(liveContext.model)}\n` +
-          `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
-        : "") +
-      gdeltContext +
-      informContext +
-      newsContext,
-  };
-
   try {
+    // If user specifically wants news, fetch it
     if (wantsNews) {
+      const latestNews = await fetchDatafixNews(origin, newsQuery);
+      const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
+      const newsSource = latestNews?.sources ? `Guardian & NewsAPI` : "unknown";
+      
+      console.log("[v0] News items available:", newsItems.length, "Source:", newsSource);
+      
       if (newsItems.length === 0) {
         console.log("[v0] No news available");
         return NextResponse.json({
@@ -365,9 +304,9 @@ export async function POST(request: Request) {
           ...(debugEnabled
             ? {
                 debug: {
-                  newsCount: newsItems.length,
+                  newsCount: 0,
                   newsSource,
-                  hasNews: newsItems.length > 0,
+                  hasNews: false,
                 },
               }
             : {}),
@@ -397,6 +336,93 @@ export async function POST(request: Request) {
           : {}),
       });
     }
+
+    // For general queries, fetch all context in parallel and wait with timeout
+    const [liveContext, gdeltEvents, informCountries, latestNews] = await Promise.allSettled([
+      liveContextPromise,
+      fetchGDELT(lastUserMessage || "global", 3),
+      Promise.resolve(readInform()),
+      fetchDatafixNews(origin, newsQuery),
+    ]).then((results) => [
+      results[0].status === "fulfilled" ? results[0].value : null,
+      results[1].status === "fulfilled" ? results[1].value : [],
+      results[2].status === "fulfilled" ? results[2].value : [],
+      results[3].status === "fulfilled" ? results[3].value : null,
+    ]);
+
+    console.log("[v0] Context gathered - liveContext:", !!liveContext, "gdelt:", gdeltEvents?.length, "inform:", informCountries?.length, "news:", latestNews?.items?.length);
+
+    const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
+    const newsSource = latestNews?.sources ? `Guardian & NewsAPI` : "unknown";
+
+    const urls = extractUrls(lastUserMessage);
+    let fetchedContext = "";
+    let fetchedSource = "";
+    if (urls.length > 0) {
+      console.log("[v0] Fetching article from URL:", urls[0]);
+      const article = await fetchArticleText(urls[0]);
+      if (article) {
+        fetchedContext = article.text;
+        fetchedSource = article.source;
+        console.log("[v0] Article fetched, length:", fetchedContext.length);
+      }
+    }
+
+    // Build context strings
+    const gdeltContext = gdeltEvents && gdeltEvents.length > 0
+      ? `\nGDELT Global Events (top ${gdeltEvents.length}):\n` +
+        gdeltEvents
+          .map(
+            (ev, idx) =>
+              `${idx + 1}. ${ev.title} | ${ev.publishDate.split("T")[0]} | ${ev.url}`
+          )
+          .join("\n")
+      : "";
+
+    const informContext = informCountries && informCountries.length > 0
+      ? `\nINFORM Risk Data:\n` +
+        informCountries
+          .slice(0, 5)
+          .map((c) => `${c.country}: Risk Score ${c.riskScore}/10 (${c.category})`)
+          .join("\n")
+      : "";
+
+    const newsContext = newsItems.length > 0
+      ? `\nLive news feed (source: ${newsSource}):\n` +
+        newsItems
+          .map(
+            (item: any, idx: number) =>
+              `${idx + 1}. ${item?.title || "Untitled"} | ${item?.source || "Unknown"} | ` +
+              `${item?.publishedAt || "Unknown time"} | ${item?.url || ""}`
+          )
+          .join("\n")
+      : "";
+
+    const system = {
+      role: "system",
+      content:
+        "You are Datafix: maximum humor, maximum precision. Be witty, playful, and clever, " +
+        "but never sloppy with data. Use fun metaphors and punchy jokes while staying accurate. " +
+        "When answering, always include precise figures if available, and name the data source " +
+        "(World Bank, IMF, WGI, WHO, GDELT, NewsAPI, Yahoo Finance, Reddit). " +
+        "If the user asks about the latest, recent, or today's news, you MUST use the Live news feed below " +
+        "and include the article titles and timestamps. If the feed is empty, say you cannot access live news. " +
+        "If exact figures are unavailable, say so explicitly and provide the best proxy. " +
+        "Be clear, helpful, and explain your reasoning briefly when comparing countries. " +
+        "You help users compare countries, explain methodology, and point them to pages. " +
+        "Pages: / (Interactive Maps), /analytics, /methodology. " +
+        "Ginis Index is a proxy: 20 + 0.3*AgeYouth_norm + 0.4*Unemployment_norm + 0.3*(100 - TaxEffort_norm), based on World Bank indicators SP.POP.0014.TO.ZS, SL.UEM.TOTL.ZS, GC.TAX.TOTL.GD.ZS (2019-2024 averages) with BSTS+DFM forecasts for 2025-2030. " +
+        "If asked to translate, translate the text. If asked for where to find data, direct to the right page " +
+        "and explain what to look for. If a URL is provided and context is available, assess whether it appears legitimate and cite the source URL." +
+        (liveContext && countryCode
+          ? `\nLive context for ${countryCode}:\n` +
+            `Model v2: ${JSON.stringify(liveContext.model)}\n` +
+            `World Bank latest indicators: ${JSON.stringify(liveContext.wbSummary)}`
+          : "") +
+        gdeltContext +
+        informContext +
+        newsContext,
+    };
 
     console.log("[v0] Calling OpenAI API...");
     const requestBody = {
@@ -457,6 +483,8 @@ export async function POST(request: Request) {
               newsCount: newsItems.length,
               newsSource,
               hasNews: newsItems.length > 0,
+              gdeltEvents: gdeltEvents?.length || 0,
+              liveContextAvailable: !!liveContext,
             },
           }
         : {}),
