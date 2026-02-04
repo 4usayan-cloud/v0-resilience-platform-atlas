@@ -202,20 +202,31 @@ export function DatafixChat() {
     setIsLoading(true);
 
     try {
+      console.log("[v0] Sending message to datafix API");
       const res = await fetch("/api/datafix", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
       });
 
+      console.log("[v0] API response status:", res.status);
+
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err?.error || "Failed to get response");
+        console.error("[v0] API error response:", err);
+        throw new Error(err?.error || err?.reply || `HTTP ${res.status}`);
       }
 
       const data = await res.json();
+      console.log("[v0] API response data received:", data?.reply?.slice(0, 100));
+      
+      if (!data.reply) {
+        throw new Error("No reply from API");
+      }
+      
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
     } catch (error) {
+      console.error("[v0] Send message error:", error);
       const reason =
         error instanceof Error ? error.message : "Unknown error";
       setMessages((prev) => [
@@ -224,7 +235,7 @@ export function DatafixChat() {
           role: "assistant",
           content:
             `I hit a snag fetching a response (${reason}). ` +
-            "If you’re on Vercel/Netlify, set OPENAI_API_KEY and redeploy.",
+            "If you're on Vercel/Netlify, set OPENAI_API_KEY and redeploy.",
         },
       ]);
     } finally {

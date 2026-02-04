@@ -168,7 +168,10 @@ async function fetchArticleText(url: string): Promise<{ text: string; source: st
 }
 
 export async function POST(request: Request) {
+  console.log("[v0] Datafix API called");
+  
   if (!OPENAI_API_KEY) {
+    console.log("[v0] Missing OPENAI_API_KEY");
     return NextResponse.json({
       reply:
         "Datafix is offline because the OpenAI API key is missing. " +
@@ -179,30 +182,42 @@ export async function POST(request: Request) {
 
   const debugEnabled = new URL(request.url).searchParams.get("debug") === "1";
   const { messages } = await request.json();
+  console.log("[v0] Received messages:", messages?.length);
+  
   const lastUserMessage =
     [...(messages || [])].reverse().find((m: any) => m.role === "user")?.content || "";
+  console.log("[v0] Last user message:", lastUserMessage.slice(0, 100));
+  
   const origin = new URL(request.url).origin;
   const countryCode = extractCountryCode(lastUserMessage);
+  console.log("[v0] Country code detected:", countryCode);
+  
   const liveContext = countryCode ? await fetchLiveCountryContext(origin, countryCode) : null;
   const latestNews = await fetchDatafixNews(origin);
   const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
   const newsSource = latestNews?.dataSource || "unknown";
   const wantsNews = /latest|recent|today|news|headline/i.test(lastUserMessage);
   
+  console.log("[v0] News items available:", newsItems.length, "Source:", newsSource);
+  
   // Fetch GDELT events for context
   const gdeltEvents = await fetchGDELT(lastUserMessage || "global", 3);
+  console.log("[v0] GDELT events:", gdeltEvents.length);
   
   // Fetch INFORM data
   const informCountries = readInform();
+  console.log("[v0] INFORM countries:", informCountries.length);
   
   const urls = extractUrls(lastUserMessage);
   let fetchedContext = "";
   let fetchedSource = "";
   if (urls.length > 0) {
+    console.log("[v0] Fetching article from URL:", urls[0]);
     const article = await fetchArticleText(urls[0]);
     if (article) {
       fetchedContext = article.text;
       fetchedSource = article.source;
+      console.log("[v0] Article fetched, length:", fetchedContext.length);
     }
   }
 
@@ -258,6 +273,7 @@ export async function POST(request: Request) {
   try {
     if (wantsNews) {
       if (newsItems.length === 0) {
+        console.log("[v0] No news available");
         return NextResponse.json({
           reply:
             "I can't access live news right now. Try again in a moment or ask about a specific topic.",
@@ -297,42 +313,56 @@ export async function POST(request: Request) {
       });
     }
 
+    console.log("[v0] Calling OpenAI API...");
+    const requestBody = {
+      model: "gpt-4o-mini",
+      temperature: 0.4,
+      messages: [
+        system,
+        ...(fetchedContext
+          ? [
+              {
+                role: "system",
+                content:
+                  `Article context (from ${fetchedSource}):\n` +
+                  fetchedContext,
+              },
+            ]
+          : []),
+        ...(messages || []),
+      ],
+    };
+    
+    console.log("[v0] Request body prepared, message count:", requestBody.messages.length);
+
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        temperature: 0.4,
-        messages: [
-          system,
-          ...(fetchedContext
-            ? [
-                {
-                  role: "system",
-                  content:
-                    `Article context (from ${fetchedSource}):\n` +
-                    fetchedContext,
-                },
-              ]
-            : []),
-          ...(messages || []),
-        ],
-      }),
+      body: JSON.stringify(requestBody),
     });
+
+    console.log("[v0] OpenAI response status:", res.status);
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
+      console.error("[v0] OpenAI API error:", err);
       return NextResponse.json(
-        { reply: "Datafix hit an API error. Please try again in a moment." },
+        { 
+          reply: "Datafix hit an API error. Please try again in a moment.",
+          error: err?.error?.message || "Unknown error"
+        },
         { status: res.status }
       );
     }
 
     const data = await res.json();
+    console.log("[v0] OpenAI response received:", data?.choices?.length, "choices");
+    
     const reply = data?.choices?.[0]?.message?.content?.trim() || "No response.";
+    console.log("[v0] Reply generated, length:", reply.length);
 
     return NextResponse.json({
       reply,
@@ -347,8 +377,10 @@ export async function POST(request: Request) {
         : {}),
     });
   } catch (error) {
+    console.error("[v0] Datafix error:", error);
+    const errorMsg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { reply: "Datafix is unreachable right now. Please try again shortly." },
+      { reply: `Datafix is unreachable right now (${errorMsg}). Please try again shortly.` },
       { status: 500 }
     );
   }
