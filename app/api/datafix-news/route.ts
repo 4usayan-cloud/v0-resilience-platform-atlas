@@ -76,10 +76,10 @@ async function fetchGuardianNews(query: string, limit: number): Promise<FetchRes
 }
 
 async function fetchNewsAPI(query: string, limit: number): Promise<FetchResult> {
-  const apiKey = MEDIA_API_KEY || NEWSAPI_API_KEY;
+  const apiKey = BRIGHT_DATA_API_KEY || NEWSAPI_API_KEY;
   
   if (!apiKey) {
-    console.warn("[NewsAPI] No API key available (tried MEDIA_API_KEY and NEWSAPI_API_KEY)");
+    console.warn("[NewsAPI] No API key available (tried BRIGHT_DATA_API_KEY and NEWSAPI_API_KEY)");
     return { items: [], status: null, error: "missing_key" };
   }
   
@@ -91,7 +91,7 @@ async function fetchNewsAPI(query: string, limit: number): Promise<FetchResult> 
     url.searchParams.set("pageSize", String(Math.min(limit, 100)));
     url.searchParams.set("language", "en");
 
-    console.log("[NewsAPI] Attempting fetch with query:", query);
+    console.log("[NewsAPI/BrightData] Attempting fetch with query:", query, "using key:", apiKey === BRIGHT_DATA_API_KEY ? "BrightData" : "NewsAPI");
     
     const res = await fetch(url.toString(), {
       signal: AbortSignal.timeout(8000),
@@ -124,39 +124,57 @@ async function fetchNewsAPI(query: string, limit: number): Promise<FetchResult> 
     return { items: [], status: null, error: err instanceof Error ? err.message : String(err) };
   }
 }
-  try {
-    const url = new URL("https://newsapi.org/v2/everything");
-    url.searchParams.set("q", query);
-    url.searchParams.set("apiKey", NEWSAPI_API_KEY);
-    url.searchParams.set("sortBy", "publishedAt");
-    url.searchParams.set("pageSize", String(Math.min(limit, 100)));
-    url.searchParams.set("language", "en");
 
-    const res = await fetch(url.toString(), {
-      signal: AbortSignal.timeout(8000),
-      next: { revalidate: CACHE_SECONDS },
+async function fetchBrightDataLiveEvents(query: string, limit: number): Promise<FetchResult> {
+  if (!BRIGHT_DATA_API_KEY) {
+    console.warn("[BrightData] API key not found");
+    return { items: [], status: null, error: "missing_key" };
+  }
+
+  try {
+    console.log("[BrightData] Fetching live events for:", query);
+    
+    const searchPayload = {
+      search_id: query,
+      max_entries: Math.min(limit * 2, 100),
+      delivery: {
+        strategy: "direct",
+      },
+    };
+
+    const res = await fetch("https://api.brightdata.com/datasets/v2/search", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(searchPayload),
+      signal: AbortSignal.timeout(10000),
     });
+
     if (!res.ok) {
-      console.warn(`[NewsAPI] API returned ${res.status}: ${res.statusText}`);
+      console.warn(`[BrightData] API returned ${res.status}: ${res.statusText}`);
       return { items: [], status: res.status, error: res.statusText };
     }
+
     const data = await res.json();
-    const articles = Array.isArray(data?.articles) ? data.articles : [];
-    console.log(`[NewsAPI] Fetched ${articles.length} articles for "${query}"`);
+    const items = Array.isArray(data?.data) ? data.data : [];
+    console.log(`[BrightData] Fetched ${items.length} items for "${query}"`);
+
     return {
-      items: articles.slice(0, limit).map((article: any) => ({
-        title: article?.title ?? "",
-        source: article?.source?.name ?? "NewsAPI",
-        url: article?.url ?? "",
-        publishedAt: article?.publishedAt ?? null,
-        summary: article?.description ?? "",
-        provider: "newsapi" as const,
+      items: items.slice(0, limit).map((item: any) => ({
+        title: item?.title ?? item?.headline ?? "News Item",
+        source: item?.source ?? "BrightData",
+        url: item?.url ?? item?.link ?? "",
+        publishedAt: item?.published_at ?? item?.date ?? new Date().toISOString(),
+        summary: item?.description ?? item?.snippet ?? "",
+        provider: "social" as const,
       })),
       status: res.status,
       error: null,
     };
   } catch (err) {
-    console.error("[NewsAPI] Fetch error:", err instanceof Error ? err.message : String(err));
+    console.error("[BrightData] Fetch error:", err instanceof Error ? err.message : String(err));
     return { items: [], status: null, error: err instanceof Error ? err.message : String(err) };
   }
 }
@@ -233,19 +251,21 @@ export async function GET(request: Request) {
   const updatedAt = new Date().toISOString();
 
   console.log("[datafix-news] Starting fetch - Query:", query, "Limit:", limit);
-  console.log("[datafix-news] API Keys - Guardian:", GUARDIAN_API_KEY ? "✓ present" : "✗ MISSING", "NewsAPI:", NEWSAPI_API_KEY ? "✓ present" : "✗ MISSING", "Media:", MEDIA_API_KEY ? "✓ present" : "✗ MISSING");
+  console.log("[datafix-news] API Keys - Guardian:", GUARDIAN_API_KEY ? "✓ present" : "✗ MISSING", "BrightData:", BRIGHT_DATA_API_KEY ? "✓ present" : "✗ MISSING", "NewsAPI:", NEWSAPI_API_KEY ? "✓ present" : "✗ MISSING");
 
   try {
-    const [guardianResult, newsapiResult] = await Promise.all([
+    const [guardianResult, newsapiResult, brightDataResult] = await Promise.all([
       fetchGuardianNews(query, guardianFetchLimit),
       fetchNewsAPI(query, newsApiFetchLimit),
+      fetchBrightDataLiveEvents(query, newsApiFetchLimit),
     ]);
     const guardianNews = guardianResult.items;
     const newsapiNews = newsapiResult.items;
+    const brightDataNews = brightDataResult.items;
 
-    let allNews = [...guardianNews, ...newsapiNews];
+    let allNews = [...guardianNews, ...newsapiNews, ...brightDataNews];
     
-    console.log("[datafix-news] Before dedup - Guardian:", guardianNews.length, "NewsAPI:", newsapiNews.length, "Total:", allNews.length);
+    console.log("[datafix-news] Before dedup - Guardian:", guardianNews.length, "NewsAPI:", newsapiNews.length, "BrightData:", brightDataNews.length, "Total:", allNews.length);
     
     allNews = deduplicateNews(allNews);
     
@@ -261,9 +281,10 @@ export async function GET(request: Request) {
     }
 
     // Log diagnostics for debugging
-    console.log(`[datafix-news] Final result: ${allNews.length} items from ${guardianNews.length} Guardian + ${newsapiNews.length} NewsAPI`);
+    console.log(`[datafix-news] Final result: ${allNews.length} items from ${guardianNews.length} Guardian + ${newsapiNews.length} NewsAPI + ${brightDataNews.length} BrightData`);
     if (guardianResult.error) console.warn(`[datafix-news] Guardian error: ${guardianResult.error} (status: ${guardianResult.status})`);
     if (newsapiResult.error) console.warn(`[datafix-news] NewsAPI error: ${newsapiResult.error} (status: ${newsapiResult.status})`);
+    if (brightDataResult.error) console.warn(`[datafix-news] BrightData error: ${brightDataResult.error} (status: ${brightDataResult.status})`);
 
     return NextResponse.json(
       {
@@ -274,16 +295,20 @@ export async function GET(request: Request) {
         sources: {
           guardian: guardianNews.length,
           newsapi: newsapiNews.length,
-          fallback: allNews.length - guardianNews.length - newsapiNews.length,
+          brightdata: brightDataNews.length,
+          fallback: allNews.length - guardianNews.length - newsapiNews.length - brightDataNews.length,
         },
         _debug: {
           guardianKeyPresent: !!GUARDIAN_API_KEY,
           newsapiKeyPresent: !!NEWSAPI_API_KEY,
+          brightdataKeyPresent: !!BRIGHT_DATA_API_KEY,
           guardianStatus: guardianResult.status,
           newsapiStatus: newsapiResult.status,
+          brightdataStatus: brightDataResult.status,
           guardianError: guardianResult.error,
           newsapiError: newsapiResult.error,
-          usingFallback: allNews.length > 0 && guardianNews.length === 0 && newsapiNews.length === 0,
+          brightdataError: brightDataResult.error,
+          usingFallback: allNews.length > 0 && guardianNews.length === 0 && newsapiNews.length === 0 && brightDataNews.length === 0,
         },
       },
       {
@@ -307,11 +332,13 @@ export async function GET(request: Request) {
         sources: {
           guardian: 0,
           newsapi: 0,
+          brightdata: 0,
           fallback: fallbackNews.length,
         },
         _debug: {
           guardianKeyPresent: !!GUARDIAN_API_KEY,
           newsapiKeyPresent: !!NEWSAPI_API_KEY,
+          brightdataKeyPresent: !!BRIGHT_DATA_API_KEY,
           usingFallback: true,
           errorMessage: error instanceof Error ? error.message : String(error),
         },
