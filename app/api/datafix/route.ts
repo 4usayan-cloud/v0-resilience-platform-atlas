@@ -265,13 +265,12 @@ async function fetchDatafixNews(origin: string, query: string = "world news") {
   try {
     console.log("[v0] Fetching news - origin:", origin, "query:", query);
     
-    // Ensure origin is valid URL
+    // Use the reliable live-news endpoint first
     let newsUrl: string;
     if (origin.startsWith("http")) {
-      newsUrl = `${origin}/api/datafix-news?q=${encodeURIComponent(query)}&limit=8&forceLive=1`;
+      newsUrl = `${origin}/api/live-news?q=${encodeURIComponent(query)}&limit=8`;
     } else {
-      // Fallback for edge cases
-      newsUrl = `/api/datafix-news?q=${encodeURIComponent(query)}&limit=8&forceLive=1`;
+      newsUrl = `/api/live-news?q=${encodeURIComponent(query)}&limit=8`;
     }
     
     console.log("[v0] News API URL:", newsUrl);
@@ -285,7 +284,7 @@ async function fetchDatafixNews(origin: string, query: string = "world news") {
     console.log("[v0] News API response status:", res.status);
     
     if (!res.ok) {
-      console.error("[v0] News API returned status:", res.status, "text:", await res.text().catch(() => ""));
+      console.error("[v0] News API returned status:", res.status);
       return null;
     }
     
