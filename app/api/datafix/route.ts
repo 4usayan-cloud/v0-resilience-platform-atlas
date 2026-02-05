@@ -296,8 +296,6 @@ async function fetchDatafixNews(origin: string, query: string = "world news") {
     return null;
   }
 }
-  }
-}
 
 async function fetchArticleText(url: string): Promise<{ text: string; source: string } | null> {
   try {
