@@ -117,9 +117,16 @@ function getFallbackGDELTEvents(query: string, limit: number): GDELTEvent[] {
 
 async function fetchBrightDataDumpStatus(origin: string): Promise<DumpStatus[]> {
   try {
-    console.log("[v0] Fetching Bright Data dump status");
+    console.log("[v0] Fetching Bright Data dump status from:", origin);
     
-    const res = await fetch(`${origin}/api/bright-data-status`, {
+    // Build URL that works in production
+    const statusUrl = origin.startsWith("http")
+      ? `${origin}/api/bright-data-status`
+      : `/api/bright-data-status`;
+    
+    console.log("[v0] Dump status URL:", statusUrl);
+    
+    const res = await fetch(statusUrl, {
       signal: AbortSignal.timeout(8000),
       cache: "no-store",
     });
@@ -178,10 +185,18 @@ async function fetchLiveCountryContext(origin: string, countryCode: string) {
   ];
 
   try {
-    const modelUrl = `${origin}/api/model/score?country=${countryCode}`;
+    // Build URLs - handle both absolute and relative URLs for production
+    const buildUrl = (path: string) => {
+      if (origin.startsWith("http")) {
+        return `${origin}${path}`;
+      }
+      return path;
+    };
+
+    const modelUrl = buildUrl(`/api/model/score?country=${countryCode}`);
     const wbUrls = indicators.map(
       (ind) =>
-        `${origin}/api/worldbank?country=${countryCode}&indicator=${ind.code}`
+        buildUrl(`/api/worldbank?country=${countryCode}&indicator=${ind.code}`)
     );
 
     console.log("[v0] Fetching model from:", modelUrl);
@@ -248,20 +263,29 @@ async function fetchLiveCountryContext(origin: string, countryCode: string) {
 
 async function fetchDatafixNews(origin: string, query: string = "world news") {
   try {
-    console.log("[v0] Fetching news with query:", query);
-    const url = new URL(`${origin}/api/datafix-news`);
-    url.searchParams.set("q", query);
-    url.searchParams.set("limit", "8");
-    url.searchParams.set("forceLive", "1");
+    console.log("[v0] Fetching news - origin:", origin, "query:", query);
     
-    const res = await fetch(url.toString(), {
+    // Ensure origin is valid URL
+    let newsUrl: string;
+    if (origin.startsWith("http")) {
+      newsUrl = `${origin}/api/datafix-news?q=${encodeURIComponent(query)}&limit=8&forceLive=1`;
+    } else {
+      // Fallback for edge cases
+      newsUrl = `/api/datafix-news?q=${encodeURIComponent(query)}&limit=8&forceLive=1`;
+    }
+    
+    console.log("[v0] News API URL:", newsUrl);
+    
+    const res = await fetch(newsUrl, {
       cache: "no-store",
       next: { revalidate: 0 },
       signal: AbortSignal.timeout(10000),
     });
     
+    console.log("[v0] News API response status:", res.status);
+    
     if (!res.ok) {
-      console.error("[v0] News API returned status:", res.status);
+      console.error("[v0] News API returned status:", res.status, "text:", await res.text().catch(() => ""));
       return null;
     }
     
@@ -271,6 +295,8 @@ async function fetchDatafixNews(origin: string, query: string = "world news") {
   } catch (err) {
     console.error("[v0] News fetch error:", err instanceof Error ? err.message : String(err));
     return null;
+  }
+}
   }
 }
 
