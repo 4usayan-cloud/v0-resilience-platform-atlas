@@ -76,22 +76,20 @@ async function fetchGuardianNews(query: string, limit: number): Promise<FetchRes
 }
 
 async function fetchNewsAPI(query: string, limit: number): Promise<FetchResult> {
-  const apiKey = BRIGHT_DATA_API_KEY || NEWSAPI_API_KEY;
-  
-  if (!apiKey) {
-    console.warn("[NewsAPI] No API key available (tried BRIGHT_DATA_API_KEY and NEWSAPI_API_KEY)");
+  if (!NEWSAPI_API_KEY) {
+    console.warn("[NewsAPI] API key not found");
     return { items: [], status: null, error: "missing_key" };
   }
   
   try {
     const url = new URL("https://newsapi.org/v2/everything");
     url.searchParams.set("q", query);
-    url.searchParams.set("apiKey", apiKey);
+    url.searchParams.set("apiKey", NEWSAPI_API_KEY);
     url.searchParams.set("sortBy", "publishedAt");
     url.searchParams.set("pageSize", String(Math.min(limit, 100)));
     url.searchParams.set("language", "en");
 
-    console.log("[NewsAPI/BrightData] Attempting fetch with query:", query, "using key:", apiKey === BRIGHT_DATA_API_KEY ? "BrightData" : "NewsAPI");
+    console.log("[NewsAPI] Attempting fetch with query:", query);
     
     const res = await fetch(url.toString(), {
       signal: AbortSignal.timeout(8000),
@@ -134,21 +132,17 @@ async function fetchBrightDataLiveEvents(query: string, limit: number): Promise<
   try {
     console.log("[BrightData] Fetching live events for:", query);
     
-    const searchPayload = {
-      search_id: query,
-      max_entries: Math.min(limit * 2, 100),
-      delivery: {
-        strategy: "direct",
-      },
-    };
+    // Bright Data's web scraping API for news
+    const url = new URL("https://api.brightdata.com/datasets/v2/snapshot/fetch");
+    url.searchParams.set("uid", query); // Use query as dataset identifier
+    url.searchParams.set("limit", String(Math.min(limit, 100)));
 
-    const res = await fetch("https://api.brightdata.com/datasets/v2/search", {
-      method: "POST",
+    const res = await fetch(url.toString(), {
+      method: "GET",
       headers: {
         Authorization: `Bearer ${BRIGHT_DATA_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(searchPayload),
       signal: AbortSignal.timeout(10000),
     });
 
@@ -158,17 +152,22 @@ async function fetchBrightDataLiveEvents(query: string, limit: number): Promise<
     }
 
     const data = await res.json();
-    const items = Array.isArray(data?.data) ? data.data : [];
+    const items = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
     console.log(`[BrightData] Fetched ${items.length} items for "${query}"`);
+
+    if (items.length === 0) {
+      console.log("[BrightData] No items returned, endpoint may require different parameters");
+      return { items: [], status: res.status, error: "no_results" };
+    }
 
     return {
       items: items.slice(0, limit).map((item: any) => ({
-        title: item?.title ?? item?.headline ?? "News Item",
+        title: item?.title ?? item?.headline ?? item?.name ?? "News Item",
         source: item?.source ?? "BrightData",
         url: item?.url ?? item?.link ?? "",
-        publishedAt: item?.published_at ?? item?.date ?? new Date().toISOString(),
-        summary: item?.description ?? item?.snippet ?? "",
-        provider: "social" as const,
+        publishedAt: item?.published_at ?? item?.date ?? item?.timestamp ?? new Date().toISOString(),
+        summary: item?.description ?? item?.snippet ?? item?.content ?? "",
+        provider: "brightdata" as const,
       })),
       status: res.status,
       error: null,
