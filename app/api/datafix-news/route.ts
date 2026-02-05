@@ -4,6 +4,7 @@ export const runtime = "nodejs";
 
 const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
 const NEWSAPI_API_KEY = process.env.NEWSAPI_API_KEY;
+const MEDIA_API_KEY = process.env.MEDIA_API_KEY || "ef3bed57-7ad1-4c7a-b258-06955fd2086d";
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_QUERY = "resilience";
 const CACHE_SECONDS = 60;
@@ -75,10 +76,54 @@ async function fetchGuardianNews(query: string, limit: number): Promise<FetchRes
 }
 
 async function fetchNewsAPI(query: string, limit: number): Promise<FetchResult> {
-  if (!NEWSAPI_API_KEY) {
-    console.warn("[NewsAPI] API key not found");
+  const apiKey = MEDIA_API_KEY || NEWSAPI_API_KEY;
+  
+  if (!apiKey) {
+    console.warn("[NewsAPI] No API key available (tried MEDIA_API_KEY and NEWSAPI_API_KEY)");
     return { items: [], status: null, error: "missing_key" };
   }
+  
+  try {
+    const url = new URL("https://newsapi.org/v2/everything");
+    url.searchParams.set("q", query);
+    url.searchParams.set("apiKey", apiKey);
+    url.searchParams.set("sortBy", "publishedAt");
+    url.searchParams.set("pageSize", String(Math.min(limit, 100)));
+    url.searchParams.set("language", "en");
+
+    console.log("[NewsAPI] Attempting fetch with query:", query);
+    
+    const res = await fetch(url.toString(), {
+      signal: AbortSignal.timeout(8000),
+      next: { revalidate: CACHE_SECONDS },
+    });
+    
+    if (!res.ok) {
+      console.warn(`[NewsAPI] API returned ${res.status}: ${res.statusText}`);
+      return { items: [], status: res.status, error: res.statusText };
+    }
+    
+    const data = await res.json();
+    const articles = Array.isArray(data?.articles) ? data.articles : [];
+    console.log(`[NewsAPI] Fetched ${articles.length} articles for "${query}"`);
+    
+    return {
+      items: articles.slice(0, limit).map((article: any) => ({
+        title: article?.title ?? "",
+        source: article?.source?.name ?? "NewsAPI",
+        url: article?.url ?? "",
+        publishedAt: article?.publishedAt ?? null,
+        summary: article?.description ?? "",
+        provider: "newsapi" as const,
+      })),
+      status: res.status,
+      error: null,
+    };
+  } catch (err) {
+    console.error("[NewsAPI] Fetch error:", err instanceof Error ? err.message : String(err));
+    return { items: [], status: null, error: err instanceof Error ? err.message : String(err) };
+  }
+}
   try {
     const url = new URL("https://newsapi.org/v2/everything");
     url.searchParams.set("q", query);
@@ -188,7 +233,7 @@ export async function GET(request: Request) {
   const updatedAt = new Date().toISOString();
 
   console.log("[datafix-news] Starting fetch - Query:", query, "Limit:", limit);
-  console.log("[datafix-news] API Keys - Guardian:", GUARDIAN_API_KEY ? "✓ present" : "✗ MISSING", "NewsAPI:", NEWSAPI_API_KEY ? "✓ present" : "✗ MISSING");
+  console.log("[datafix-news] API Keys - Guardian:", GUARDIAN_API_KEY ? "✓ present" : "✗ MISSING", "NewsAPI:", NEWSAPI_API_KEY ? "✓ present" : "✗ MISSING", "Media:", MEDIA_API_KEY ? "✓ present" : "✗ MISSING");
 
   try {
     const [guardianResult, newsapiResult] = await Promise.all([
