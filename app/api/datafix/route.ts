@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const BRIGHT_DATA_API_KEY = process.env.MEDIA_API_KEY || "ef3bed57-7ad1-4c7a-b258-06955fd2086d";
 const MAX_CHARS = 6000;
 
 interface GDELTEvent {
@@ -19,6 +20,17 @@ interface InformCountry {
   affectedPopulation: number;
   lastUpdate: string;
   indicators: Record<string, number>;
+}
+
+interface DumpStatus {
+  dump_id: string;
+  status: "in_progress" | "done" | "failed";
+  batches_total: number;
+  batches_uploaded?: number;
+  files_total: number;
+  files_uploaded?: number;
+  estimate_finish?: string;
+  completed_at?: string;
 }
 
 function extractUrls(text: string): string[] {
@@ -101,6 +113,31 @@ function getFallbackGDELTEvents(query: string, limit: number): GDELTEvent[] {
   ];
 
   return fallbackEvents.slice(0, limit);
+}
+
+async function fetchBrightDataDumpStatus(origin: string): Promise<DumpStatus[]> {
+  try {
+    console.log("[v0] Fetching Bright Data dump status");
+    
+    const res = await fetch(`${origin}/api/bright-data-status`, {
+      signal: AbortSignal.timeout(8000),
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      console.warn("[v0] Dump status API returned:", res.status);
+      return [];
+    }
+
+    const data = await res.json();
+    const dumps = Array.isArray(data?.dumps) ? data.dumps : [];
+    console.log("[v0] Retrieved", dumps.length, "data collection dumps");
+    
+    return dumps;
+  } catch (err) {
+    console.error("[v0] Dump status fetch error:", err instanceof Error ? err.message : String(err));
+    return [];
+  }
 }
 
 function readInform(): InformCountry[] {
@@ -371,19 +408,21 @@ export async function POST(request: Request) {
     }
 
     // For general queries, fetch all context in parallel and wait with timeout
-    const [liveContext, gdeltEvents, informCountries, latestNews] = await Promise.allSettled([
+    const [liveContext, gdeltEvents, informCountries, latestNews, dumpStatus] = await Promise.allSettled([
       liveContextPromise,
       fetchGDELT(lastUserMessage || "global", 3),
       Promise.resolve(readInform()),
       fetchDatafixNews(origin, newsQuery),
+      fetchBrightDataDumpStatus(origin),
     ]).then((results) => [
       results[0].status === "fulfilled" ? results[0].value : null,
       results[1].status === "fulfilled" ? results[1].value : [],
       results[2].status === "fulfilled" ? results[2].value : [],
       results[3].status === "fulfilled" ? results[3].value : null,
+      results[4].status === "fulfilled" ? results[4].value : [],
     ]);
 
-    console.log("[v0] Context gathered - liveContext:", !!liveContext, "gdelt:", gdeltEvents?.length, "inform:", informCountries?.length, "news:", latestNews?.items?.length);
+    console.log("[v0] Context gathered - liveContext:", !!liveContext, "gdelt:", gdeltEvents?.length, "inform:", informCountries?.length, "news:", latestNews?.items?.length, "dumps:", dumpStatus?.length);
 
     const newsItems = Array.isArray(latestNews?.items) ? latestNews.items.slice(0, 8) : [];
     const newsSource = latestNews?.sources ? `Guardian & NewsAPI` : "unknown";
@@ -431,13 +470,33 @@ export async function POST(request: Request) {
           .join("\n")
       : "";
 
+    const dumpContext = dumpStatus && dumpStatus.length > 0
+      ? `\nBright Data Collection Status:\n` +
+        dumpStatus
+          .map(
+            (dump: DumpStatus, idx: number) => {
+              const progress = dump.batches_uploaded && dump.batches_total
+                ? Math.round((dump.batches_uploaded / dump.batches_total) * 100)
+                : 0;
+              const status = dump.status === "in_progress" 
+                ? `${progress}% complete (est. finish: ${dump.estimate_finish})` 
+                : dump.status === "done"
+                ? `Completed (${dump.files_uploaded}/${dump.files_total} files)`
+                : "Failed";
+              return `${idx + 1}. Collection ${dump.dump_id}: ${status}`;
+            }
+          )
+          .join("\n")
+      : "";
+
     const system = {
       role: "system",
       content:
         "You are Datafix: maximum humor, maximum precision. Be witty, playful, and clever, " +
         "but never sloppy with data. Use fun metaphors and punchy jokes while staying accurate. " +
         "When answering, always include precise figures if available, and name the data source " +
-        "(World Bank, IMF, WGI, WHO, GDELT, NewsAPI, Yahoo Finance, Reddit). " +
+        "(World Bank, IMF, WGI, WHO, GDELT, NewsAPI, Bright Data, Yahoo Finance, Reddit). " +
+        "If the user asks about data collection, dumps, or collection status, use the Bright Data Collection Status below. " +
         "If the user asks about the latest, recent, or today's news, you MUST use the Live news feed below " +
         "and include the article titles and timestamps. If the feed is empty, say you cannot access live news. " +
         "If exact figures are unavailable, say so explicitly and provide the best proxy. " +
@@ -454,7 +513,8 @@ export async function POST(request: Request) {
           : "") +
         gdeltContext +
         informContext +
-        newsContext,
+        newsContext +
+        dumpContext,
     };
 
     console.log("[v0] Calling OpenAI API...");
